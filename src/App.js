@@ -9,6 +9,7 @@ class App extends Component {
 
     
   constructor(props) {
+    console.log("123");
     super(props);
 
     this.state = {
@@ -37,7 +38,7 @@ class App extends Component {
 
   async componentDidMount() {
     console.log("ComponentDidMount....");
-    
+
     let result = await this.readArtworks();
     result.orders = this.shuffle(result.orders);
     await this.preload(result.urls, result.orders);

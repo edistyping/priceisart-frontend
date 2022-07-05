@@ -3,13 +3,11 @@ import './App.css';
 
 import Result from './components/Result';
 
-const numberOfImages = 24; // Number of images to read from Azure Storage
+const numberOfImages = 20; // Number of images to read from Azure Storage
 
 class App extends Component {
 
-    
   constructor(props) {
-    console.log("123");
     super(props);
 
     this.state = {
@@ -37,8 +35,6 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    console.log("ComponentDidMount....");
-
     let result = await this.readArtworks();
     result.orders = this.shuffle(result.orders);
     await this.preload(result.urls, result.orders);
@@ -51,7 +47,9 @@ class App extends Component {
 
   async readArtworks() {
     // Call API to get data from Postgres from Django
+    var startTime = performance.now()
     try {
+
       console.log("Running readArtworks()....")
       const url = this.state.preurl + 'api1/'
       console.log("url: " + url);
@@ -80,6 +78,9 @@ class App extends Component {
       console.log("Error occurred in reading Artworks...")
       console.log(error);
     }
+    var endTime = performance.now()
+    console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
+
   }
 
   async preload(urls, orders) {
@@ -122,7 +123,7 @@ class App extends Component {
       console.log("Game is over")
       this.setState({    
         index: 0,
-        artworks_choice: temp_choice,
+        artworks_choice: temp_choice
       })
       this.gameover();
       return
@@ -259,7 +260,7 @@ class App extends Component {
 
         <div className="container-header">
           <h1>Price is Art!</h1>
-          <h3>Choose an Expensive-looking Artwork  </h3>
+          <h3>Choose an Expensive-looking Artwork </h3>
         
           <div className="container-header-index"> {this.state.index / 2 + 1} / {numberOfImages/2}</div>
         </div>
@@ -268,7 +269,6 @@ class App extends Component {
           <button className="button-75" onClick={this.handleStart}>
             <span className="text">START</span>
           </button>
-          <p style={{ margin: "auto", fontSize: "3em", }}>More updates coming up but slowly due to a new project</p>
         </div>
 
         <div className="container-replay">
@@ -277,7 +277,7 @@ class App extends Component {
 
 
           <div style={{height: "100%", display: "flex", flexDirection: "column", overflowY:"auto"}}>
-            <h2 style={{margin: "1% 0"}}>Result ({})</h2>
+            <h2 style={{margin: "1% 0"}}>Result ( {} / { numberOfImages / 2 })</h2>
               {this.state.artworks_choice.map((item, i) => {
                 return(
                   <div color={"yellow"} style={{border: "solid black 10px", display: "flex", }}>

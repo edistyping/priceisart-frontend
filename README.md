@@ -3,6 +3,10 @@
 Link: https://edistyping.github.io/priceisart/
 https://i.stack.imgur.com/fYFze.png
 
+# Idea
+1. Start button will read from Postgres then randomize it to collect 10 random images. 
+2. 
+
 # To Do
 1. Improve visuals
     - Update 'Buttons' and Font stuffs

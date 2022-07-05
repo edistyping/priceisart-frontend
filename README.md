@@ -3,15 +3,16 @@
 Link: https://edistyping.github.io/priceisart/
 https://i.stack.imgur.com/fYFze.png
 
-# Idea
-1. Start button will read from Postgres then randomize it to collect 10 random images. 
-2. 
-
 # To Do
-1. Improve visuals
-    - Update 'Buttons' and Font stuffs
+1. Shows 'You Picked This' by adding a border to picture chosen by user 
+2. Show Number of correct items 
+3. Confirm Replay button re-assign images 
+4. Add a button for show Ranking 
+5. Click Image to Enlarge them 
 
-2. Update with Routers
+6. Improve visuals
+
+7. Update with Routers
     - Start Page
     - Game Page
         - Counts and Time

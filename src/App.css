@@ -1,0 +1,303 @@
+.App {
+  font-family: "Codec cold",sans-serif;
+
+  height: 100vh;
+  width: 100vw;
+
+  background-color: #7b1113;
+
+}
+
+
+h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+h2 {
+  margin: 0;
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1em;
+  margin: 0;
+  color: white;
+}
+
+p {
+  margin: 0;
+}
+
+img {
+  height: 90%;
+  width: 85%;
+  border: solid 10px;
+
+  pointer-events: none;
+
+}
+
+
+.container-header {
+  /*Change from 25 to 10*/
+  height: 40%; 
+  
+  width: 100%;
+
+  font-size: 4em;
+
+  overflow: auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+ 
+  background-color: #e60026;
+  color: white;
+}
+
+.container-header-index {
+  position: absolute;
+  right: 2%;
+  font-size: 2em;
+  display: none;
+}
+
+
+.container-start {
+  display: flex;
+  flex-direction: column;
+  
+  height: 60%;
+  text-align: center;
+  background-color: #7b1113;
+
+}
+
+button {
+  height: fit-content;
+  width: fit-content;
+  margin: auto;
+  
+  font-size: 6em;
+  padding: 5%;
+  background-color: lightsalmon;
+}
+button:hover {
+  background-color: rgb(136, 88, 69);
+
+}
+
+/* CSS */
+.button-75 {
+  align-items: center;
+  background-image: linear-gradient(135deg, #f34079 40%, #fc894d);
+  border: 0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-family: "Codec cold",sans-serif;
+  font-size: 6em;
+  font-weight: 700;
+
+  height: fit-content;
+  width: 50%;
+  
+  justify-content: center;
+  letter-spacing: .4px;
+  line-height: 1;
+
+  max-width: 100%;
+ 
+  text-decoration: none;
+  text-transform: uppercase;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-75:active {
+  outline: 0;
+}
+.button-75:hover {
+  outline: 0;
+}
+.button-75 span {
+  transition: all 200ms;
+}
+.button-75:hover span {
+  transform: scale(.9);
+  opacity: .75;
+}
+@media screen and (max-width: 991px) {
+  .button-75 {
+    font-size: 15px;
+    height: 50px;
+  }
+
+  .button-75 span {
+    line-height: 50px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container-replay {
+  display: none;
+  flex-direction: column;
+  
+  height: 90%;
+  text-align: center;
+  background-color: #7b1113;
+  overflow-y:auto
+}
+
+.container-replay button {
+  height: fit-content;
+  width: 40%;
+  margin: 1% auto 0.5% auto;
+
+  font-size: 1em;
+  padding: 1%;
+  background-color: lightsalmon;
+}
+.container-replay button:hover {
+  background-color: rgb(136, 88, 69);
+
+}
+
+.container-images {
+  display: none;
+
+  height: 90%;
+  text-align: center;
+  background-color: #800000;
+
+}
+.div-left {
+  width: 50%;
+  height: 100%;
+
+  border: solid 10px #482502 ;
+  border-right-width: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  
+
+}
+.div-left:hover {
+  background-color: #A52A2A; 
+}
+
+.div-right {
+  width: 50%;
+  height: 100%;
+  
+  border: solid 10px #482502 ;
+  border-right-width: 5px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+}
+.div-right:hover {
+  background-color: #A52A2A;
+}
+
+
+
+.container-results {
+  width: 45%;
+  height: 50vh;
+
+  display: flex;
+  flex-direction: column;
+
+}
+
+.container-results-header {
+  height: 15%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  padding: 15px;
+}
+
+.container-results-body {
+  height: 85%;
+  width: 100%;
+  position: relative;
+
+  padding: 15px;
+}
+
+.image-results {
+  width: 50%;
+  height: 100%;
+  border: solid 10px #000000;
+  border-radius: 5px;
+
+  pointer-events: none;
+
+}
+
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 50%;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #485e66;
+  word-wrap: break-word; 
+  border-radius: 15px;
+  padding: 15px;
+  
+}
+.overlay:hover {
+  opacity: 0.8;
+}
+.text {
+  height: fit-content;
+  color: white;
+  text-align: center;
+  margin: 1% 0;
+}
+.overlay-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3%;
+}

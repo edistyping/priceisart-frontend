@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/priceisart-frontend/static/css/main.7e2bf238.css",
-    "main.js": "/priceisart-frontend/static/js/main.769c0d7c.js",
-    "index.html": "/priceisart-frontend/index.html",
-    "main.7e2bf238.css.map": "/priceisart-frontend/static/css/main.7e2bf238.css.map",
-    "main.769c0d7c.js.map": "/priceisart-frontend/static/js/main.769c0d7c.js.map"
+    "main.css": "/static/css/main.7e2bf238.css",
+    "main.js": "/static/js/main.96478f19.js",
+    "index.html": "/index.html",
+    "main.7e2bf238.css.map": "/static/css/main.7e2bf238.css.map",
+    "main.96478f19.js.map": "/static/js/main.96478f19.js.map"
   },
   "entrypoints": [
     "static/css/main.7e2bf238.css",
-    "static/js/main.769c0d7c.js"
+    "static/js/main.96478f19.js"
   ]
 }

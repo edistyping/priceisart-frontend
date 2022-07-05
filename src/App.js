@@ -36,6 +36,8 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    console.log("ComponentDidMount....");
+    
     let result = await this.readArtworks();
     result.orders = this.shuffle(result.orders);
     await this.preload(result.urls, result.orders);

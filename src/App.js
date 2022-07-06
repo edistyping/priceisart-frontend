@@ -67,6 +67,8 @@ class App extends Component {
         artworks_url: arr_urls,
         artworks_order: arr_temp,
       })
+      var endTime = performance.now()
+      console.log(`   Inside readArtworks()... ${endTime - startTime} milliseconds`)
       return {
         urls: arr_urls,
         orders: arr_temp
@@ -75,13 +77,14 @@ class App extends Component {
     catch(error) {
       console.log("Error occurred in reading Artworks...")
       console.log(error);
+      var endTime = performance.now()
+      console.log(`   Inside readArtworks()... ${endTime - startTime} milliseconds`)
     }
-    var endTime = performance.now()
-    console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
 
   }
 
   async preload(urls, orders) {
+    var startTime = performance.now()
     var images = urls
     var results = [];
     let i = 0;
@@ -97,6 +100,10 @@ class App extends Component {
       artworks_images: results
     })
     console.log("preload() finished...");
+
+    var endTime = performance.now()
+    console.log(`   Inside preload()... ${endTime - startTime} milliseconds`)
+
     return results; 
   }  
 

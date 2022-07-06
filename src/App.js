@@ -108,11 +108,14 @@ class App extends Component {
   }  
 
   handleStart = () => {
+    /*
     document.getElementsByClassName("container-images")[0].style.display = "flex";
     document.getElementsByClassName("container-start")[0].style.display = "none";
     document.getElementsByClassName("container-header")[0].style.height = "10%";
     document.getElementsByClassName("container-header")[0].style.fontSize = "1em";
     document.getElementsByClassName("container-header-index")[0].style.display = "inline";
+    */
+    // Get the next 5 Images 
 
     this.setState({
       index: 0,
@@ -260,107 +263,119 @@ class App extends Component {
       
       <div className="App">
         
-    { this.state.isDataLoaded === true ? 
       <div style={{height: "100%", width: "100%"}}>
 
-        <div className="container-header">
-          <h1>Price is Art!</h1>
-          <h3>Choose an Expensive-looking Artwork </h3>
-        
+        <div className="container-begin"> 
+          <div className="container-begin-header">
+            <h1>Price is Art!</h1>       
+          </div>
+
+          <div className="container-begin-start">
+            <button className="button-75" onClick={this.handleStart}>
+              <div className="startButtonInitial">
+                <p>START</p>
+              </div>
+
+              <div className="startButtonLoading">
+                <div className="startButtonLoading-top">
+                  <p id="text-gamerule">Prepare to Choose Appealing Artworks!</p>
+                </div>
+                <div className="startButtonLoading-bottom">
+                  <img src={require('./bobross.gif')} id="img-bobross"  />
+                  <p id="text-loading">Loading...</p>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+      { this.state.isDataLoaded === true ? 
+        <div>
           <div className="container-header-index"> {this.state.index / 2 + 1} / {numberOfImages/2}</div>
-        </div>
 
-        <div className="container-start">
-          <button className="button-75" onClick={this.handleStart}>
-            <span className="text">START</span>
-          </button>
-        </div>
+          <div className="container-images" >
+            <div className="div-left" onClick={this.handleSelect} id="0">
+              <h3 style={{ }}>  <i>{this.state.artworks_list[this.state.artworks_order[this.state.index]].name}</i> {this.state.artworks_list[this.state.artworks_order[this.state.index]].artist} {this.state.artworks_list[this.state.artworks_order[this.state.index]].year} </h3>
+              { this.state.artworks_images.length > 0 ? 
+                <img key={this.state.index} src={this.state.artworks_images[this.state.index].src} alt="left one"></img>
+              :
+                <div>
+                </div>
+              }                    
+            </div>
 
-        <div className="container-replay">
-          <button onClick={this.handleReplay}>REPLAY</button>
-          <button id="submit" onClick={this.handleSubmit}>SUBMIT YOUR RESPONSE</button>
+            <div className="div-right" onClick={this.handleSelect} id="1">
+              <h3 style={{}}>  <i>{this.state.artworks_list[this.state.artworks_order[this.state.index + 1]].name}</i> {this.state.artworks_list[this.state.artworks_order[this.state.index + 1]].artist} {this.state.artworks_list[this.state.artworks_order[this.state.index + 1]].year} </h3>
+
+              { this.state.artworks_images.length > 0 ? 
+                <img key={this.state.index + 1} src={this.state.artworks_images[this.state.index + 1].src} alt="right one"></img>
+              :
+                <div>
+                </div>
+              }
+            </div>        
+          </div>
+
+          <div className="container-replay">
+            <button onClick={this.handleReplay}>REPLAY</button>
+            <button id="submit" onClick={this.handleSubmit}>SUBMIT YOUR RESPONSE</button>
 
 
-          <div style={{height: "100%", display: "flex", flexDirection: "column", overflowY:"auto"}}>
-            <h2 style={{margin: "1% 0"}}>Result ( {} / { numberOfImages / 2 })</h2>
-              {this.state.artworks_choice.map((item, i) => {
-                return(
-                  <div color={"yellow"} style={{border: "solid black 10px", display: "flex", }}>
-                    
-                    <div className="container-results" style={{ backgroundColor: (i % 2 === 0 ? '#FFA07A' : '#7b1113') }}  >
-                      <div className="container-results-header">
-                        <h2> {"$" + this.state.artworks_list[this.state.artworks_order[(i * 2)]].adjusted_price + " Millions"}</h2>
-                        <h3> {this.state.artworks_list[this.state.artworks_order[(i * 2)]].name}  </h3>
-                      </div>
-
-                      <div className="container-results-body">  
-                        <img className="image-results" src={this.state.artworks_images[(i * 2)].src} alt="yes" />                      
-                        <div className="overlay">
-                          <div className="overlay-text">
-                            <p className="text" style={{fontSize: "2em"}}>By {this.state.artworks_list[this.state.artworks_order[(i * 2)]].artist} in {this.state.artworks_list[this.state.artworks_order[(i * 2)]].year}</p>
-                            <p className="text" style={{fontSize: "3em"}}><b>${this.state.artworks_list[this.state.artworks_order[(i * 2)]].adjusted_price} Millions</b></p>
-                            <p className="text" style={{fontSize: "1em"}}>Sold at {this.state.artworks_list[this.state.artworks_order[(i * 2)]].auction_house} on {this.state.artworks_list[this.state.artworks_order[(i * 2)]].date_of_sale}</p>
-                          </div>
+            <div style={{height: "100%", display: "flex", flexDirection: "column", overflowY:"auto"}}>
+              <h2 style={{margin: "1% 0"}}>Result ( {} / { numberOfImages / 2 })</h2>
+                {this.state.artworks_choice.map((item, i) => {
+                  return(
+                    <div color={"yellow"} style={{border: "solid black 10px", display: "flex", }}>
+                      
+                      <div className="container-results" style={{ backgroundColor: (i % 2 === 0 ? '#FFA07A' : '#7b1113') }}  >
+                        <div className="container-results-header">
+                          <h2> {"$" + this.state.artworks_list[this.state.artworks_order[(i * 2)]].adjusted_price + " Millions"}</h2>
+                          <h3> {this.state.artworks_list[this.state.artworks_order[(i * 2)]].name}  </h3>
                         </div>
-                      </div>
-                    </div>
-                    
-                    <div className="container-results" style={{ backgroundColor: (i % 2 === 0 ? '#FFA07A' : '#7b1113'), flexDirection: "row", height: "100%", width: "10%", textAlign: "center", alignItems: "center", wordBreak: "break-word" }}>
-                      <Result leftPrice={this.state.artworks_list[this.state.artworks_order[(i * 2)]].adjusted_price} rightPrice={this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].adjusted_price} choice={this.state.artworks_choice[i]} />
-                    </div>
 
-                    <div className="container-results" style={{ backgroundColor: (i % 2 === 0 ? '#FFA07A' : '#7b1113') }}  >
-                      <div className="container-results-header">
-                        <h2> {"$" + this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].adjusted_price + " Millions"}</h2>
-                        <h3> {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].name}  </h3>
-                      </div>
-                      <div className="container-results-body">  
-                      <img className="image-results" src={this.state.artworks_images[(i * 2) + 1].src} alt="yes" />                      
-                        <div className="overlay">
-                          <div className="overlay-text">
-                            <p className="text" style={{fontSize: "2em"}}>By {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].artist} in {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].year}</p>
-                            <p className="text" style={{fontSize: "3em"}}><b>${this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].adjusted_price} Millions</b></p>
-                            <p className="text" style={{fontSize: "1em"}}>Sold at {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].auction_house} on {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].date_of_sale}</p>
+                        <div className="container-results-body">  
+                          <img className="image-results" src={this.state.artworks_images[(i * 2)].src} alt="yes" />                      
+                          <div className="overlay">
+                            <div className="overlay-text">
+                              <p className="text" style={{fontSize: "2em"}}>By {this.state.artworks_list[this.state.artworks_order[(i * 2)]].artist} in {this.state.artworks_list[this.state.artworks_order[(i * 2)]].year}</p>
+                              <p className="text" style={{fontSize: "3em"}}><b>${this.state.artworks_list[this.state.artworks_order[(i * 2)]].adjusted_price} Millions</b></p>
+                              <p className="text" style={{fontSize: "1em"}}>Sold at {this.state.artworks_list[this.state.artworks_order[(i * 2)]].auction_house} on {this.state.artworks_list[this.state.artworks_order[(i * 2)]].date_of_sale}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
                       
+                      <div className="container-results" style={{ backgroundColor: (i % 2 === 0 ? '#FFA07A' : '#7b1113'), flexDirection: "row", height: "100%", width: "10%", textAlign: "center", alignItems: "center", wordBreak: "break-word" }}>
+                        <Result leftPrice={this.state.artworks_list[this.state.artworks_order[(i * 2)]].adjusted_price} rightPrice={this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].adjusted_price} choice={this.state.artworks_choice[i]} />
+                      </div>
+
+                      <div className="container-results" style={{ backgroundColor: (i % 2 === 0 ? '#FFA07A' : '#7b1113') }}  >
+                        <div className="container-results-header">
+                          <h2> {"$" + this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].adjusted_price + " Millions"}</h2>
+                          <h3> {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].name}  </h3>
+                        </div>
+                        <div className="container-results-body">  
+                        <img className="image-results" src={this.state.artworks_images[(i * 2) + 1].src} alt="yes" />                      
+                          <div className="overlay">
+                            <div className="overlay-text">
+                              <p className="text" style={{fontSize: "2em"}}>By {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].artist} in {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].year}</p>
+                              <p className="text" style={{fontSize: "3em"}}><b>${this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].adjusted_price} Millions</b></p>
+                              <p className="text" style={{fontSize: "1em"}}>Sold at {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].auction_house} on {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].date_of_sale}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                        
                     </div>
-                  </div>
-              )})}
+                )})}
+            </div>
           </div>
         </div>
-
-
-        <div className="container-images" >
-          <div className="div-left" onClick={this.handleSelect} id="0">
-            <h3 style={{ }}>  <i>{this.state.artworks_list[this.state.artworks_order[this.state.index]].name}</i> {this.state.artworks_list[this.state.artworks_order[this.state.index]].artist} {this.state.artworks_list[this.state.artworks_order[this.state.index]].year} </h3>
-            { this.state.artworks_images.length > 0 ? 
-              <img key={this.state.index} src={this.state.artworks_images[this.state.index].src} alt="left one"></img>
-            :
-              <div>
-              </div>
-            }                    
-          </div>
-
-          <div className="div-right" onClick={this.handleSelect} id="1">
-            <h3 style={{}}>  <i>{this.state.artworks_list[this.state.artworks_order[this.state.index + 1]].name}</i> {this.state.artworks_list[this.state.artworks_order[this.state.index + 1]].artist} {this.state.artworks_list[this.state.artworks_order[this.state.index + 1]].year} </h3>
-
-            { this.state.artworks_images.length > 0 ? 
-              <img key={this.state.index + 1} src={this.state.artworks_images[this.state.index + 1].src} alt="right one"></img>
-            :
-              <div>
-              </div>
-            }
-          </div>        
+      : 
+      <div style={{ display: "flex", width: "100%", height: "100%"}}>
       </div>
-  
+      }
       </div>
-     : 
-    <div style={{ display: "flex", width: "100%", height: "100%"}}>
-        <h1 style={{ color: "white", textAlign: "center", flexDirection: "column", margin: " auto" }}>Loading...</h1>
-    </div>
-          }
 
     </div>
     )

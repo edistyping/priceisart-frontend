@@ -4,6 +4,15 @@ Link: https://edistyping.github.io/priceisart/
 https://i.stack.imgur.com/fYFze.png
 
 # To Do
+0. Chosoe the background image to gradient for God's sake.
+1. Load Database and 5 Images on load
+    - (Review works) Trim unnecessary data
+    - Asap, get postgres data, randomize order, and 5 images 
+2. After Start is clicked, load 5 Images more. The Button is changed to Loading Icon and display the rule
+    - Once the image is loaded, start the game by showing the images 
+        + Create a new component for Game display
+
+# Goals
 1. Shows 'You Picked This' by adding a border to picture chosen by user 
 2. Show Number of correct items 
 3. Confirm Replay button re-assign images 

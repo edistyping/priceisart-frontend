@@ -9,9 +9,7 @@ https://i.stack.imgur.com/fYFze.png
 3. Confirm Replay button re-assign images 
 4. Add a button for show Ranking 
 5. Click Image to Enlarge them 
-
-6. Improve visuals
-
+6. Improve visuals + Organize Codes
 7. Update with Routers
     - Start Page
     - Game Page

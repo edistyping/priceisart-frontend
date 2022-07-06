@@ -19,11 +19,9 @@ class App extends Component {
       preurl: (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/", 
       artworks_list: [],
       artworks_url: [],
-      artworks_choice: [], // half the artworks.length and each index will associate with arworks_list[i] and artworks_lists[i + 1[] 
-      artworks_order: [],
+      artworks_choice: [], // This shows selections made by users and each index will associate with arworks_list[i] and artworks_lists[i + 1[] 
+      artworks_order: [], // This shows number of images to display to users 
       artworks_images: [],
-
-      postId: "", // testing
           
     };
 
@@ -165,6 +163,7 @@ class App extends Component {
     const choices = this.state.artworks_choice;
     const artworks_order = this.state.artworks_order;
 
+    // Calculate Correct Answers, Choices Selected
     var temp = [];
     var i = 0
     for (i = 0; i < choices.length; i++) {
@@ -184,7 +183,6 @@ class App extends Component {
         selected: 0,
         artwork_id: artworks[artworks_order[i * 2 + 1]].id,
       }
-
       if (artworks[artworks_order[i * 2]].adjusted_price > artworks[artworks_order[i * 2 + 1]].adjusted_price && choices[i] === "0") {
         objectLeft.win++;
       } else if (artworks[artworks_order[i * 2]].adjusted_price < artworks[artworks_order[i * 2 + 1]].adjusted_price && choices[i] === "1") {

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import './App.css';
 
+import Start from './components/Start';
+import Game from './components/Game';
 import Result from './components/Result';
-
-const numberOfImages = 20; // Number of images to read from Azure Storage
 
 class App extends Component {
 
@@ -17,62 +17,60 @@ class App extends Component {
       index: 0, 
 
       preurl: (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/", 
-      artworks_list: [],
-      artworks_url: [],
-      artworks_choice: [], // This shows selections made by users and each index will associate with arworks_list[i] and artworks_lists[i + 1[] 
+      artworks: [],
+      artworks_userResponse: [], // This shows selections made by users and each index will associate with arworks_list[i] and artworks_lists[i + 1[] 
       artworks_order: [], // This shows number of images to display to users 
-      artworks_images: [],
-          
+      artworks_image: [],
+        
+      currentView: "Start"
     };
 
     this.handleStart = this.handleStart.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
     this.handleReplay = this.handleReplay.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.handleGameOver = this.handleGameOver.bind(this);
   }
 
+  // Read Artworks
   async componentDidMount() {
-    let result = await this.readArtworks();
-    result.orders = this.shuffle(result.orders);
-    await this.preload(result.urls, result.orders);
+    console.log("componentDidMount...");
+
+    // Get artworks data
+    const result = await this.readArtworks();
+
+    // Set artworks_order
+    const newOrder = this.shuffle(result.length);
+
+    // Initialize artworks_image
+    await this.loadImages(result, newOrder, 10);
+
     this.setState({
-      isDataLoaded: true,
-      appStart: true,
-      artworks_order: result.orders
+      artworks_order: newOrder
     })
+    console.log("     componentDidMount()...")
   }
 
+  shuffle(n) {
+    // randomly generated N = 10 length array 0 <= A[N] <= 39
+    var arr = Array.from({length: 10}, () => Math.floor(Math.random() * n));
+    return arr;
+  }
+  
+  // Call API to get data from Postgres
   async readArtworks() {
-    // Call API to get data from Postgres from Django
     var startTime = performance.now()
     try {
-
       console.log("Running readArtworks()....")
       const url = this.state.preurl + 'api1/'
       console.log("url: " + url);
       const res = await fetch(url);
-
       let res_json = await res.json();
 
-      var arr_urls = [];
-      var arr_temp = [];
-      for (let i = 0; i < res_json.length; i++) {
-        arr_urls.push(res_json[i].full_path)      
-        arr_temp.push(i);
-      }
-
       this.setState({
-        artworks_list: res_json,
-        artworks_url: arr_urls,
-        artworks_order: arr_temp,
+        artworks: res_json,
       })
-      var endTime = performance.now()
-      console.log(`   Inside readArtworks()... ${endTime - startTime} milliseconds`)
-      return {
-        urls: arr_urls,
-        orders: arr_temp
-      };
+      console.log(" readArtworks() ending....")
+    
+      return res_json;
     }
     catch(error) {
       console.log("Error occurred in reading Artworks...")
@@ -80,181 +78,64 @@ class App extends Component {
       var endTime = performance.now()
       console.log(`   Inside readArtworks()... ${endTime - startTime} milliseconds`)
     }
-
   }
 
-  async preload(urls, orders) {
-    var startTime = performance.now()
-    var images = urls
-    var results = [];
-    let i = 0;
+  // load images to 'artwork_images'; skip if already added
+  async loadImages(artworks, order, n) {
+    console.log("loadImages()...");
 
-    for(i = 0; i < numberOfImages; i++) {      
-      var img=new Image();
-      img.src=images[orders[i]];
-      img.id=orders[i]; // testing
-      results.push(img);
+    // Retrieve from 'artworks_image'
+    var images = this.state.artworks_image;
+  
+    // check if the image is already filled then add if not
+    let i = 0;
+    for(i = 0; i < n; i++) {      
+      if ( images[order[i]] == "" || images[order[i]] == undefined){
+        var img=new Image();
+        img.src=artworks[order[i]].full_path;
+        img.id=artworks[order[i]].id; // testing
+        images[order[i]] = img;
+      } else
+        console.log(images[order[i]].id + " is already added...")
     }
     
     this.setState({
-      artworks_images: results
+      artworks_image: images
     })
-    console.log("preload() finished...");
-
-    var endTime = performance.now()
-    console.log(`   Inside preload()... ${endTime - startTime} milliseconds`)
-
-    return results; 
+    return images; 
   }  
 
-  handleStart = () => {
-    /*
-    document.getElementsByClassName("container-images")[0].style.display = "flex";
-    document.getElementsByClassName("container-start")[0].style.display = "none";
-    document.getElementsByClassName("container-header")[0].style.height = "10%";
-    document.getElementsByClassName("container-header")[0].style.fontSize = "1em";
-    document.getElementsByClassName("container-header-index")[0].style.display = "inline";
-    */
-    // Get the next 5 Images 
-
+  async handleStart() {    
     this.setState({
-      index: 0,
-      // artworks_order: temp,
+      isDataLoaded: true,
+      currentView: "Game",
     })
-  }
-
-  handleSelect = (e) => {
-    var temp = e.currentTarget.id;
-    var temp_choice = this.state.artworks_choice;
-    temp_choice.push(temp);
-    if (this.state.index >= numberOfImages - 2) {
-      console.log("Game is over")
-      this.setState({    
-        index: 0,
-        artworks_choice: temp_choice
-      })
-      this.gameover();
-      return
-    } 
-    
-    this.setState({
-      index: this.state.index + 2,
-      artworks_choice: temp_choice,
-    })
-
   }
   
-  handleReplay = () => {
+  // Need to Reset something except we load image to existing array
+  handleReplay = async () => {
     // shuffle artworks again
-    var temp = this.shuffle(this.state.artworks_order);
-
-    // preload()
-    this.preload(this.state.artworks_url, temp)
+    var new_order = this.shuffle(this.state.artworks.length);
+    
+    // load (more) images using the new order
+    await this.loadImages(this.state.artworks, new_order, 10);
 
     this.setState({ 
-      index: 0,
-      artworks_choice: [],
-      artworks_order: temp
+      artworks_userResponse: [],
+      artworks_order: new_order,
+      currentView: "Game",
     });
     
-    document.getElementsByClassName("container-header")[0].style.height = "10%";
-    document.getElementsByClassName("container-header")[0].style.fontSize = "1em";
-    document.getElementsByClassName("container-images")[0].style.display = "flex";
-    document.getElementsByClassName("container-replay")[0].style.display = "none";
-    document.getElementById('submit').disabled = false;
   }
 
-  handleSubmit = (e) => {
-    console.log("Inside handleSubmit()");
-    e.preventDefault();
-
-    // Use artworks_list and artworks_choice
-    const artworks = this.state.artworks_list;
-    const choices = this.state.artworks_choice;
-    const artworks_order = this.state.artworks_order;
-
-    // Calculate Correct Answers, Choices Selected
-    var temp = [];
-    var i = 0
-    for (i = 0; i < choices.length; i++) {
-      var objectLeft = {
-        id: artworks[artworks_order[i * 2]].id,
-        counts: 1,
-        win: 0,
-        loss: 0, 
-        selected: 0,
-        artwork_id: artworks[artworks_order[i * 2]].id,
-      }
-      var objectRight = {
-        id: artworks[artworks_order[i * 2 + 1]].id,
-        counts: 1,
-        win: 0, 
-        loss: 0, 
-        selected: 0,
-        artwork_id: artworks[artworks_order[i * 2 + 1]].id,
-      }
-      if (artworks[artworks_order[i * 2]].adjusted_price > artworks[artworks_order[i * 2 + 1]].adjusted_price && choices[i] === "0") {
-        objectLeft.win++;
-      } else if (artworks[artworks_order[i * 2]].adjusted_price < artworks[artworks_order[i * 2 + 1]].adjusted_price && choices[i] === "1") {
-        objectRight.win++;
-      }
-      
-      if (choices[i] === "0")
-        objectLeft.selected++;
-      else if (choices[i] === "1")
-        objectRight.selected++;
-
-      temp.push(objectLeft, objectRight);      
-    }
-
-
-    var url = this.state.preurl + 'submit/'
-    const requestOptions = {
-      method: 'PUT',
-      headers: { 
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(temp)
-    };
-    fetch(url, requestOptions)
-    .then(response => {
-      if (response.ok){
-        console.log("Submitted successfully...")
-      }
-      else {
-        console.log("Encountered error...")
-      }
-    })
-    .catch(error => {
-      console.log("Error when submitting the response!")
-      throw new Error("HTTP error " + error);  // ***
-    });    
+  handleGameOver(response) {
+    console.log("  handleGameOver() is called..... ")
+    console.log(response);
     
-    // Disable Submit Button 
-    document.getElementById("submit").disabled = true;
-  }
-
-  shuffle(array) {
-    let currentIndex = array.length,  randomIndex;
-  
-    // While there remain elements to shuffle...
-    while (currentIndex !== 0) {
-
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-    }
-    return array;
-  }
-
-  gameover() {
-    document.getElementsByClassName("container-images")[0].style.display = "none";
-    document.getElementsByClassName("container-replay")[0].style.display = "flex";    
-    document.getElementsByClassName("container-replay")[0].style.height = "90%";    
-    document.getElementsByClassName("container-header")[0].style.fontSize = "1em";
+    this.setState({ 
+      currentView: "Result",
+      artworks_userResponse: response,
+    });    
   }
 
   render() {
@@ -263,121 +144,13 @@ class App extends Component {
       
       <div className="App">
         
-      <div style={{height: "100%", width: "100%"}}>
-
-        <div className="container-begin"> 
-          <div className="container-begin-header">
-            <h1>Price is Art!</h1>       
-          </div>
-
-          <div className="container-begin-start">
-            <button className="button-75" onClick={this.handleStart}>
-              <div className="startButtonInitial">
-                <p>START</p>
-              </div>
-
-              <div className="startButtonLoading">
-                <div className="startButtonLoading-top">
-                  <p id="text-gamerule">Prepare to Choose Appealing Artworks!</p>
-                </div>
-                <div className="startButtonLoading-bottom">
-                  <img src={require('./bobross.gif')} id="img-bobross"  />
-                  <p id="text-loading">Loading...</p>
-                </div>
-              </div>
-            </button>
-          </div>
+        <div style={{height: "100%", width: "100%"}}>
+          {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
+          {this.state.currentView === "Game" && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
+          {this.state.currentView === "Result" && <Result artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} artworks_userResponse={this.state.artworks_userResponse} handleReplay={this.handleReplay}  />}
         </div>
 
-      { this.state.isDataLoaded === true ? 
-        <div>
-          <div className="container-header-index"> {this.state.index / 2 + 1} / {numberOfImages/2}</div>
-
-          <div className="container-images" >
-            <div className="div-left" onClick={this.handleSelect} id="0">
-              <h3 style={{ }}>  <i>{this.state.artworks_list[this.state.artworks_order[this.state.index]].name}</i> {this.state.artworks_list[this.state.artworks_order[this.state.index]].artist} {this.state.artworks_list[this.state.artworks_order[this.state.index]].year} </h3>
-              { this.state.artworks_images.length > 0 ? 
-                <img key={this.state.index} src={this.state.artworks_images[this.state.index].src} alt="left one"></img>
-              :
-                <div>
-                </div>
-              }                    
-            </div>
-
-            <div className="div-right" onClick={this.handleSelect} id="1">
-              <h3 style={{}}>  <i>{this.state.artworks_list[this.state.artworks_order[this.state.index + 1]].name}</i> {this.state.artworks_list[this.state.artworks_order[this.state.index + 1]].artist} {this.state.artworks_list[this.state.artworks_order[this.state.index + 1]].year} </h3>
-
-              { this.state.artworks_images.length > 0 ? 
-                <img key={this.state.index + 1} src={this.state.artworks_images[this.state.index + 1].src} alt="right one"></img>
-              :
-                <div>
-                </div>
-              }
-            </div>        
-          </div>
-
-          <div className="container-replay">
-            <button onClick={this.handleReplay}>REPLAY</button>
-            <button id="submit" onClick={this.handleSubmit}>SUBMIT YOUR RESPONSE</button>
-
-
-            <div style={{height: "100%", display: "flex", flexDirection: "column", overflowY:"auto"}}>
-              <h2 style={{margin: "1% 0"}}>Result ( {} / { numberOfImages / 2 })</h2>
-                {this.state.artworks_choice.map((item, i) => {
-                  return(
-                    <div color={"yellow"} style={{border: "solid black 10px", display: "flex", }}>
-                      
-                      <div className="container-results" style={{ backgroundColor: (i % 2 === 0 ? '#FFA07A' : '#7b1113') }}  >
-                        <div className="container-results-header">
-                          <h2> {"$" + this.state.artworks_list[this.state.artworks_order[(i * 2)]].adjusted_price + " Millions"}</h2>
-                          <h3> {this.state.artworks_list[this.state.artworks_order[(i * 2)]].name}  </h3>
-                        </div>
-
-                        <div className="container-results-body">  
-                          <img className="image-results" src={this.state.artworks_images[(i * 2)].src} alt="yes" />                      
-                          <div className="overlay">
-                            <div className="overlay-text">
-                              <p className="text" style={{fontSize: "2em"}}>By {this.state.artworks_list[this.state.artworks_order[(i * 2)]].artist} in {this.state.artworks_list[this.state.artworks_order[(i * 2)]].year}</p>
-                              <p className="text" style={{fontSize: "3em"}}><b>${this.state.artworks_list[this.state.artworks_order[(i * 2)]].adjusted_price} Millions</b></p>
-                              <p className="text" style={{fontSize: "1em"}}>Sold at {this.state.artworks_list[this.state.artworks_order[(i * 2)]].auction_house} on {this.state.artworks_list[this.state.artworks_order[(i * 2)]].date_of_sale}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="container-results" style={{ backgroundColor: (i % 2 === 0 ? '#FFA07A' : '#7b1113'), flexDirection: "row", height: "100%", width: "10%", textAlign: "center", alignItems: "center", wordBreak: "break-word" }}>
-                        <Result leftPrice={this.state.artworks_list[this.state.artworks_order[(i * 2)]].adjusted_price} rightPrice={this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].adjusted_price} choice={this.state.artworks_choice[i]} />
-                      </div>
-
-                      <div className="container-results" style={{ backgroundColor: (i % 2 === 0 ? '#FFA07A' : '#7b1113') }}  >
-                        <div className="container-results-header">
-                          <h2> {"$" + this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].adjusted_price + " Millions"}</h2>
-                          <h3> {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].name}  </h3>
-                        </div>
-                        <div className="container-results-body">  
-                        <img className="image-results" src={this.state.artworks_images[(i * 2) + 1].src} alt="yes" />                      
-                          <div className="overlay">
-                            <div className="overlay-text">
-                              <p className="text" style={{fontSize: "2em"}}>By {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].artist} in {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].year}</p>
-                              <p className="text" style={{fontSize: "3em"}}><b>${this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].adjusted_price} Millions</b></p>
-                              <p className="text" style={{fontSize: "1em"}}>Sold at {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].auction_house} on {this.state.artworks_list[this.state.artworks_order[(i * 2) + 1]].date_of_sale}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                        
-                    </div>
-                )})}
-            </div>
-          </div>
-        </div>
-      : 
-      <div style={{ display: "flex", width: "100%", height: "100%"}}>
       </div>
-      }
-      </div>
-
-    </div>
     )
          
   }

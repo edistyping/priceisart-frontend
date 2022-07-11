@@ -4,13 +4,26 @@ Link: https://edistyping.github.io/priceisart/
 https://i.stack.imgur.com/fYFze.png
 
 # To Do
-0. Chosoe the background image to gradient for God's sake.
-1. Load Database and 5 Images on load
-    - (Review works) Trim unnecessary data
-    - Asap, get postgres data, randomize order, and 5 images 
-2. After Start is clicked, load 5 Images more. The Button is changed to Loading Icon and display the rule
-    - Once the image is loaded, start the game by showing the images 
-        + Create a new component for Game display
+
+1. How game is started
+    1. randomize order
+    2. load 10 images 
+
+
+2. How should replay be loaded
+    1. randomize order
+    2. load 10 more images 
+        skip if needed
+
+1. artworks_image don't get reset
+
+
+1. Should Parents or Child host the image? 
+    Good Read: https://stackoverflow.com/questions/66702644/should-the-parent-or-child-component-fetch-data-in-react
+
+Resources:
+1. Create and Initiailize 0 to N array: https://www.techiedelight.com/initialize-array-with-range-from-0-to-n-javascript/
+
 
 # Goals
 1. Shows 'You Picked This' by adding a border to picture chosen by user 

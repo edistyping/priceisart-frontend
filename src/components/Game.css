@@ -1,0 +1,47 @@
+.Game { 
+
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+  }
+  .container-header {
+    height: 10%;
+    font-size: 3em;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .container-images {
+  
+    height: 90%;
+    width: 100%;
+    text-align: center;
+    background-color: #800000;
+    
+    display: flex;
+  }
+  .section-image {
+    width: 50%;
+    height: 100%;
+  
+    border: solid 10px #482502 ;
+    border-right-width: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    
+  }
+  .section-image:hover {
+    background-color: #A52A2A; 
+  }
+
+  
+.img {
+  width: 100%;
+  height: 100%;
+}
+  

@@ -43,64 +43,44 @@ function Result(props) {
     return result;
   }
 
+  // Submitting data. API will do its own thing and adding or incrementing exisitng one 
   function prepareDataForSubmit() {
-    // Submit data to Postgres
-    /*
-    console.log("Inside handleSubmit()");
-    e.preventDefault();
-
-    // Use artworks_list and artworks_choice
-    const artworks = this.state.artworks_list;
-    const choices = this.state.artworks_choice;
-    const artworks_order = this.state.artworks_order;
-
-    var temp = [];
-    var i = 0
-    for (i = 0; i < choices.length; i++) {
+    console.log("prepareDataForSubmit()....");
+    const artworks = props.artworks;
+    const order = props.order;
+    const userResponses = props.userResponses;
+    
+    // Use artwork_id, count, win; count == they were clicked
+    var inputData = [];
+    var i = 0;
+    for (i = 0; i < userResponses.length; i++) {
       var objectLeft = {
-        id: artworks[artworks_order[i * 2]].id,
+        artwork_id: artworks[order[i * 2]].id,
         counts: 1,
         win: 0,
-        loss: 0, 
-        selected: 0,
-        artwork_id: artworks[artworks_order[i * 2]].id,
       }
       var objectRight = {
-        id: artworks[artworks_order[i * 2 + 1]].id,
+        artwork_id: artworks[order[i * 2 + 1]].id,
         counts: 1,
         win: 0, 
-        loss: 0, 
-        selected: 0,
-        artwork_id: artworks[artworks_order[i * 2 + 1]].id,
       }
-
-      if (artworks[artworks_order[i * 2]].adjusted_price > artworks[artworks_order[i * 2 + 1]].adjusted_price && choices[i] === "0") {
-        objectLeft.win++;
-      } else if (artworks[artworks_order[i * 2]].adjusted_price < artworks[artworks_order[i * 2 + 1]].adjusted_price && choices[i] === "1") {
-        objectRight.win++;
-      }
-      
-      if (choices[i] === "0")
-        objectLeft.selected++;
-      else if (choices[i] === "1")
-        objectRight.selected++;
-
-      temp.push(objectLeft, objectRight);      
+      inputData.push(objectLeft, objectRight);      
     }
-
-
-    var url = this.state.preurl + 'submit/'
+    
+    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
+    const url = preurl + 'submit/'
     const requestOptions = {
       method: 'PUT',
       headers: { 
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify(temp)
+      body: JSON.stringify(inputData)
     };
     fetch(url, requestOptions)
     .then(response => {
       if (response.ok){
         console.log("Submitted successfully...")
+        setSubmitted(1);
       }
       else {
         console.log("Encountered error...")
@@ -110,27 +90,24 @@ function Result(props) {
       console.log("Error when submitting the response!")
       throw new Error("HTTP error " + error);  // ***
     });    
-     
-     
-     */
   }
 
   useEffect(() => {
     // This useEffect acts as componentDidMount
     // It will only run once when the component mounts, since 
     // the dependency array is empty 
-    console.log('mount');
     checkCorrectAnswers(artworks, order, userResponses); 
   }, []);
 
   const artworks = props.artworks;
   const artworks_image = props.artworks_image;
-  const userResponses = props.artworks_userResponse;
+  const userResponses = props.userResponses;
   const order = props.order;
   const numberOfQuestions = userResponses.length;
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [index, setIndex] = useState(0);
+  const [submitted, setSubmitted] = useState(0);
 
   return (
     <div className="container-result">
@@ -141,39 +118,47 @@ function Result(props) {
 
       <div className="container-result-options">
         <button onClick={props.handleReplay}>REPLAY</button>
-        <button id="submit" onClick={handleSubmit}>SUBMIT YOUR RESPONSE</button> 
+        <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>SUBMIT YOUR RESPONSE</button> 
       </div>
 
-      <div className="container-result-content">
+      <div className="container-result-body">
         <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
       
-        <div className="content-wrapper">
-
-            { 
-              (() => {
+        <div className="wrapper-result">
+            {(() => {
                 let result = [];
                 for (let i = 0; i < numberOfQuestions; i++) {
                   result.push(
-                    <div className="content-result">
-                      <div className="content-result-left">
-                          <h3>{artworks[order[i * 2]].id} {artworks[order[i * 2]].name}</h3>
+                    <div className="content-result" key ={i} >
+                      <div className="content-result-body">
+                        <div className="content-result-header">
+                          <h3><i>{artworks[order[i * 2]].name}</i> By {artworks[order[i * 2]].artist} </h3>
                           <h3>${artworks[order[i * 2]].adjusted_price}</h3>
+                        </div>
+                        <div className="content-result-image">
                           <img key={order[i * 2]} src={artworks_image[order[i * 2]].src} />
+                        </div>
                       </div>
+
                       <div className="content-result-answer">
                           {correctAnswers[i]}
                       </div>
-                      <div className="content-result-right">
-                          <h3>{artworks[order[i * 2 + 1]].id} {artworks[order[i * 2 + 1]].name}</h3>
+
+                      <div className="content-result-body">
+                        <div className="content-result-header">
+                          <h3><i>{artworks[order[i * 2 + 1]].name}</i> By {artworks[order[i * 2]].artist}</h3>
                           <h3>${artworks[order[i * 2 + 1]].adjusted_price}</h3>
+                        </div>
+                        <div className="content-result-image">
                           <img key={order[i * 2+ 1]} src={artworks_image[order[i * 2 + 1]].src} />
+                        </div>
                       </div>
                     </div>
 
 
+              );
+            }
 
-                  );
-                }
                 return result;
               })()
             }

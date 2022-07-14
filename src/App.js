@@ -130,7 +130,7 @@ class App extends Component {
 
   handleGameOver(response) {
     console.log("  handleGameOver() is called..... ")
-    console.log(response);
+    console.log(response); // Chosen order[i]
     
     this.setState({ 
       currentView: "Result",
@@ -147,7 +147,7 @@ class App extends Component {
         <div style={{height: "100%", width: "100%"}}>
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
-          {this.state.currentView === "Result" && <Result artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} artworks_userResponse={this.state.artworks_userResponse} handleReplay={this.handleReplay}  />}
+          {this.state.currentView === "Result" && <Result artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay}  />}
         </div>
 
       </div>

@@ -3,23 +3,13 @@
 Link: https://edistyping.github.io/priceisart/
 https://i.stack.imgur.com/fYFze.png
 
+
 # To Do
-1. In Result page, users can click on image to get a bigger view 
-
-1. Should Parents or Child host the image? 
-    Good Read: https://stackoverflow.com/questions/66702644/should-the-parent-or-child-component-fetch-data-in-react
-
-Resources:
-1. Create and Initiailize 0 to N array: https://www.techiedelight.com/initialize-array-with-range-from-0-to-n-javascript/
-
 
 # Goals
-1. Shows 'You Picked This' by adding a border to picture chosen by user 
-2. Show Number of correct items 
-3. Confirm Replay button re-assign images 
-4. Add a button for show Ranking 
-5. Click Image to Enlarge them 
-6. Improve visuals + Organize Codes
+1. Add a button for show Ranking page 
+2. Click Image to Enlarge them 
+3. Improve visuals + Organize Codes
 7. Update with Routers
     - Start Page
     - Game Page
@@ -57,12 +47,18 @@ npm view react version
 
 
 # Done
-1. How game is started
++ How game is started
     1. randomize order
     2. load 10 images 
 
-2. How should replay be loaded
++ How should replay be loaded
     1. randomize order
     2. load 10 more images 
         skip if needed
 
++ Hovering the image will show the cost 
+    => Cancelled; it will just annoy users
+
+1. Shows 'You Picked This' by adding a border to picture chosen by user 
+2. Show Number of correct items 
+3. Confirm Replay button re-assign images 

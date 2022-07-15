@@ -4,6 +4,7 @@ import './App.css';
 import Start from './components/Start';
 import Game from './components/Game';
 import Result from './components/Result';
+import Ranking from './components/Ranking';
 
 class App extends Component {
 
@@ -28,6 +29,7 @@ class App extends Component {
     this.handleStart = this.handleStart.bind(this);
     this.handleReplay = this.handleReplay.bind(this);
     this.handleGameOver = this.handleGameOver.bind(this);
+    this.handleShowRanking = this.handleShowRanking.bind(this);
   }
 
   // Read Artworks
@@ -60,9 +62,16 @@ class App extends Component {
     var startTime = performance.now()
     try {
       console.log("Running readArtworks()....")
-      const url = this.state.preurl + 'api1/'
+      const url2 = this.state.preurl + 'api1/'
+      const url = "https://priceisart-app.herokuapp.com/postgres/api1/"
       console.log("url: " + url);
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       let res_json = await res.json();
 
       this.setState({
@@ -90,7 +99,7 @@ class App extends Component {
     // check if the image is already filled then add if not
     let i = 0;
     for(i = 0; i < n; i++) {      
-      if ( images[order[i]] == "" || images[order[i]] == undefined){
+      if ( images[order[i]] === "" || images[order[i]] === undefined){
         var img=new Image();
         img.src=artworks[order[i]].full_path;
         img.id=artworks[order[i]].id; // testing
@@ -100,16 +109,18 @@ class App extends Component {
     }
     
     this.setState({
-      artworks_image: images
+      artworks_image: images,
+      isDataLoaded: true,
     })
     return images; 
   }  
 
   async handleStart() {    
-    this.setState({
-      isDataLoaded: true,
-      currentView: "Game",
-    })
+    if (this.state.isDataLoaded === true) {
+      this.setState({
+        currentView: "Game",
+      })
+    }      
   }
   
   // Need to Reset something except we load image to existing array
@@ -128,6 +139,7 @@ class App extends Component {
     
   }
 
+  // Receive response from User then show Result page 
   handleGameOver(response) {
     console.log("  handleGameOver() is called..... ")
     console.log(response); // Chosen order[i]
@@ -135,6 +147,13 @@ class App extends Component {
     this.setState({ 
       currentView: "Result",
       artworks_userResponse: response,
+    });    
+  }
+
+  handleShowRanking() {
+    console.log("Button pressed");
+    this.setState({ 
+      currentView: "Ranking"
     });    
   }
 
@@ -146,8 +165,8 @@ class App extends Component {
         
         <div style={{height: "100%", width: "100%"}}>
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
-          {this.state.currentView === "Game" && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
-          {this.state.currentView === "Result" && <Result artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay}  />}
+          {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
+          {this.state.currentView === "Result" && <Result artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleShowRanking={this.handleShowRanking} />}
         </div>
 
       </div>

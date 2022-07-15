@@ -3,45 +3,65 @@
     display: flex;
     flex-direction: column;
     
-    height: 100%;
+    height: 100vh;
     width: 100vw;
     text-align: center;
-    background-color: aquamarine;
 }
 
 .container-result-header {
-  height: 10vh;
-  background-color: yellow;
+  height: 15vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 3rem;
+
+  position: relative;
 }
+
+.container-result-header #rankingButton {
+  position: absolute;
+  right: 5%;
+  font-size: 2rem;
+}
+.container-result-header #rankingButton:hover {
+  font-size: 2.5rem;
+
+}
+
 
 .container-result-options {
   height: 10vh;
-  background-color: orange;
   display: flex;
-  
-  justify-content: center;
+
 }
 .container-result-options button {
   font-size: 2rem;
-  width: 20%;
   height: 80%;
+}
+.container-result-options h2 {
+  font-size: 3rem;
+  width: fit-content; 
+}
+.container-result-option {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
 .container-result-body {
   height: 100%;
   width: 100%;
-  background-color: yellowgreen;
+  height: 75vh;
+
 }
 
 .wrapper-result {
   width: 100%;
-  height: 80vh;
+  height: 100%;
 
-  background-color: green;
   display: flex;
   flex-direction: column;
 
@@ -52,15 +72,15 @@
 .content-result {
   display: flex;
   justify-content: space-evenly;
-  height: 60vh;
+  height: 90%;
   width: 100%;
 
-  border: 5px red solid;
-
+  padding: 2%;
+  
 }
 
 .content-result-body {
-  width: 40%;  
+  width: 45%;  
   height: 100%;
 
   display: flex;
@@ -68,6 +88,8 @@
   justify-content: center;
   align-items: center;
 
+  background-color: grey;
+  border-radius: 45px;
 }
 
 .content-result-answer {
@@ -77,23 +99,26 @@
   justify-content: center;
   align-items: center;
 
-  background-color: aqua;
 
 }
 .content-result-header {
   height: 10%;
   width: 100%;
-  background-color: pink;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items:center;
+
+  padding-top: 2%;
+}
+.content-result-header h4 {
+  margin: 0;
+  font-size: 2em;
 }
 .content-result-image {
   height: 90%;
   width: 100%;
-  background-color: orange;
 
   padding: 2%;
 }

@@ -1,4 +1,61 @@
+
 .container-ranking {
+    display: flex;
+    flex-direction: column;
+    
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+}
+
+.container-ranking-header {
+  height: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+
+  position: relative;
+}
+.container-ranking-header #resultButton {
+    position: absolute;
+    right: 5%;
+    font-size: 2rem;
+}
+.container-ranking-header #resultButton:hover {
+    font-size: 2.5rem;  
+}
+  
+.container-ranking-body {
+    height: 85vh;
+    background-color: yellow;
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+.content-ranking {
+    height: 100%;
     width: 100%;
-    height: 90vh;
+    background-color: beige;
+    display: flex;
+    justify-content: center;
+    
+}
+.content-ranking-wrapper {
+    border: solid 10px blue;
+    width: 50%;
+    height: 60%;
+    display: flex;
+}
+.content-ranking-left {
+    width: 60%;
+    border: solid 10px red;
+
+}
+.content-ranking-right {
+    width: 40%;
+    border: solid 10px red;
+
 }

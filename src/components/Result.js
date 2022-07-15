@@ -104,8 +104,8 @@ function Result(props) {
   const userResponses = props.userResponses;
   const order = props.order;
   const numberOfQuestions = userResponses.length;
-  const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0);
-  const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
+  const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [index, setIndex] = useState(0);
   const [submitted, setSubmitted] = useState(0);
 
@@ -113,43 +113,53 @@ function Result(props) {
     <div className="container-result">
 
       <div className="container-result-header">
-        <h2>Price is Art!</h2>
+        <h1>Price is Art!</h1>
+        <p id="rankingButton" onClick={props.handleShowRanking}>Ranking</p>
       </div>
 
       <div className="container-result-options">
-        <button onClick={props.handleReplay}>REPLAY</button>
-        <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>SUBMIT YOUR RESPONSE</button> 
+        <div className="container-result-option">
+          <button onClick={props.handleReplay}>REPLAY</button>
+        </div>
+        <div className="container-result-option">
+          <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
+        </div>
+        <div className="container-result-option">
+          <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>SUBMIT YOUR RESPONSE</button> 
+        </div>
       </div>
 
       <div className="container-result-body">
-        <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
       
         <div className="wrapper-result">
             {(() => {
-                let result = [];
-                for (let i = 0; i < numberOfQuestions; i++) {
-                  result.push(
-                    <div className="content-result" key ={i} >
-                      <div className="content-result-body">
+              let result = [];
+              for (let i = 0; i < numberOfQuestions; i++) {
+                result.push(
+                  <div className="content-result" key ={i} >
+                  
+                    {/*
+                      <h2>{correctAnswers[i]} {userResponses[i]}| L: {order[i * 2]} R: {order[i * 2 + 1]} </h2> 
+                      {typeof(userResponses[i])} | {typeof(order[i * 2])}
+                      <p>{ (correctAnswers[i] === "Correct" && userResponses[i] === order[i * 2].toString()) ? "passed": "not passed" }</p>
+                    */}
+                    
+                      <div className="content-result-body" style={{ border: (correctAnswers[i] === "Correct" && userResponses[i] === order[i * 2].toString() ? "solid 15px lime" : (correctAnswers[i] === "Incorrect" && userResponses[i] === order[i * 2].toString() ) ? "solid 15px red" : "")}} >
                         <div className="content-result-header">
                           <h3><i>{artworks[order[i * 2]].name}</i> By {artworks[order[i * 2]].artist} </h3>
-                          <h3>${artworks[order[i * 2]].adjusted_price}</h3>
+                          <h4>${parseFloat(artworks[order[i * 2]].adjusted_price)} Million</h4>
                         </div>
-                        <div className="content-result-image">
+                        <div className="content-result-image" >
                           <img key={order[i * 2]} src={artworks_image[order[i * 2]].src} />
                         </div>
                       </div>
 
-                      <div className="content-result-answer">
-                          {correctAnswers[i]}
-                      </div>
-
-                      <div className="content-result-body">
+                      <div className="content-result-body" style={{ border: (correctAnswers[i] === "Correct" && userResponses[i] === order[i * 2 + 1].toString() ? "solid 15px lime" : (correctAnswers[i] === "Incorrect" && userResponses[i] === order[i * 2 + 1] ) ? "solid 15px red" : "") }}>
                         <div className="content-result-header">
                           <h3><i>{artworks[order[i * 2 + 1]].name}</i> By {artworks[order[i * 2]].artist}</h3>
-                          <h3>${artworks[order[i * 2 + 1]].adjusted_price}</h3>
+                          <h4>${parseFloat(artworks[order[i * 2 + 1]].adjusted_price)} Million</h4>
                         </div>
-                        <div className="content-result-image">
+                        <div className="content-result-image" >
                           <img key={order[i * 2+ 1]} src={artworks_image[order[i * 2 + 1]].src} />
                         </div>
                       </div>

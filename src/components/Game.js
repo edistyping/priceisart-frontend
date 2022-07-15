@@ -34,19 +34,24 @@ function Game(props) {
         <div className="Game">
     
             <div className="container-header"> 
-                {index / 2 + 1} / {numberOfImages / 2}
+                <div>
+                    <h1>Price is Art!</h1>
+                </div>
+                <div className="container-header-counts">
+                    <h3>{index / 2 + 1} / {numberOfImages / 2}</h3>
+                </div>
             </div>
 
             {
             (artworks.length > 0 && index <= numberOfImages - 2) &&
             <div className="container-images" >
                 <div className="section-image" onClick={handleSelect} id={[order[index]]} >
-                    <h3>  {artworks[order[index]].id} <i>{artworks[order[index]].name}</i> {artworks[order[index]].artist} {artworks[order[index]].year} </h3>
+                    <h3><i>{artworks[order[index]].name}</i> {artworks[order[index]].artist} {artworks[order[index]].year} </h3>
                     <img key={index} src={artworks_image[order[index]].src} alt="left one"></img>
                 </div>
 
                 <div className="section-image" onClick={handleSelect} id={[order[index + 1]]} >
-                    <h3>   {artworks[order[index + 1]].id} <i>{artworks[order[index + 1]].name}</i> {artworks[order[index + 1]].artist} {artworks[order[index + 1]].year} </h3>
+                    <h3><i>{artworks[order[index + 1]].name}</i> {artworks[order[index + 1]].artist} {artworks[order[index + 1]].year} </h3>
                     <img key={index + 1} src={artworks_image[order[index + 1]].src} alt="right one"></img>
                 </div>
             </div>                       

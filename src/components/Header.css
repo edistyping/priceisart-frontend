@@ -1,0 +1,32 @@
+.container-header-start {
+    height: 60vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    position: relative;
+    background-color: pink;
+
+    font-size: 6em;
+}
+.container-header-others {
+  height: 15vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+  background-color: pink;
+  
+}
+.container-header-others h1 {
+  font-size: 4em;
+}
+
+.container-header-others p {
+  position: absolute;
+  right: 5%;
+  font-size: 2rem;
+}

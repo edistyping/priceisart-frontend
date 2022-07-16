@@ -32,16 +32,6 @@ function Game(props) {
 
     return (
         <div className="Game">
-    
-            <div className="container-header"> 
-                <div>
-                    <h1>Price is Art!</h1>
-                </div>
-                <div className="container-header-counts">
-                    <h3>{index / 2 + 1} / {numberOfImages / 2}</h3>
-                </div>
-            </div>
-
             {
             (artworks.length > 0 && index <= numberOfImages - 2) &&
             <div className="container-images" >

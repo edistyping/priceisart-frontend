@@ -1,6 +1,6 @@
 
 .container-begin {
-    height: 100%;
+    height: 40vh;
     width: 100%;
 }
 .container-begin-header {
@@ -23,43 +23,48 @@
 }
   
 .container-begin-start {
-    height: 50%;
+    height: 60%;
     display: flex;
 }
   
-.startButtonInitial {
-    display: block;
+.content-start {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.startButtonLoading {
-    display: none;
-  
+.content-loading {  
     position: relative;
     width: 100%;
     height: 100%;
     color: white;
 }
+.content-blank {
+    display: none;
+}
   
-.startButtonLoading-top {
+.content-loading-top {
     height: 25%;
     display: flex;
 }
-.startButtonLoading-bottom {
+.content-loading-bottom {
     height: 75%;
     position: relative;
     display: flex;
 }
   
-.startButtonLoading #text-gamerule {
+.content-loading #text-gamerule {
     font-size: 0.3em;
     margin: auto;
 }
-.startButtonLoading-bottom #img-bobross {
+.content-loading-bottom #img-bobross {
     width: 40%;
     height: 90%;
     margin: auto;
     
 }
-.startButtonLoading-bottom #text-loading {
+.content-loading-bottom #text-loading {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -68,8 +73,13 @@
     font-size: 0.3em;
 }
   
+.content-filler {
+    height: 40%;
+    width: 100%;
+}
+
 button {
-    height: 100%;
+    height: auto;
     width: fit-content;
     margin: auto;
     
@@ -96,7 +106,7 @@ button:hover {
     font-size: 6em;
     font-weight: 700;
   
-    height: 60%;
+    height: 80%;
     width: 50%;
   
   

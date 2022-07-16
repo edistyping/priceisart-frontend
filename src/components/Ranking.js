@@ -6,11 +6,6 @@ function Ranking(props) {
     return (
         <div className="container-ranking">
 
-            <div className="container-ranking-header">
-                <h1>Price is Art!</h1>
-                <p id="resultButton" >Back to Result</p>
-            </div>
-            
             <div className="container-ranking-body">
                 <h2>Top 10</h2>
                 <div className='content-ranking'>

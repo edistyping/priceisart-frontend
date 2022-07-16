@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import './App.css';
 
+import Header from './components/Header';
 import Start from './components/Start';
 import Game from './components/Game';
 import Result from './components/Result';
@@ -121,6 +122,7 @@ class App extends Component {
         currentView: "Game",
       })
     }      
+    return 1;
   }
   
   // Need to Reset something except we load image to existing array
@@ -151,10 +153,16 @@ class App extends Component {
   }
 
   handleShowRanking() {
-    console.log("Button pressed");
-    this.setState({ 
-      currentView: "Ranking"
-    });    
+    if (this.state.currentView === "Result") {
+      this.setState({ 
+        currentView: "Ranking"
+      });    
+    } else if (this.state.currentView === "Ranking") {
+      this.setState({ 
+        currentView: "Result"
+      });    
+    }
+
   }
 
   render() {
@@ -163,11 +171,10 @@ class App extends Component {
       
       <div className="App">
         
-        <div style={{height: "100%", width: "100%"}}>
+          <Header currentView={this.state.currentView} handleShowRanking={this.handleShowRanking} />
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
           {this.state.currentView === "Result" && <Result artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleShowRanking={this.handleShowRanking} />}
-        </div>
 
       </div>
     )

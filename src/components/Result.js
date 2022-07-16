@@ -112,11 +112,6 @@ function Result(props) {
   return (
     <div className="container-result">
 
-      <div className="container-result-header">
-        <h1>Price is Art!</h1>
-        <p id="rankingButton" onClick={props.handleShowRanking}>Ranking</p>
-      </div>
-
       <div className="container-result-options">
         <div className="container-result-option">
           <button onClick={props.handleReplay}>REPLAY</button>

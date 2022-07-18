@@ -3,6 +3,32 @@ import './Ranking.css';
 
 function Ranking(props) {
     // Show top 20 most voted imgaes 
+
+    /*
+        1. 
+    */
+    async function getTopImages(n) {
+
+        // fetch(url, )
+        const url = "https://priceisart-app.herokuapp.com/postgres/api2/"
+        const res = await fetch(url, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+        var tempobject = {
+            name: "name",
+            url: ""
+        }          
+
+    }
+
+
+
+
     return (
         <div className="container-ranking">
 

@@ -12,8 +12,13 @@ const Start = props => {
      */
     const [loading, setLoading] = useState(0);
 
-    async function handleStartTest() {
+    function handleStartTest() {
+        
+        // Phase 1 and 2 done here
         setLoading(1);
+
+        // Phase 3 and 4 but leads to error
+        // What happens if the images are not loaded?
         props.handleStart();
 
     }
@@ -24,7 +29,7 @@ const Start = props => {
             <div className="container-begin-start">
                 <button className="button-75" onClick={handleStartTest} >
                     <div className={loading === 0 ? "content-start":"content-blank"} >
-                        <p>START</p>
+                        <p>START{props.isDataLoaded}</p>
                     </div>
 
                     <div className={loading === 1 ? "content-loading":"content-blank"} >

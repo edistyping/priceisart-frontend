@@ -38,16 +38,16 @@ class App extends Component {
     console.log("componentDidMount...");
 
     // Get artworks data
-    const result = await this.readArtworks();
+    //const result = await this.readArtworks();
 
     // Set artworks_order
-    const newOrder = this.shuffle(result.length);
+    //const newOrder = this.shuffle(result.length);
 
     // Initialize artworks_image
-    await this.loadImages(result, newOrder, 10);
+    // await this.loadImages(result, newOrder, 6);
 
     this.setState({
-      artworks_order: newOrder
+      //artworks_order: newOrder
     })
     console.log("     componentDidMount()...")
   }
@@ -117,9 +117,34 @@ class App extends Component {
   }  
 
   async handleStart() {    
+    console.log("handleStart() clicked")
+    // Initialize artworks_image
+    // Get artworks data
+    const result = await this.readArtworks();
+
+    // Set artworks_order
+    const newOrder = this.shuffle(result.length);
+
+    // Initialize artworks_image
+    await this.loadImages(result, newOrder, 10);
+//         img.src=artworks[order[i]].full_path;
+  
+    console.log(result);
+    console.log(newOrder)
+
+    console.log("handleStart() ending....")
+
+    this.setState({
+      artworks_order: newOrder,
+      currentView: "Game",
+    })
+
+
+    // await this.readArtworks()
+    // await this.loadImages(this.state.artworks, this.state.artworks_order, 10);
+
     if (this.state.isDataLoaded === true) {
       this.setState({
-        currentView: "Game",
       })
     }      
     return 1;
@@ -171,7 +196,7 @@ class App extends Component {
       
       <div className="App">
         
-          <Header currentView={this.state.currentView} handleShowRanking={this.handleShowRanking} />
+          <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} />
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
           {this.state.currentView === "Result" && <Result artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleShowRanking={this.handleShowRanking} />}

@@ -14,6 +14,7 @@ class App extends Component {
 
     this.state = {
       isDataLoaded: false,
+      isDataSubmitted: false,
       appStart: false,
 
       index: 0, 
@@ -31,6 +32,7 @@ class App extends Component {
     this.handleReplay = this.handleReplay.bind(this);
     this.handleGameOver = this.handleGameOver.bind(this);
     this.handleShowRanking = this.handleShowRanking.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   // Read Artworks
@@ -159,6 +161,7 @@ class App extends Component {
     await this.loadImages(this.state.artworks, new_order, 10);
 
     this.setState({ 
+      isDataSubmitted: false, 
       artworks_userResponse: [],
       artworks_order: new_order,
       currentView: "Game",
@@ -187,8 +190,13 @@ class App extends Component {
         currentView: "Result"
       });    
     }
-
   }
+  handleSubmit() {
+    this.setState({
+      isDataSubmitted: true,
+    })
+  }
+
 
   render() {
 
@@ -199,7 +207,7 @@ class App extends Component {
           <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} />
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
-          {this.state.currentView === "Result" && <Result artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleShowRanking={this.handleShowRanking} />}
+          {this.state.currentView === "Result" && <Result isDataSubmitted={this.state.isDataSubmitted} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleShowRanking={this.handleShowRanking} handleSubmit={this.handleSubmit} />}
 
       </div>
     )

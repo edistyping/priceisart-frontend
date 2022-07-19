@@ -26,9 +26,6 @@ function Ranking(props) {
 
     }
 
-
-
-
     return (
         <div className="container-ranking">
 

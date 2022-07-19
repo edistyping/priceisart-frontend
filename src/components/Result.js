@@ -50,6 +50,9 @@ function Result(props) {
     const order = props.order;
     const userResponses = props.userResponses;
     
+    // Update IsSubmittedButton();
+    props.handleSubmit()
+
     // Use artwork_id, count, win; count == they were clicked
     var inputData = [];
     var i = 0;
@@ -67,15 +70,20 @@ function Result(props) {
       inputData.push(objectLeft, objectRight);      
     }
     
-    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
+    // http://127.0.0.1:8000/postgres
+    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "https://priceisart-app.herokuapp.com/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
     const url = preurl + 'submit/'
     const requestOptions = {
       method: 'PUT',
+      mode: 'cors',
       headers: { 
           'Content-Type': 'application/json',
       },
       body: JSON.stringify(inputData)
     };
+
+    console.log("url: " + url);
+
     fetch(url, requestOptions)
     .then(response => {
       if (response.ok){
@@ -107,7 +115,7 @@ function Result(props) {
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [index, setIndex] = useState(0);
-  const [submitted, setSubmitted] = useState(0);
+  const [submitted, setSubmitted] = useState(props.isDataSubmitted);
 
   return (
     <div className="container-result">
@@ -120,7 +128,7 @@ function Result(props) {
           <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
         </div>
         <div className="container-result-option">
-          <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>SUBMIT YOUR RESPONSE</button> 
+          <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>{submitted}SUBMIT YOUR RESPONSE</button> 
         </div>
       </div>
 
@@ -149,13 +157,13 @@ function Result(props) {
                         </div>
                       </div>
 
-                      <div className="content-result-body" style={{ border: (correctAnswers[i] === "Correct" && userResponses[i] === order[i * 2 + 1].toString() ? "solid 15px lime" : (correctAnswers[i] === "Incorrect" && userResponses[i] === order[i * 2 + 1] ) ? "solid 15px red" : "") }}>
+                      <div className="content-result-body" style={{ border: (correctAnswers[i] === "Correct" && userResponses[i] === order[i * 2 + 1].toString() ? "solid 15px lime" : (correctAnswers[i] === "Incorrect" && userResponses[i] === order[i * 2 + 1].toString() ) ? "solid 15px red" : "") }}>
                         <div className="content-result-header">
                           <h3><i>{artworks[order[i * 2 + 1]].name}</i> By {artworks[order[i * 2]].artist}</h3>
                           <h4>${parseFloat(artworks[order[i * 2 + 1]].adjusted_price)} Million</h4>
                         </div>
                         <div className="content-result-image" >
-                          <img key={order[i * 2+ 1]} src={artworks_image[order[i * 2 + 1]].src} />
+                          <img key={order[i * 2 + 1]} src={artworks_image[order[i * 2 + 1]].src} />
                         </div>
                       </div>
                     </div>

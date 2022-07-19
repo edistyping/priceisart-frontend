@@ -5,12 +5,14 @@ https://i.stack.imgur.com/fYFze.png
 
 
 # To Do
+= How to bring Win data into prepareDataforSubmit(); 
+= Submit your response is active if switch to Ranking and back 
+
 
 # Goals
-1. Add a button for show Ranking page 
 2. Click Image to Enlarge them 
 3. Improve visuals + Organize Codes
-7. Update with Routers
+
     - Start Page
     - Game Page
         - Counts and Time
@@ -62,3 +64,6 @@ npm view react version
 1. Shows 'You Picked This' by adding a border to picture chosen by user 
 2. Show Number of correct items 
 3. Confirm Replay button re-assign images 
+1. Add a button for show Ranking page 
+7. Update with Routers
+    => Cancelled; not really needed and want to try the vanilla way

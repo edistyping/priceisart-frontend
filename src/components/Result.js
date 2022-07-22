@@ -18,6 +18,7 @@ function Result(props) {
     const order = var_order;
     const userResponses = var_userResponses;
   
+    var result2 = [];
     // check if the user choice is correct 
     var i, total = 0;
     for (i = 0; i < userResponses.length; i++) {
@@ -30,16 +31,19 @@ function Result(props) {
       if (left_id === userResponse && left_price >= right_price) {
         total++;
         result.push("Correct");
+        result2.push(parseInt(left_id))
       } else if (right_id === userResponse && left_price < right_price) {
         total++;
         result.push("Correct");
+        result2.push(parseInt(right_id))
       } else {
         result.push("Incorrect");
+        result2.push(-1);
       }
     }
     
     setTotalCorrectAnswer(total);
-    setCorrectAnswers(result);
+    setCorrectAnswers(result2);
     return result;
   }
 
@@ -50,28 +54,28 @@ function Result(props) {
     const order = props.order;
     const userResponses = props.userResponses;
     
-    // Update IsSubmittedButton();
-    props.handleSubmit()
-
     // Use artwork_id, count, win; count == they were clicked
     var inputData = [];
     var i = 0;
     for (i = 0; i < userResponses.length; i++) {
       var objectLeft = {
-        artwork_id: artworks[order[i * 2]].id,
+        artworks_id: artworks[order[i * 2]].id,
         counts: 1,
-        win: 0,
+        win: correctAnswers[i] === order[i * 2] ? 1:0 
       }
       var objectRight = {
-        artwork_id: artworks[order[i * 2 + 1]].id,
+        artworks_id: order[i * 2 + 1],
         counts: 1,
-        win: 0, 
+        win: correctAnswers[i] === order[i * 2 + 1] ? 1:0 
       }
       inputData.push(objectLeft, objectRight);      
     }
+
+    console.log("inputting data.....")
+    console.log(inputData);
     
-    // http://127.0.0.1:8000/postgres
-    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "https://priceisart-app.herokuapp.com/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
+    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
+    //const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "https://priceisart-app.herokuapp.com/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
     const url = preurl + 'submit/'
     const requestOptions = {
       method: 'PUT',
@@ -98,6 +102,9 @@ function Result(props) {
       console.log("Error when submitting the response!")
       throw new Error("HTTP error " + error);  // ***
     });    
+
+    // Update IsSubmittedButton();
+    props.handleSubmit()
   }
 
   useEffect(() => {
@@ -128,7 +135,7 @@ function Result(props) {
           <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
         </div>
         <div className="container-result-option">
-          <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>{submitted}SUBMIT YOUR RESPONSE</button> 
+          <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>SUBMIT YOUR RESPONSE</button> 
         </div>
       </div>
 
@@ -147,17 +154,17 @@ function Result(props) {
                       <p>{ (correctAnswers[i] === "Correct" && userResponses[i] === order[i * 2].toString()) ? "passed": "not passed" }</p>
                     */}
                     
-                      <div className="content-result-body" style={{ border: (correctAnswers[i] === "Correct" && userResponses[i] === order[i * 2].toString() ? "solid 15px lime" : (correctAnswers[i] === "Incorrect" && userResponses[i] === order[i * 2].toString() ) ? "solid 15px red" : "")}} >
+                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2] ? "solid 15px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2].toString() ) ? "solid 15px red" : "")}} >
                         <div className="content-result-header">
                           <h3><i>{artworks[order[i * 2]].name}</i> By {artworks[order[i * 2]].artist} </h3>
-                          <h4>${parseFloat(artworks[order[i * 2]].adjusted_price)} Million</h4>
+                          <h4>${parseFloat(artworks[order[i * 2]].adjusted_price)} Million </h4>
                         </div>
                         <div className="content-result-image" >
                           <img key={order[i * 2]} src={artworks_image[order[i * 2]].src} />
                         </div>
                       </div>
 
-                      <div className="content-result-body" style={{ border: (correctAnswers[i] === "Correct" && userResponses[i] === order[i * 2 + 1].toString() ? "solid 15px lime" : (correctAnswers[i] === "Incorrect" && userResponses[i] === order[i * 2 + 1].toString() ) ? "solid 15px red" : "") }}>
+                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2 + 1] ? "solid 15px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2 + 1].toString() ) ? "solid 15px red" : "") }}>
                         <div className="content-result-header">
                           <h3><i>{artworks[order[i * 2 + 1]].name}</i> By {artworks[order[i * 2]].artist}</h3>
                           <h4>${parseFloat(artworks[order[i * 2 + 1]].adjusted_price)} Million</h4>

@@ -65,8 +65,8 @@ class App extends Component {
     var startTime = performance.now()
     try {
       console.log("Running readArtworks()....")
-      const url2 = this.state.preurl + 'api1/'
-      const url = "https://priceisart-app.herokuapp.com/postgres/api1/"
+      const url = this.state.preurl + 'api1/'
+      //const url = "https://priceisart-app.herokuapp.com/postgres/api1/"
       console.log("url: " + url);
       const res = await fetch(url, {
         method: 'GET',

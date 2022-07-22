@@ -6,8 +6,15 @@ https://i.stack.imgur.com/fYFze.png
 
 # To Do
 = How to bring Win data into prepareDataforSubmit(); 
-= Submit your response is active if switch to Ranking and back 
+    - A new array to store a picture id of correct answer. if wrong, then -1
+        = (Done) need to fix the logic for wrong answer ()
+    - submitting for api
+        = Done
 
+- (Done) Submit your response is active if switch to Ranking and back 
+
+- Ranking page - Finish API to get top 10 
+    
 
 # Goals
 2. Click Image to Enlarge them 

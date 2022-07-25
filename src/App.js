@@ -79,7 +79,8 @@ class App extends Component {
       let res_json = await res.json();
 
       // const url = "https://priceisart-app.herokuapp.com/postgres/api2/"
-      const url_ranking = this.state.preurl + "ranking/"   
+      const url_ranking = this.state.preurl + "ranking/"  
+      console.log("yo: " + url_ranking) 
       const res_ranking = await fetch(url_ranking, {
         method: 'GET',
         mode: 'cors',

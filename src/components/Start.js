@@ -25,7 +25,6 @@ const Start = props => {
 
     return (
         <div className="container-begin"> 
-        {loading}
             <div className="container-begin-start">
                 <button className="button-75" onClick={handleStartTest} >
                     <div className={loading === 0 ? "content-start":"content-blank"} >
@@ -37,7 +36,7 @@ const Start = props => {
                             <p id="text-gamerule">Prepare to Choose 5 Appealing Artworks</p>
                         </div>
                         <div className="content-loading-bottom">
-                            <img src={require('../bobross.gif')} alt="Loading Icon" id="img-bobross"  />
+                            <img src={require('../static/images/bobross.gif')} alt="Loading Icon" id="img-bobross"  />
                             <p id="text-loading">Loading...</p>
                         </div>
                     </div>

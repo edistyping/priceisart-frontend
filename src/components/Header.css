@@ -6,20 +6,29 @@
     align-items: center;
   
     position: relative;
-    background-color: pink;
-
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     font-size: 6em;
+
+  }
+.container-header-start h1 {
+    color: white;
+    background-color: burlywood;
+    background: rgba(222, 184, 135, 0.6);
+    border-radius: 50px;    
+    padding: 3%;
 }
+
 .container-header-others {
-  height: 15vh;
+  height: 10vh;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 
   position: relative;
-  background-color: pink;
-  
+
+
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .container-header-others h1 {
   font-size: 4em;

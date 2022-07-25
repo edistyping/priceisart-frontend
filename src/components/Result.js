@@ -70,9 +70,6 @@ function Result(props) {
       }
       inputData.push(objectLeft, objectRight);      
     }
-
-    console.log("inputting data.....")
-    console.log(inputData);
     
     const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
     //const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "https://priceisart-app.herokuapp.com/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
@@ -85,8 +82,6 @@ function Result(props) {
       },
       body: JSON.stringify(inputData)
     };
-
-    console.log("url: " + url);
 
     fetch(url, requestOptions)
     .then(response => {
@@ -135,7 +130,9 @@ function Result(props) {
           <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
         </div>
         <div className="container-result-option">
-          <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>SUBMIT YOUR RESPONSE</button> 
+          <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>
+            {  submitted == 0 ? "SUBMIT YOUR RESPONSE" : "THANK YOU!" }
+          </button> 
         </div>
       </div>
 
@@ -147,16 +144,11 @@ function Result(props) {
               for (let i = 0; i < numberOfQuestions; i++) {
                 result.push(
                   <div className="content-result" key ={i} >
-                  
-                    {/*
-                      <h2>{correctAnswers[i]} {userResponses[i]}| L: {order[i * 2]} R: {order[i * 2 + 1]} </h2> 
-                      {typeof(userResponses[i])} | {typeof(order[i * 2])}
-                      <p>{ (correctAnswers[i] === "Correct" && userResponses[i] === order[i * 2].toString()) ? "passed": "not passed" }</p>
-                    */}
                     
-                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2] ? "solid 15px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2].toString() ) ? "solid 15px red" : "")}} >
+                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2] ? "solid 10px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2].toString() ) ? "solid 10px red" : "")}} >
                         <div className="content-result-header">
-                          <h3><i>{artworks[order[i * 2]].name}</i> By {artworks[order[i * 2]].artist} </h3>
+                          <h2><i>{artworks[order[i * 2]].name}</i></h2>
+                          <h3> By {artworks[order[i * 2]].artist}</h3>
                           <h4>${parseFloat(artworks[order[i * 2]].adjusted_price)} Million </h4>
                         </div>
                         <div className="content-result-image" >
@@ -164,9 +156,10 @@ function Result(props) {
                         </div>
                       </div>
 
-                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2 + 1] ? "solid 15px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2 + 1].toString() ) ? "solid 15px red" : "") }}>
+                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2 + 1] ? "solid 10px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2 + 1].toString() ) ? "solid 10px red" : "") }}>
                         <div className="content-result-header">
-                          <h3><i>{artworks[order[i * 2 + 1]].name}</i> By {artworks[order[i * 2]].artist}</h3>
+                          <h2><i>{artworks[order[i * 2 + 1]].name}</i></h2>
+                          <h3> By {artworks[order[i * 2]].artist}</h3>
                           <h4>${parseFloat(artworks[order[i * 2 + 1]].adjusted_price)} Million</h4>
                         </div>
                         <div className="content-result-image" >

@@ -8,27 +8,6 @@
     text-align: center;
 }
 
-.container-result-header {
-  height: 15vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3rem;
-
-  position: relative;
-}
-
-.container-result-header #rankingButton {
-  position: absolute;
-  right: 5%;
-  font-size: 2rem;
-}
-.container-result-header #rankingButton:hover {
-  font-size: 2.5rem;
-
-}
-
-
 .container-result-options {
   height: 10vh;
   display: flex;
@@ -67,6 +46,8 @@
 
   position: relative; 
   overflow-y:auto;
+
+
 }
 
 .content-result {
@@ -75,7 +56,7 @@
   height: 90%;
   width: 100%;
 
-  padding: 2%;
+  padding: 1%;
   
 }
 
@@ -102,7 +83,7 @@
 
 }
 .content-result-header {
-  height: 10%;
+  height: 15%;
   width: 100%;
 
   display: flex;
@@ -110,14 +91,13 @@
   justify-content: center;
   align-items:center;
 
-  padding-top: 2%;
 }
 .content-result-header h4 {
   margin: 0;
   font-size: 2em;
 }
 .content-result-image {
-  height: 90%;
+  height: 85%;
   width: 100%;
 
   padding: 2%;

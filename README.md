@@ -1,6 +1,6 @@
 # Price is Art!
 
-# To Do
+### To Do
 1. (Issue): While testing, I think I saw two same picture come up 
 2. (Issue): Need a way to refresh data for 'Ranking' page. 
     - Might need to create a separate function
@@ -10,9 +10,9 @@
 5. Improve visuals + Organize Codes
 
 # Summary
-
 	Notable Statae Variables: 
 		Artworks: For showing info (title and artist)
+        Artworks_top: data about top 10 
 		Images: For showing image
 		Order: For tracking which artworks to display 
 		Selections: An array of number to be sent to parent Component
@@ -23,18 +23,18 @@
 	- We also use 'file_path' column 'Artworks' to get image files from Azure Blob Storage, and save them into an array 'Images' as Image datatype. These three arrays are also passed to Game, Result, and Ranking component 
 	- Once the data is loaded, direct users to Game component (This currently takes a little long).
 
-		// Load next 10 images (if not exists) and update the state variable
-		var images = this.state.images;
-		for (i = 0.....9){
-			if ( images[order[i]] === "" || images[order[i]] === undefined){
-				var img=new Image();
-				img.src=artworks[order[i]].full_path;
-				img.id=artworks[order[i]].id; // testing
-			}
-		}		
-		this.setState({
-			images: images
-		})
+    // Load next 10 images (if not exists) and update the state variable
+    var images = this.state.images;
+    for (i = 0.....9){
+        if ( images[order[i]] === "" || images[order[i]] === undefined){
+            var img=new Image();
+            img.src=artworks[order[i]].full_path;
+            img.id=artworks[order[i]].id; // testing
+        }
+    }		
+    this.setState({
+        images: images
+    })
 		
 2. Game Component:
 	Props: Artworks, Images, Order
@@ -42,7 +42,7 @@
 	- Three arrays (Artworks, Images, and Order) are passed down as a prop and we use this to show a pair of images for 5 times. Two containers will include basic info (title and artist) and corresponding image for each pair. 
 	- Once selections are made by a user for all 5 pairs of images, they (Selections) will be sent to parent component 'Apps' and save it in an array state variable so we can use this for Result component later. Lastly, 'Result' will now display for users to check their choices/result.  
 		
-3: Result component: (My concerns: A lot of props being passed here...)
+3. Result component: (My concerns: A lot of props being passed here...)
 	Props: Artworks, Images, Order, UserResponse
 
 	- Show all 5 pairs of images and details using 'Artworks', 'Images', 'Order', and 'Selections' state variables 
@@ -60,14 +60,14 @@
 	- Display the images and show info about each (Artwork name, artist, # of selected by users). 
 	- Back to Result: Simply go back to 'Result' component for users to Replay or Submit 
  
-## Available Scripts
+### Available Scripts
 git add frontend 
 git commit -m "frontend subtree commit"
  
-# RUN THIS TO PUSH TO GH-PAGES!!!!!!!!
+### RUN THIS TO PUSH TO GH-PAGES!!!!!!!!
 npm run deploy
 
-# Others
+### Others
 // create a subtree/branch
 git subtree push --prefix frontend origin gh-pages
 
@@ -79,13 +79,13 @@ npm list --depth=0
 npm view react-native version
 npm view react version 
 
-# Resources
-# Link: https://edistyping.github.io/priceisart/
-## https://i.stack.imgur.com/fYFze.png
-### https://www.parkwestgallery.com/browse-artwork/gallery/matt-beyrer
+## Resources
+Link: https://edistyping.github.io/priceisart/
+https://i.stack.imgur.com/fYFze.png
+https://www.parkwestgallery.com/browse-artwork/gallery/matt-beyrer
 
 
-# Done
+## Done
 + How game is started
     1. randomize order
     2. load 10 images 

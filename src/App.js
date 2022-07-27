@@ -52,7 +52,6 @@ class App extends Component {
     this.setState({
       //artworks_order: newOrder
     })
-    console.log("     componentDidMount()...")
   }
 
   shuffle(n) {
@@ -67,8 +66,6 @@ class App extends Component {
     try {
       console.log("Running readArtworks()....")
       const url = this.state.preurl + 'api1/'
-      //const url = "https://priceisart-app.herokuapp.com/postgres/api1/"
-      //console.log("url: " + url);
       const res = await fetch(url, {
         method: 'GET',
         mode: 'cors',
@@ -78,9 +75,7 @@ class App extends Component {
       });
       let res_json = await res.json();
 
-      // const url = "https://priceisart-app.herokuapp.com/postgres/api2/"
       const url_ranking = this.state.preurl + "ranking/"  
-      console.log("yo: " + url_ranking) 
       const res_ranking = await fetch(url_ranking, {
         method: 'GET',
         mode: 'cors',
@@ -89,8 +84,6 @@ class App extends Component {
         }
       });
       let res_json_ranking = await res_ranking.json();
-
-      console.log(" readArtworks() ending....")    
 
       this.setState({
         artworks: res_json,
@@ -122,8 +115,9 @@ class App extends Component {
         img.src=artworks[order[i]].full_path;
         img.id=artworks[order[i]].id; // testing
         images[order[i]] = img;
-      } else
-        console.log(images[order[i]].id + " is already added...")
+      } else {
+        //console.log(images[order[i]].id + " is already added...")
+      }
     }
     
     this.setState({

@@ -38,4 +38,7 @@
   position: absolute;
   right: 5%;
   font-size: 2rem;
+  background-color: beige;
+  padding: 5px 15px;
+  border-radius: 15px;
 }

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import DisplayAnswers from './DisplayAnswers';
 import './Result.css';
 
-function Result(props) {
 
-  // 'Post' request: Push the data to database
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log("handleSubmit is clicked");
-  }
+/*
+  Purpose: This component is used for following things: 
+
+
+*/
+function Result(props) {
 
   // artworks, order, userResponse
   // count winning and update total wins 
@@ -18,7 +17,6 @@ function Result(props) {
     const order = var_order;
     const userResponses = var_userResponses;
   
-    var result2 = [];
     // check if the user choice is correct 
     var i, total = 0;
     for (i = 0; i < userResponses.length; i++) {
@@ -30,20 +28,17 @@ function Result(props) {
 
       if (left_id === userResponse && left_price >= right_price) {
         total++;
-        result.push("Correct");
-        result2.push(parseInt(left_id))
+        result.push(parseInt(left_id))
       } else if (right_id === userResponse && left_price < right_price) {
         total++;
-        result.push("Correct");
-        result2.push(parseInt(right_id))
+        result.push(parseInt(right_id))
       } else {
-        result.push("Incorrect");
-        result2.push(-1);
+        result.push(-1);
       }
     }
     
     setTotalCorrectAnswer(total);
-    setCorrectAnswers(result2);
+    setCorrectAnswers(result);
     return result;
   }
 
@@ -102,13 +97,6 @@ function Result(props) {
     props.handleSubmit()
   }
 
-  useEffect(() => {
-    // This useEffect acts as componentDidMount
-    // It will only run once when the component mounts, since 
-    // the dependency array is empty 
-    checkCorrectAnswers(artworks, order, userResponses); 
-  }, []);
-
   const artworks = props.artworks;
   const artworks_image = props.artworks_image;
   const userResponses = props.userResponses;
@@ -116,8 +104,15 @@ function Result(props) {
   const numberOfQuestions = userResponses.length;
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
-  const [index, setIndex] = useState(0);
   const [submitted, setSubmitted] = useState(props.isDataSubmitted);
+
+  useEffect(() => {
+    // This useEffect acts as componentDidMount
+    // It will only run once when the component mounts, since 
+    // the dependency array is empty 
+    checkCorrectAnswers(artworks, order, userResponses); 
+  }, []);
+
 
   return (
     <div className="container-result">
@@ -131,7 +126,7 @@ function Result(props) {
         </div>
         <div className="container-result-option">
           <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>
-            {  submitted == 0 ? "SUBMIT YOUR RESPONSE" : "THANK YOU!" }
+            {  submitted === 0 ? "SUBMIT YOUR RESPONSE" : "THANK YOU!" }
           </button> 
         </div>
       </div>
@@ -145,25 +140,25 @@ function Result(props) {
                 result.push(
                   <div className="content-result" key ={i} >
                     
-                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2] ? "solid 10px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2].toString() ) ? "solid 10px red" : "")}} >
+                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2] ? "solid 10px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2].toString() ) ? "solid 10px red" : "solid 10px inherit")}} >
                         <div className="content-result-header">
                           <h2><i>{artworks[order[i * 2]].name}</i></h2>
                           <h3> By {artworks[order[i * 2]].artist}</h3>
                           <h4>${parseFloat(artworks[order[i * 2]].adjusted_price)} Million </h4>
                         </div>
                         <div className="content-result-image" >
-                          <img key={order[i * 2]} src={artworks_image[order[i * 2]].src} />
+                          <img key={order[i * 2]} src={artworks_image[order[i * 2]].src} alt="left artwork"/>
                         </div>
                       </div>
 
-                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2 + 1] ? "solid 10px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2 + 1].toString() ) ? "solid 10px red" : "") }}>
+                      <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2 + 1] ? "solid 10px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2 + 1].toString() ) ? "solid 10px red" : "solid 10px inherit") }}>
                         <div className="content-result-header">
                           <h2><i>{artworks[order[i * 2 + 1]].name}</i></h2>
                           <h3> By {artworks[order[i * 2]].artist}</h3>
                           <h4>${parseFloat(artworks[order[i * 2 + 1]].adjusted_price)} Million</h4>
                         </div>
                         <div className="content-result-image" >
-                          <img key={order[i * 2 + 1]} src={artworks_image[order[i * 2 + 1]].src} />
+                          <img key={order[i * 2 + 1]} src={artworks_image[order[i * 2 + 1]].src} alt="right artwork" />
                         </div>
                       </div>
                     </div>

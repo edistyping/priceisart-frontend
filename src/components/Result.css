@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     
-    height: 85vh;
+    height: 90vh;
     width: 100vw;
     text-align: center;
 }
@@ -69,7 +69,7 @@
   justify-content: center;
   align-items: center;
 
-  background-color: grey;
+  background-color: burlywood;
   border-radius: 45px;
 }
 
@@ -83,7 +83,7 @@
 
 }
 .content-result-header {
-  height: 15%;
+  height: 20%;
   width: 100%;
 
   display: flex;
@@ -97,7 +97,7 @@
   font-size: 2em;
 }
 .content-result-image {
-  height: 85%;
+  height: 80%;
   width: 100%;
 
   padding: 2%;

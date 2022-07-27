@@ -45,7 +45,6 @@ const Start = props => {
 
             <div className="content-filler">
             </div>
-
         </div>
     )
 }

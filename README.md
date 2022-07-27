@@ -16,7 +16,7 @@
 2. Ranking.js
     1. Instead of passing all Images and data to Ranking component, should I just send only 10 back to Ranking.js? 
 
-![Trust the Process!](./frontend/src/static/resources/process.png)
+![Trust the Process!](.src/static/resources/process.png?raw=true)
 
 # Summary
 	Notable Statae Variables: 

@@ -10,6 +10,7 @@ import './Result.css';
 
 function Result(props) {
 
+  // Configuring variables 
   const artworks = props.artworks;
   const artworks_image = props.artworks_image;
   const userResponses = props.userResponses;
@@ -19,8 +20,7 @@ function Result(props) {
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [submitted, setSubmitted] = useState(props.isDataSubmitted);
 
-  // artworks, order, userResponse
-  // count winning and update total wins 
+  // Check how many were correctly selected 
   function checkCorrectAnswers(var_artworks, var_order, var_userResponses) {
     var result = [];
     const artworks = var_artworks;

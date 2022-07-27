@@ -4,20 +4,18 @@
 1. (Issue): While testing, I think I saw two same picture come up 
 2. (Issue): Need a way to refresh data for 'Ranking' page. 
     - Might need to create a separate function
-    - Call it whenever a 'Ranking' button is clicked 
+    - Call it whenever a 'Ranking' button is clicked or other way
 3. Refactor Code 
 4. Click Image to Enlarge them 
-5. Improve visuals + Organize Codes
 
 # Code Refactoring
 1. Game.js
-    1. Merge setUserResponse and handleGameover. We don't have to send back data to App everytime but only at the end. 
+    1. (Done) Merge setUserResponse and handleGameover. We don't have to send back data to App everytime but only at the end. 
 2. Result.js
-    - 
+    1. Any? 
 
 3. Ranking.js
-    1. Instead of sending all Images and data, should I just send only 10 back to Ranking.js? 
-
+    1. Instead of passing all Images and data to Ranking component, should I just send only 10 back to Ranking.js? 
 
 
 # Summary

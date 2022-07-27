@@ -186,6 +186,8 @@ class App extends Component {
         currentView: "Ranking"
       });    
     } else if (this.state.currentView === "Ranking") {
+      
+
       this.setState({ 
         currentView: "Result"
       });    

@@ -21,7 +21,7 @@ class App extends Component {
 
       preurl: (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/", 
       artworks: [],
-      artworks_userResponse: [], // This shows selections made by users and each index will associate with arworks_list[i] and artworks_lists[i + 1[] 
+      artworks_userResponse: [], // This shows selections made by users for each pair of images 
       artworks_order: [], // This shows number of images to display to users 
       artworks_image: [],
       artworks_top: [],
@@ -199,9 +199,7 @@ class App extends Component {
 
 
   render() {
-
     return (
-      
       <div className="App">
           <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} />
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
@@ -210,7 +208,6 @@ class App extends Component {
           {this.state.currentView === "Ranking" && <Ranking loadImages={this.loadImages} artworks={this.state.artworks} artworks_image={this.state.artworks_image} artworks_top={this.state.artworks_top}/>}
       </div>
     )
-         
   }
 }
 

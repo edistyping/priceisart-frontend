@@ -25,14 +25,13 @@ function Header(props) {
                         case 'Start':
                             break;
                         case 'Game': 
-                            return <h2> {/* <h3>{index / 2 + 1} / {numberOfImages / 2}</h3> */}</h2>; 
+                            break;
                         case 'Result':
-                            return <p id="resultButton" onClick={props.handleShowRanking}>Ranking</p>;
+                            return <button id="rankingButton" onClick={props.handleShowRanking}>Ranking</button>;
                         case 'Ranking':
-                            return <p id="resultButton" onClick={props.handleShowRanking}>Back to Result</p>;
+                            return <button id="resultButton" onClick={props.handleShowRanking}>Back to Result</button>;
                         default: 
                             return null; 
-
                     }
                     }).call(this)
                 }

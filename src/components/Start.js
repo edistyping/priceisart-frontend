@@ -12,7 +12,7 @@ const Start = props => {
      */
     const [loading, setLoading] = useState(0);
 
-    function handleStartTest() {
+    function handleStart() {
         
         // Phase 1 and 2 done here
         setLoading(1);
@@ -26,7 +26,7 @@ const Start = props => {
     return (
         <div className="container-begin"> 
             <div className="container-begin-start">
-                <button className="button-75" onClick={handleStartTest} >
+                <button className="button-75" onClick={handleStart} >
                     <div className={loading === 0 ? "content-start":"content-blank"} >
                         <p>START{props.isDataLoaded}</p>
                     </div>

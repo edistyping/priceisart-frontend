@@ -10,6 +10,15 @@ import './Result.css';
 
 function Result(props) {
 
+  const artworks = props.artworks;
+  const artworks_image = props.artworks_image;
+  const userResponses = props.userResponses;
+  const order = props.order;
+  const numberOfQuestions = userResponses.length;
+  const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
+  const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
+  const [submitted, setSubmitted] = useState(props.isDataSubmitted);
+
   // artworks, order, userResponse
   // count winning and update total wins 
   function checkCorrectAnswers(var_artworks, var_order, var_userResponses) {
@@ -68,7 +77,6 @@ function Result(props) {
     }
     
     const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
-    //const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "https://priceisart-app.herokuapp.com/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
     const url = preurl + 'submit/'
     const requestOptions = {
       method: 'PUT',
@@ -94,18 +102,9 @@ function Result(props) {
       throw new Error("HTTP error " + error);  // ***
     });    
 
-    // Update IsSubmittedButton();
+    // Update IsSubmittedButton() which will cause to disable 'Submit Your Response' button
     props.handleSubmit()
   }
-
-  const artworks = props.artworks;
-  const artworks_image = props.artworks_image;
-  const userResponses = props.userResponses;
-  const order = props.order;
-  const numberOfQuestions = userResponses.length;
-  const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
-  const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
-  const [submitted, setSubmitted] = useState(props.isDataSubmitted);
 
   useEffect(() => {
     // This useEffect acts as componentDidMount

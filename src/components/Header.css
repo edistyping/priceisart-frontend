@@ -34,11 +34,16 @@
   font-size: 4em;
 }
 
-.container-header-others p {
+.container-header-others button {
   position: absolute;
   right: 5%;
   font-size: 2rem;
   background-color: beige;
   padding: 5px 15px;
   border-radius: 15px;
+  border: solid 2px;
+}
+
+.container-header-others button:hover {
+  background-color: grey;
 }

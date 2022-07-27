@@ -9,6 +9,17 @@
 4. Click Image to Enlarge them 
 5. Improve visuals + Organize Codes
 
+# Code Refactoring
+1. Game.js
+    1. Merge setUserResponse and handleGameover. We don't have to send back data to App everytime but only at the end. 
+2. Result.js
+    - 
+
+3. Ranking.js
+    1. Instead of sending all Images and data, should I just send only 10 back to Ranking.js? 
+
+
+
 # Summary
 	Notable Statae Variables: 
 		Artworks: For showing info (title and artist)
@@ -60,6 +71,7 @@
 	- Display the images and show info about each (Artwork name, artist, # of selected by users). 
 	- Back to Result: Simply go back to 'Result' component for users to Replay or Submit 
  
+
 ### Available Scripts
 git add frontend 
 git commit -m "frontend subtree commit"

@@ -12,6 +12,9 @@
 
 1. Apps.js, Game.js, Result.js (OnLoad + Start + Replay)
     - How and When to read and load data? 
+    - Consider also when to load artwork_top (Either when Ranking is clicked)
+        - Loading artwork_top will require checking artwork_imgae
+        - Don't forget to add Loading icon
 
 2. Ranking.js
     1. Instead of passing all Images and data to Ranking component, should I just send only 10 back to Ranking.js? 

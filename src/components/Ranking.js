@@ -7,10 +7,10 @@ import './Ranking.css';
 */
 function Ranking(props) {
     
-    const artworks = props.artworks;
-    const artworks_image = props.artworks_image;
-    const artworks_top = props.artworks_top;
-    const order = artworks_top.map(a => a.artworks);
+    const artworks = props.artworks; // For Artworks info
+    const artworks_image = props.artworks_image; // For Artworks images
+    const artworks_top = props.artworks_top; // To get correct 10 images from above two props
+    const order = artworks_top.map(a => a.artworks); // Make an array using 'artworks_top'
 
     return (
         <div className="container-ranking">

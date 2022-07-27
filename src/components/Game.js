@@ -10,13 +10,11 @@ function Game(props) {
     const [index, setIndex] = useState(0);
     const [userResponses, setUserResponses] = useState([]);
 
-    // Add the choice to userResponse
+    // Save user's selection to 'UserRespnose' and send it to Parent once all 5 are made
     function handleSelect(e) {
         e.preventDefault();
 
         var choice= e.target.id;
-        // right now, it's left to right. change it to the art id 
-
         var tempResponse = userResponses;
         tempResponse.push(choice);
         setUserResponses(tempResponse);

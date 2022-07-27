@@ -9,14 +9,14 @@
 4. Click Image to Enlarge them 
 
 # Code Refactoring
-1. Game.js
-    1. (Done) Merge setUserResponse and handleGameover. We don't have to send back data to App everytime but only at the end. 
-2. Result.js
-    1. Any? 
 
-3. Ranking.js
+1. Apps.js, Game.js, Result.js (OnLoad + Start + Replay)
+    - How and When to read and load data? 
+
+2. Ranking.js
     1. Instead of passing all Images and data to Ranking component, should I just send only 10 back to Ranking.js? 
 
+![Trust the Process!](./frontend/src/static/resources/process.png)
 
 # Summary
 	Notable Statae Variables: 

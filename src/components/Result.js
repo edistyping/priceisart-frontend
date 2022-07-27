@@ -7,6 +7,7 @@ import './Result.css';
 
 
 */
+
 function Result(props) {
 
   // artworks, order, userResponse
@@ -126,7 +127,7 @@ function Result(props) {
         </div>
         <div className="container-result-option">
           <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>
-            {  submitted === 0 ? "SUBMIT YOUR RESPONSE" : "THANK YOU!" }
+            {  submitted === false ? "SUBMIT YOUR RESPONSE" : "THANK YOU!" }
           </button> 
         </div>
       </div>

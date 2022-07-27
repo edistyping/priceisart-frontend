@@ -1,46 +1,65 @@
-# Getting Started with Create React App
-
-Link: https://edistyping.github.io/priceisart/
-https://i.stack.imgur.com/fYFze.png
-
-https://www.parkwestgallery.com/browse-artwork/gallery/matt-beyrer
+# Price is Art!
 
 # To Do
-1. Finish up Ranking
-    Option 1
-        - Fetch top 10 artworks_id
-        - check if it's in artwork_iamges
-        - load up if not in 
-    Option 2 (more convinenet) 
-        - Start loading top 10 images once the game is over
+1. (Issue): While testing, I think I saw two same picture come up 
+2. (Issue): Need a way to refresh data for 'Ranking' page. 
+    - Might need to create a separate function
+    - Call it whenever a 'Ranking' button is clicked 
+3. Refactor Code 
+4. Click Image to Enlarge them 
+5. Improve visuals + Organize Codes
 
-2. After Response is submitted, change it to "Thank you!" 
+# Summary
 
-3. Add a button for "Report a Bug!"
-    - Prompt: Ask for a category (Computer issue, Mobile issue, Suggestions)
-    - Subject, Detail
+	Notable Statae Variables: 
+		Artworks: For showing info (title and artist)
+		Images: For showing image
+		Order: For tracking which artworks to display 
+		Selections: An array of number to be sent to parent Component
+		currentView: This is used to switch between Start, Game, Result, and Ranking component to display (pretty much my router)
 
-4. (Possible Issue): While testing, I think I saw two same picture come up 
+1. Start Component: 
+	- User clicks 'Start' button and it will make a request to Postgres for artworks (id, name, artist, file_path). We store this data into an array 'Artworks' and also create another array 'Order' to get 10 random numbers from 0 to Artworks.length. 
+	- We also use 'file_path' column 'Artworks' to get image files from Azure Blob Storage, and save them into an array 'Images' as Image datatype. These three arrays are also passed to Game, Result, and Ranking component 
+	- Once the data is loaded, direct users to Game component (This currently takes a little long).
 
-5. A new page for recently sold art from any api 
+		// Load next 10 images (if not exists) and update the state variable
+		var images = this.state.images;
+		for (i = 0.....9){
+			if ( images[order[i]] === "" || images[order[i]] === undefined){
+				var img=new Image();
+				img.src=artworks[order[i]].full_path;
+				img.id=artworks[order[i]].id; // testing
+			}
+		}		
+		this.setState({
+			images: images
+		})
+		
+2. Game Component:
+	Props: Artworks, Images, Order
 
-# Goals
-2. Click Image to Enlarge them 
-3. Improve visuals + Organize Codes
+	- Three arrays (Artworks, Images, and Order) are passed down as a prop and we use this to show a pair of images for 5 times. Two containers will include basic info (title and artist) and corresponding image for each pair. 
+	- Once selections are made by a user for all 5 pairs of images, they (Selections) will be sent to parent component 'Apps' and save it in an array state variable so we can use this for Result component later. Lastly, 'Result' will now display for users to check their choices/result.  
+		
+3: Result component: (My concerns: A lot of props being passed here...)
+	Props: Artworks, Images, Order, UserResponse
 
-    - Start Page
-    - Game Page
-        - Counts and Time
-        - Image Components
-            - Header, Image
+	- Show all 5 pairs of images and details using 'Artworks', 'Images', 'Order', and 'Selections' state variables 
+	- The component has 3 buttons they can interact with (Ranking, Replay, and Submit). 
+		
+		'Replay' button will get 10 random numbers between 0 to artworks.length and load iamges to 'Images' array if not yet added. 
+		'Submit' button will submit user's response to my Postgres database 
+		'Ranking' will direct users to Ranking component. 
+	
+4. Ranking component:
+	Props: Artworks, artworks_top, Images
 
-    - Result Page
-        - Stay the Same
-    - Results Page
-        - Show (# of votes picked / total)
-        - Show (# of times won / total)
-        
-
+	- Request a call to Postgres to get Top-10 selected Images by users (id, selected, artwork_id).
+	- Check using 'artwork_id' to verify if they were already loaded in 
+	- Display the images and show info about each (Artwork name, artist, # of selected by users). 
+	- Back to Result: Simply go back to 'Result' component for users to Replay or Submit 
+ 
 ## Available Scripts
 git add frontend 
 git commit -m "frontend subtree commit"
@@ -55,13 +74,15 @@ git subtree push --prefix frontend origin gh-pages
 // delete a branch
 git push origin --delete gh-pages
 
-// 
 npm list
 npm list --depth=0
-
 npm view react-native version
 npm view react version 
 
+# Resources
+# Link: https://edistyping.github.io/priceisart/
+## https://i.stack.imgur.com/fYFze.png
+### https://www.parkwestgallery.com/browse-artwork/gallery/matt-beyrer
 
 
 # Done
@@ -95,3 +116,14 @@ npm view react version
         = (Done) need to fix the logic for wrong answer ()
     - submitting for api
         = Done
+
+= (Done) Finish up Ranking
+    Option 1
+        - Fetch top 10 artworks_id
+        - check if it's in artwork_iamges
+        - load up if not in 
+    Option 2 (more convinenet) 
+        - Start loading top 10 images once the game is over
+
+= (Done) After Response is submitted, change it to "Thank you!" 
+

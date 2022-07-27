@@ -102,7 +102,7 @@ class App extends Component {
 
   // load images to 'artwork_images'; skip if already added
   async loadImages(artworks, order, n) {
-    //console.log("loadImages()...");
+    console.log("loadImages()...");
 
     // Retrieve from 'artworks_image'
     var images = this.state.artworks_image;

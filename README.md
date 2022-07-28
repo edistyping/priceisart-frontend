@@ -15,6 +15,9 @@
 		Selections: An array of number to be sent to parent Component
 		currentView: This is used to switch between Start, Game, Result, and Ranking component to display (pretty much my router)
 
+	Resources and Tools:
+		React, JavaScript, Django, Heroku Cloud Hosting, Heroku Postgres Cloud Database, Azure Blob Storage
+
 1. Start Component: 
 	- User clicks 'Start' button and it will make a request to Postgres for artworks (id, name, artist, file_path). We store this data into an array 'Artworks' and also create another array 'Order' to get 10 random numbers from 0 to Artworks.length. 
 	- We also use 'file_path' column 'Artworks' to get image files from Azure Blob Storage, and save them into an array 'Images' as Image datatype. These three arrays are also passed to Game, Result, and Ranking component 

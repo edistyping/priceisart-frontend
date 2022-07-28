@@ -1,10 +1,10 @@
-import React, { useState, useEffect  } from 'react';
+import React  from 'react';
 import './Ranking.css';
-
 
 /*
     Receive artworks info and images to display top 10    
 */
+
 function Ranking(props) {
     
     const artworks = props.artworks; // For Artworks info

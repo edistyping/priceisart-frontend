@@ -9,10 +9,9 @@
   background: linear-gradient(90deg, rgba(125,27,0,1) 0%, rgba(203,128,88,1) 35%, rgba(255,162,0,1) 100%);}
   */
   
-  background: lightblue url("https://wallpaperaccess.com/full/5713527.jpg") no-repeat fixed center;
-
-
-  background: lightblue url("https://wallpaperaccess.com/full/2339295.jpg") no-repeat fixed center;
+  background: lightblue no-repeat fixed center;
+  background-image: url('./static/images/background2.jpg');
+  background-size: cover;
 
 }
 

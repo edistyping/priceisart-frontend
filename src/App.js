@@ -20,6 +20,7 @@ class App extends Component {
       index: 0, 
 
       preurl: (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/", 
+      
       artworks: [],
       artworks_userResponse: [], // This shows selections made by users for each pair of images 
       artworks_order: [], // This shows number of images to display to users 
@@ -36,18 +37,16 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // Read Artworks
   async componentDidMount() {
     console.log("componentDidMount...");
+
+    // Below are moved to 'handleStart() button
 
     // Get artworks data
     //const result = await this.readArtworks();
 
     // Set artworks_order
     //const newOrder = this.shuffle(result.length);
-
-    // Initialize artworks_image
-    // await this.loadImages(result, newOrder, 6);
 
     this.setState({
       //artworks_order: newOrder
@@ -60,7 +59,7 @@ class App extends Component {
     return arr;
   }
   
-  // Call API to get data from Postgres
+  // Call API to get Artworks data from Postgres
   async readArtworks() {
     var startTime = performance.now()
     try {
@@ -74,6 +73,21 @@ class App extends Component {
         }
       });
       let res_json = await res.json();
+      return res_json;
+    }
+    catch(error) {
+      console.log("Error occurred in reading Artworks...")
+      console.log(error);
+      var endTime = performance.now()
+      console.log(`   Inside readArtworks()... ${endTime - startTime} milliseconds`)
+    }
+  }
+
+  // Call API to get Top-10 data from Postgres
+  async readTopRanking() {
+    var startTime = performance.now()
+    try {
+      console.log("Running readTopRanking()....")
 
       const url_ranking = this.state.preurl + "ranking/"  
       const res_ranking = await fetch(url_ranking, {
@@ -84,21 +98,16 @@ class App extends Component {
         }
       });
       let res_json_ranking = await res_ranking.json();
-
-      this.setState({
-        artworks: res_json,
-        artworks_top: res_json_ranking
-      })
-
-      return [res_json, res_json_ranking];
+      return res_json_ranking;
     }
     catch(error) {
-      console.log("Error occurred in reading Artworks...")
+      console.log("Error occurred in reading readTopRanking()...")
       console.log(error);
       var endTime = performance.now()
-      console.log(`   Inside readArtworks()... ${endTime - startTime} milliseconds`)
+      console.log(`   Inside readTopRanking()... ${endTime - startTime} milliseconds`)
     }
   }
+
 
   // load images to 'artwork_images'; skip if already added
   async loadImages(artworks, order, n) {
@@ -127,27 +136,24 @@ class App extends Component {
     return images; 
   }  
 
+  // Get 10 random images for Game. Also, get top 10 images for Ranking 
   async handleStart() {    
     console.log("handleStart() clicked")
-    // Initialize artworks_image
-    // Get artworks data
-    var [result, result2] = await this.readArtworks();
-
-    // Set artworks_order
+    
+    // Get artworks data and load 10 random images using 'newOrder'
+    var result = await this.readArtworks();
     const newOrder = this.shuffle(result.length);
-
-    // Initialize artworks_image
     await this.loadImages(result, newOrder, 10);
 
-    // Testing
-    // Error: artworks_top is not updated yet by readArtworks() in line 157wA
-    const artworks_top = result2;
+    // Top Ranking and get images for them
+    const artworks_top = await this.readTopRanking();
     let topOrder = artworks_top.map(a => a.artworks);
     await this.loadImages(result, topOrder, 10);
 
-
     this.setState({
-      artworks_order: newOrder,
+      artworks: result,
+      artworks_order: newOrder,      
+      artworks_top: topOrder,
       currentView: "Game",
     })
 
@@ -180,19 +186,25 @@ class App extends Component {
     });    
   }
 
-  handleShowRanking() {
+  // Switch between Result page and Ranking page
+  async handleShowRanking() {
     if (this.state.currentView === "Result") {
+      // Retrieve data for Top Ranking artworks again and load it (if needed)
+      const artworks_top = await this.readTopRanking();
+      let topOrder = artworks_top.map(a => a.artworks);
+      await this.loadImages(this.state.artworks, topOrder, 10);
+      
       this.setState({ 
-        currentView: "Ranking"
+        currentView: "Ranking",
+        artworks_top: artworks_top
       });    
     } else if (this.state.currentView === "Ranking") {
-      
-
       this.setState({ 
-        currentView: "Result"
+        currentView: "Result",
       });    
     }
   }
+  
   handleSubmit() {
     this.setState({
       isDataSubmitted: true,

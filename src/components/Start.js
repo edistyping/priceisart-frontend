@@ -2,25 +2,18 @@ import React, { useState } from 'react';
 import './Start.css';
 
 
+/*
+    1. Start button is clicked and runs a function
+    2. Hide START and display Loading div
+    3. Start Retrieving arts and wait for response
+    4. Start the game if successful. Show Error message if no data 
+ */
 const Start = props => {
-
-    /*
-        1. Start button is clicked and runs a function
-        2. Hide START and display Loading div
-        3. Start Retrieving arts and wait for response
-        4. Start the game if successful. Show Error message if no data 
-     */
     const [loading, setLoading] = useState(0);
 
     function handleStart() {
-        
-        // Phase 1 and 2 done here
         setLoading(1);
-
-        // Phase 3 and 4 but leads to error
-        // What happens if the images are not loaded?
         props.handleStart();
-
     }
 
     return (

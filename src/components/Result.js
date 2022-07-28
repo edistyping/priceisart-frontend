@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Result.css';
 
-
 /*
   Purpose: This component is used for following things: 
-
-
 */
 
 function Result(props) {
@@ -20,7 +17,7 @@ function Result(props) {
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [submitted, setSubmitted] = useState(props.isDataSubmitted);
 
-  // Check how many were correctly selected 
+  // Check and save correct answers and # of correct answers  
   function checkCorrectAnswers(var_artworks, var_order, var_userResponses) {
     var result = [];
     const artworks = var_artworks;
@@ -49,7 +46,7 @@ function Result(props) {
     
     setTotalCorrectAnswer(total);
     setCorrectAnswers(result);
-    return result;
+    return [total, result];
   }
 
   // Submitting data. API will do its own thing and adding or incrementing exisitng one 
@@ -107,12 +104,9 @@ function Result(props) {
   }
 
   useEffect(() => {
-    // This useEffect acts as componentDidMount
-    // It will only run once when the component mounts, since 
-    // the dependency array is empty 
-    checkCorrectAnswers(artworks, order, userResponses); 
+    checkCorrectAnswers(artworks, order, userResponses);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   return (
     <div className="container-result">
@@ -132,7 +126,6 @@ function Result(props) {
       </div>
 
       <div className="container-result-body">
-      
         <div className="wrapper-result">
             {(() => {
               let result = [];
@@ -162,16 +155,12 @@ function Result(props) {
                         </div>
                       </div>
                     </div>
-
-
               );
             }
-
                 return result;
               })()
             }
         </div>
-
       </div>
 
     </div>

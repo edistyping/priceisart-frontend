@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import './Game.css';
 
+
+/*
+    Display a pair of images at a time up to 5 times. 
+*/
 function Game(props) {
 
     const artworks = props.artworks;

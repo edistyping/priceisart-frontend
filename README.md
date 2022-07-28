@@ -1,23 +1,7 @@
 # Price is Art!
 
-### To Do
-1. (Issue): While testing, I think I saw two same picture come up 
-2. (Issue): Need a way to refresh data for 'Ranking' page. 
-    - Might need to create a separate function
-    - Call it whenever a 'Ranking' button is clicked or other way
-3. Refactor Code 
-4. Click Image to Enlarge them 
-
-# Code Refactoring
-
-1. Apps.js, Game.js, Result.js (OnLoad + Start + Replay)
-    - How and When to read and load data? 
-    - Consider also when to load artwork_top (Either when Ranking is clicked)
-        - Loading artwork_top will require checking artwork_imgae
-        - Don't forget to add Loading icon
-
-2. Ranking.js
-    1. Instead of passing all Images and data to Ranking component, should I just send only 10 back to Ranking.js? 
+### Future Update
+1. Click Image to Enlarge them (Result and Ranking page)
 
 ![Trust the Process!](src/static/resources/process.png?raw=true)
 
@@ -34,20 +18,8 @@
 	- User clicks 'Start' button and it will make a request to Postgres for artworks (id, name, artist, file_path). We store this data into an array 'Artworks' and also create another array 'Order' to get 10 random numbers from 0 to Artworks.length. 
 	- We also use 'file_path' column 'Artworks' to get image files from Azure Blob Storage, and save them into an array 'Images' as Image datatype. These three arrays are also passed to Game, Result, and Ranking component 
 	- Once the data is loaded, direct users to Game component (This currently takes a little long).
+    - For Start and Replay, load next 10 images if not exists in the state variable
 
-    // Load next 10 images (if not exists) and update the state variable
-    var images = this.state.images;
-    for (i = 0.....9){
-        if ( images[order[i]] === "" || images[order[i]] === undefined){
-            var img=new Image();
-            img.src=artworks[order[i]].full_path;
-            img.id=artworks[order[i]].id; // testing
-        }
-    }		
-    this.setState({
-        images: images
-    })
-		
 2. Game Component:
 	Props: Artworks, Images, Order
 
@@ -74,13 +46,18 @@
  
 
 ### Available Scripts
+```
 git add frontend 
 git commit -m "frontend subtree commit"
- 
+```
+
 ### RUN THIS TO PUSH TO GH-PAGES!!!!!!!!
+```
 npm run deploy
+```
 
 ### Others
+```
 // create a subtree/branch
 git subtree push --prefix frontend origin gh-pages
 
@@ -91,52 +68,45 @@ npm list
 npm list --depth=0
 npm view react-native version
 npm view react version 
+```
 
 ## Resources
 Link: https://edistyping.github.io/priceisart/
 https://i.stack.imgur.com/fYFze.png
 https://www.parkwestgallery.com/browse-artwork/gallery/matt-beyrer
 
-
 ## Done
 + How game is started
     1. randomize order
     2. load 10 images 
-
 + How should replay be loaded
     1. randomize order
     2. load 10 more images 
         skip if needed
-
 + Hovering the image will show the cost 
     => Cancelled; it will just annoy users
-
-1. Shows 'You Picked This' by adding a border to picture chosen by user 
-2. Show Number of correct items 
-3. Confirm Replay button re-assign images 
-1. Add a button for show Ranking page 
-7. Update with Routers
++ Shows 'You Picked This' by adding a border to picture chosen by user 
++ Show Number of correct items 
++ Confirm Replay button re-assign images 
++ Add a button for show Ranking page 
++ Update with Routers
     => Cancelled; not really needed and want to try the vanilla way
-
-- (Done) Submit your response is active if switch to Ranking and back 
-
-- (Done) Ranking page - Finish API to get top 10 
++ Submit your response is active if switch to Ranking and back 
++ Ranking page - Finish API to get top 10 
     = ranking API will return top 10 artwork_id 
-
-
-= (Done) How to bring Win data into prepareDataforSubmit(); 
++ How to bring Win data into prepareDataforSubmit(); 
     - A new array to store a picture id of correct answer. if wrong, then -1
         = (Done) need to fix the logic for wrong answer ()
     - submitting for api
         = Done
-
-= (Done) Finish up Ranking
++ Finish up Ranking
     Option 1
         - Fetch top 10 artworks_id
         - check if it's in artwork_iamges
         - load up if not in 
     Option 2 (more convinenet) 
         - Start loading top 10 images once the game is over
-
-= (Done) After Response is submitted, change it to "Thank you!" 
-
++ After Response is submitted, change it to "Thank you!" 
++ Need a way to refresh data for 'Ranking' page. 
+    - Might need to create a separate function
+    - Call it whenever a 'Ranking' button is clicked or other way

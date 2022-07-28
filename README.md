@@ -8,7 +8,7 @@
 # Summary
 	Notable Statae Variables: 
 		Artworks: For showing info (title and artist)
-        Artworks_top: data about top 10 
+		Artworks_top: data about top 10 
 		Images: For showing image
 		Order: For tracking which artworks to display 
 		Selections: An array of number to be sent to parent Component

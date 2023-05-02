@@ -63,8 +63,10 @@ class App extends Component {
   async readArtworks() {
     var startTime = performance.now()
     try {
-      console.log("Running readArtworks()....")
       const url = this.state.preurl + 'api1/'
+      
+      console.log(`Running readArtworks().... ${url}`)
+
       const res = await fetch(url, {
         method: 'GET',
         mode: 'cors',
@@ -144,10 +146,13 @@ class App extends Component {
     var result = await this.readArtworks();
     const newOrder = this.shuffle(result.length);
     await this.loadImages(result, newOrder, 10);
+    console.log(result.length)
+    console.log("now onto ranking")
 
     // Top Ranking and get images for them
     const artworks_top = await this.readTopRanking();
     let topOrder = artworks_top.map(a => a.artworks);
+    console.log(topOrder);
     await this.loadImages(result, topOrder, 10);
 
     this.setState({

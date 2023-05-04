@@ -18,32 +18,93 @@ const Start = props => {
         props.handleStart();
     }
 
-      // Call API to get Artworks data from Postgres
-    async function handleStart2() {
+    function compareArtworks(artwork1, artwork2) {
+        let artwork1_value = 0;
+        let artwork2_value = 1;
+
+        if (artwork1_value > artwork2_value)
+            return 1;
+        else 
+            return 0;
+
+    }
+
+    // !!! Submit user's responses to Server
+    async function handleSubmitResponse() {
+        try {
+            // const url = 'http://localhost:3000/artworks'
+            const url = 'http://localhost:3000/response'
+            
+            const data = [{ artwork_id: 1, other_artwork_id: 2, user_id: 3, win: compareArtworks(1, 2) }, {artwork_id: 11, other_artwork_id: 22, user_id: 33, win: true}, {artwork_id: 11111, other_artwork_id: 2222, user_id: 33, win: true}];
+            const res = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                console.log(response);
+            }).catch(error => {
+                console.log(error);
+            })
+        }
+        catch(error) {
+            console.log("Error occurred in reading...")
+            console.log(error);
+        }
+    }
+    // !!! Submit user's responses to Server
+    async function handleSubmitVote() {
+        try {
+            // const url = 'http://localhost:3000/artworks'
+            const url = 'http://localhost:3000/vote'
+            
+            const data = [{count: 1, win: compareArtworks(1, 0), artwork_id: 1}, {count: 2, win: compareArtworks(1, 2), artwork_id: 2}, {count: 2, win: compareArtworks(1, 2), artwork_id: 999}];
+            const res = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(response => {
+                console.log(response);
+            }).catch(error => {
+                console.log(error);
+            })
+        }
+        catch(error) {
+            console.log("Error occurred in reading...")
+            console.log(error);
+        }
+    }
+    async function handleGetArtworks() {
         try {
             const url = 'http://localhost:3000/artworks'
-            
-            console.log(`Running readArtworks().... ${url}`)
             const res = await fetch(url, {
                 method: 'GET',
                 mode: 'cors',
                 headers: {
-                'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json'
+                },
             });
+            
             let res_json = await res.json();
+            console.log(res_json)
             return res_json;
         }
         catch(error) {
-            console.log("Error occurred in reading Artworks...")
+            console.log("Error occurred in reading...")
             console.log(error);
         }
-  }
+    }
 
   return (
         <div className="container-begin"> 
 
-            <button onClick={handleStart2} style={{width:"auto", height: "100px"}}>TEST</button>
+            <button onClick={handleSubmitResponse} style={{width:"auto", height: "100px"}}>TEST</button>
+            <button onClick={handleSubmitVote} style={{width:"auto", height: "100px"}}>TEST2</button>
 
             <div className="container-begin-start">
                 <button className="button-75" onClick={handleStart} >

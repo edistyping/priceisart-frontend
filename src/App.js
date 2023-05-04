@@ -7,6 +7,13 @@ import Game from './components/Game';
 import Result from './components/Result';
 import Ranking from './components/Ranking';
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 class App extends Component {
 
   constructor(props) {

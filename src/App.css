@@ -10,7 +10,7 @@
   */
   
   background: lightblue no-repeat fixed center;
-  background-image: url('./static/images/background2.jpg');
+  background-image: url('./assets/images/background2.jpg');
   background-size: cover;
 
 }

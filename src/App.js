@@ -9,25 +9,28 @@ import Ranking from './components/Ranking';
 
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
-  Link
+  Link,
 } from "react-router-dom";
 
 class App extends Component {
 
+  
   constructor(props) {
     super(props);
+    
+
 
     this.state = {
       isDataLoaded: false,
       isDataSubmitted: false,
       appStart: false,
 
-      index: 0, 
-
-      preurl: (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/", 
       
+      preurl: window.location.hostname === "localhost" ? 'http://localhost:3000' : 'damn', 
+      
+      artwork_index: 0, 
       artworks: [],
       artworks_userResponse: [], // This shows selections made by users for each pair of images 
       artworks_order: [], // This shows number of images to display to users 
@@ -47,18 +50,24 @@ class App extends Component {
   async componentDidMount() {
     console.log("componentDidMount...");
 
-    // Below are moved to 'handleStart() button
-
     // Get artworks data
-    //const result = await this.readArtworks();
+    //const artworks = await this.loadArtworks();
 
     // Set artworks_order
-    //const newOrder = this.shuffle(result.length);
+    //const newOrder = this.shuffle(artworks.length);
 
     this.setState({
-      //artworks_order: newOrder
+      // artworks_order: newOrder,
+      // artworks: artworks,
+      // isDataLoaded: true
     })
   }
+  componentDidUpdate() { 
+    console.log('componentDidUpdate()...')
+    console.log(`     image: ${this.state.artworks_image.length}`)
+    console.log(this.state.artworks_image)
+  }
+
 
   shuffle(n) {
     // randomly generated N = 10 length array 0 <= A[N] <= 39
@@ -67,12 +76,12 @@ class App extends Component {
   }
   
   // Call API to get Artworks data from Postgres
-  async readArtworks() {
+  async loadArtworks() {
     var startTime = performance.now()
     try {
-      const url = this.state.preurl + 'api1/'
+      const url = this.state.preurl + '/artworks/'
       
-      console.log(`Running readArtworks().... ${url}`)
+      console.log(`Running loadArtworks().... ${url}`)
 
       const res = await fetch(url, {
         method: 'GET',
@@ -88,8 +97,87 @@ class App extends Component {
       console.log("Error occurred in reading Artworks...")
       console.log(error);
       var endTime = performance.now()
-      console.log(`   Inside readArtworks()... ${endTime - startTime} milliseconds`)
+      console.log(`   Inside loadArtworks()... ${endTime - startTime} milliseconds`)
     }
+  }
+
+  // load images to 'artwork_images'; skip if already added
+  async loadImages(artworks, order) {
+    console.log(`loadImages()...      ${this.state.artworks_image.length}`);
+
+    const numberOfImagesToRetrieve = this.state.artwork_index === 0 ? 4 : 2;
+    
+    // check if the image is already filled then add if not
+    var images = this.state.artworks_image;
+    let artwork_index = this.state.artwork_index;
+    console.log(artworks); 
+    console.log(order)
+    for(let i = artwork_index; i < artwork_index + numberOfImagesToRetrieve; i++) {      
+      if ( images[order[i]] === "" || images[order[i]] === undefined){
+        var img=new Image();
+        console.log(`${i}  ${order[i]}`)
+        img.src=artworks[order[i]].file_path;
+        img.id=artworks[order[i]].id; // testing
+        images[order[i]] = img;
+      } else {
+        //console.log(images[order[i]].id + " is already added...")
+      }
+    }
+    
+    this.setState({
+      artworks_image: images,
+      artwork_index: this.state.artwork_index + 1, 
+      isDataLoaded: true,
+    })
+    return images; 
+  }  
+
+  async handleStart() {    
+    console.log("handleStart() clicked")
+    
+    // Get artworks data and load 10 random images using 'newOrder'
+    var artworks = await this.loadArtworks();
+    const newOrder = this.shuffle(artworks.length);
+       
+    console.log(newOrder);
+    await this.loadImages(artworks, newOrder); // artworks, random order, index 
+    // console.log(result.length)
+
+    
+
+    this.setState({
+      artworks: artworks,
+      artworks_order: newOrder,      
+      // artworks_top: topOrder, // This is for ranking
+      // currentView: "Game",
+    });
+  }
+  
+  // Need to Reset something except we load image to existing array
+  handleReplay = async () => {
+    // shuffle artworks again
+    var new_order = this.shuffle(this.state.artworks.length);
+    
+    // load (more) images using the new order
+    await this.loadImages(this.state.artworks, new_order, 10);
+
+    this.setState({ 
+      isDataSubmitted: false, 
+      artworks_userResponse: [],
+      artworks_order: new_order,
+      currentView: "Game",
+      artwork_index: 0,
+    });
+    
+  }
+
+  // Receive response from User then show Result page 
+  handleGameOver(response) {
+    console.log("  handleGameOver() is called..... ")    
+    this.setState({ 
+      currentView: "Result",
+      artworks_userResponse: response,
+    });    
   }
 
   // Call API to get Top-10 data from Postgres
@@ -116,87 +204,7 @@ class App extends Component {
       console.log(`   Inside readTopRanking()... ${endTime - startTime} milliseconds`)
     }
   }
-
-
-  // load images to 'artwork_images'; skip if already added
-  async loadImages(artworks, order, n) {
-    console.log("loadImages()...");
-
-    // Retrieve from 'artworks_image'
-    var images = this.state.artworks_image;
   
-    // check if the image is already filled then add if not
-    let i = 0;
-    for(i = 0; i < n; i++) {      
-      if ( images[order[i]] === "" || images[order[i]] === undefined){
-        var img=new Image();
-        img.src=artworks[order[i]].full_path;
-        img.id=artworks[order[i]].id; // testing
-        images[order[i]] = img;
-      } else {
-        //console.log(images[order[i]].id + " is already added...")
-      }
-    }
-    
-    this.setState({
-      artworks_image: images,
-      isDataLoaded: true,
-    })
-    return images; 
-  }  
-
-  // Get 10 random images for Game. Also, get top 10 images for Ranking 
-  async handleStart() {    
-    console.log("handleStart() clicked")
-    
-    // Get artworks data and load 10 random images using 'newOrder'
-    var result = await this.readArtworks();
-    const newOrder = this.shuffle(result.length);
-    await this.loadImages(result, newOrder, 10);
-    console.log(result.length)
-    console.log("now onto ranking")
-
-    // Top Ranking and get images for them
-    const artworks_top = await this.readTopRanking();
-    let topOrder = artworks_top.map(a => a.artworks);
-    console.log(topOrder);
-    await this.loadImages(result, topOrder, 10);
-
-    this.setState({
-      artworks: result,
-      artworks_order: newOrder,      
-      artworks_top: topOrder,
-      currentView: "Game",
-    })
-
-    return 1;
-  }
-  
-  // Need to Reset something except we load image to existing array
-  handleReplay = async () => {
-    // shuffle artworks again
-    var new_order = this.shuffle(this.state.artworks.length);
-    
-    // load (more) images using the new order
-    await this.loadImages(this.state.artworks, new_order, 10);
-
-    this.setState({ 
-      isDataSubmitted: false, 
-      artworks_userResponse: [],
-      artworks_order: new_order,
-      currentView: "Game",
-    });
-    
-  }
-
-  // Receive response from User then show Result page 
-  handleGameOver(response) {
-    console.log("  handleGameOver() is called..... ")    
-    this.setState({ 
-      currentView: "Result",
-      artworks_userResponse: response,
-    });    
-  }
 
   // Switch between Result page and Ranking page
   async handleShowRanking() {
@@ -226,13 +234,28 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-          <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} />
-          {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
-          {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
-          {this.state.currentView === "Result" && <Result isDataSubmitted={this.state.isDataSubmitted} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleShowRanking={this.handleShowRanking} handleSubmit={this.handleSubmit} />}
-          {this.state.currentView === "Ranking" && <Ranking loadImages={this.loadImages} artworks={this.state.artworks} artworks_image={this.state.artworks_image} artworks_top={this.state.artworks_top}/>}
-      </div>
+      <Router>
+
+        <div className="App">
+            
+            {/*
+            <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} />
+            {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
+            {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
+            {this.state.currentView === "Result" && <Result isDataSubmitted={this.state.isDataSubmitted} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleShowRanking={this.handleShowRanking} handleSubmit={this.handleSubmit} />}
+            {this.state.currentView === "Ranking" && <Ranking loadImages={this.loadImages} artworks={this.state.artworks} artworks_image={this.state.artworks_image} artworks_top={this.state.artworks_top}/>}
+            */}
+          <Routes>
+            <Route path="/" element={<Start isDataLoaded={this.state.isDataLoaded} loadGame={this.handleStart}/>}  />
+            <Route path="/game"  element={<Game/>} artworks={this.state.artworks} artworks_image={this.state.artworks_image} artworks_order={this.state.artworks_order} artworks_index={this.state.artwork_index} loadImages={this.loadImages} />
+            <Route path="/result"  element={<Result/>} />
+            <Route path="/ranking"  element={<Ranking/>} />
+          </Routes>
+
+        </div>
+        
+      </Router>
+
     )
   }
 }

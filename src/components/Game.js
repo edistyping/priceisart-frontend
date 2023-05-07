@@ -8,15 +8,21 @@ import './Game.css';
 function Game(props) {
 
     const artworks = props.artworks;
-    const artworks_image = props.images; 
-    const order = props.order; 
+    const artworks_image = props.artworks_images; 
+    const order = props.artworks_order; 
+    const artworks_index = props.artworks_index;
+
     const numberOfImages = 10;
+    
     const [index, setIndex] = useState(0);
     const [userResponses, setUserResponses] = useState([]);
 
+    console.log(artworks);
     // Save user's selection to 'UserRespnose' and send it to Parent once all 5 are made
     function handleSelect(e) {
         e.preventDefault();
+
+        // props.loadImages2(2);
 
         var choice= e.target.id;
         var tempResponse = userResponses;
@@ -30,6 +36,7 @@ function Game(props) {
         } else {
             setIndex(index => index + 2);
         }
+
     }    
 
     return (

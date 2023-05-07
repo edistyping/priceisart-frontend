@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Start.css';
-
+import { useNavigate , Link } from "react-router-dom";
 
 /*
     1. Start button is clicked and runs a function
@@ -12,10 +12,14 @@ import './Start.css';
 
 const Start = props => {
     const [loading, setLoading] = useState(0);
+    const navigate = useNavigate()
 
-    function handleStart() {
-        setLoading(1);
-        props.handleStart();
+    async function handleStart() {
+        setLoading(1); // No need to update this. Once loadGame() is finished, just route to Game.js
+
+        // Load everything (artworks, first 4 images)
+        await props.loadGame();
+        // navigate('/game');
     }
 
     function compareArtworks(artwork1, artwork2) {
@@ -79,47 +83,34 @@ const Start = props => {
             console.log(error);
         }
     }
-    async function handleGetArtworks() {
-        try {
-            const url = 'http://localhost:3000/artworks'
-            const res = await fetch(url, {
-                method: 'GET',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-            
-            let res_json = await res.json();
-            console.log(res_json)
-            return res_json;
-        }
-        catch(error) {
-            console.log("Error occurred in reading...")
-            console.log(error);
-        }
-    }
 
+    const divStyle = {
+        color: 'yellow',
+        width: '50px',
+        height: '100px',
+        fontSize: '15px',
+    };
   return (
         <div className="container-begin"> 
 
             <button onClick={handleSubmitResponse} style={{width:"auto", height: "100px"}}>TEST</button>
             <button onClick={handleSubmitVote} style={{width:"auto", height: "100px"}}>TEST2</button>
+            
+            <button onClick={handleStart} style={divStyle}>START2</button> <br/>
+
 
             <div className="container-begin-start">
                 <button className="button-75" onClick={handleStart} >
                     <div className={loading === 0 ? "content-start":"content-blank"} >
-                        {/*
-                            <p>START{props.isDataLoaded}</p>
-                        */}    
-                        </div>
+                        <Link to="/game" style={divStyle} disabled >Game{props.isDataLoaded}</Link>
+                    </div>
 
                     <div className={loading === 1 ? "content-loading":"content-blank"} >
                         <div className="content-loading-top">
                             <p id="text-gamerule">Prepare to Choose 5 Appealing Artworks</p>
                         </div>
                         <div className="content-loading-bottom">
-                            <img src={require('../static/images/bobross.gif')} alt="Loading Icon" id="img-bobross"  />
+                            <img src={require('../assets/images/bobross.gif')} alt="Loading Icon" id="img-bobross"  />
                             <p id="text-loading">Loading...</p>
                         </div>
                     </div>

@@ -30,7 +30,7 @@ class App extends Component {
       
       preurl: window.location.hostname === "localhost" ? 'http://localhost:3000' : 'damn', 
       
-      artwork_index: 0, 
+      artworks_index: 0, 
       artworks: [],
       artworks_userResponse: [], // This shows selections made by users for each pair of images 
       artworks_order: [], // This shows number of images to display to users 
@@ -105,14 +105,14 @@ class App extends Component {
   async loadImages(artworks, order) {
     console.log(`loadImages()...      ${this.state.artworks_image.length}`);
 
-    const numberOfImagesToRetrieve = this.state.artwork_index === 0 ? 4 : 2;
+    const numberOfImagesToRetrieve = this.state.artworks_index === 0 ? 4 : 2;
     
     // check if the image is already filled then add if not
     var images = this.state.artworks_image;
-    let artwork_index = this.state.artwork_index;
+    let artworks_index = this.state.artworks_index;
     console.log(artworks); 
     console.log(order)
-    for(let i = artwork_index; i < artwork_index + numberOfImagesToRetrieve; i++) {      
+    for(let i = artworks_index; i < artworks_index + numberOfImagesToRetrieve; i++) {      
       if ( images[order[i]] === "" || images[order[i]] === undefined){
         var img=new Image();
         console.log(`${i}  ${order[i]}`)
@@ -126,9 +126,10 @@ class App extends Component {
     
     this.setState({
       artworks_image: images,
-      artwork_index: this.state.artwork_index + 1, 
+      artworks_index: this.state.artworks_index + 2, 
       isDataLoaded: true,
     })
+
     return images; 
   }  
 
@@ -143,14 +144,14 @@ class App extends Component {
     await this.loadImages(artworks, newOrder); // artworks, random order, index 
     // console.log(result.length)
 
-    
-
     this.setState({
       artworks: artworks,
       artworks_order: newOrder,      
       // artworks_top: topOrder, // This is for ranking
-      // currentView: "Game",
+      currentView: "Game",
     });
+    
+    return 1;
   }
   
   // Need to Reset something except we load image to existing array
@@ -166,7 +167,7 @@ class App extends Component {
       artworks_userResponse: [],
       artworks_order: new_order,
       currentView: "Game",
-      artwork_index: 0,
+      artworks_index: 0,
     });
     
   }
@@ -177,6 +178,7 @@ class App extends Component {
     this.setState({ 
       currentView: "Result",
       artworks_userResponse: response,
+      artworks_index: 0,
     });    
   }
 
@@ -247,7 +249,7 @@ class App extends Component {
             */}
           <Routes>
             <Route path="/" element={<Start isDataLoaded={this.state.isDataLoaded} loadGame={this.handleStart}/>}  />
-            <Route path="/game"  element={<Game/>} artworks={this.state.artworks} artworks_image={this.state.artworks_image} artworks_order={this.state.artworks_order} artworks_index={this.state.artwork_index} loadImages={this.loadImages} />
+            <Route path="/game"  element={<Game/>} currentView={this.state.currentView} artworks={this.state.artworks} artworks_image={this.state.artworks_image} artworks_order={this.state.artworks_order} artworks_index={this.state.artworks_index} loadImages={this.loadImages} />
             <Route path="/result"  element={<Result/>} />
             <Route path="/ranking"  element={<Ranking/>} />
           </Routes>

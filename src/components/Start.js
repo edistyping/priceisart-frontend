@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Start.css';
 import { useNavigate , Link } from "react-router-dom";
 
@@ -14,11 +14,24 @@ const Start = props => {
     const [loading, setLoading] = useState(0);
     const navigate = useNavigate()
 
-    async function handleStart() {
-        setLoading(1); // No need to update this. Once loadGame() is finished, just route to Game.js
+    // Similar to componentDidMount and componentDidUpdate:
+    useEffect(() => {
+        console.log("useEffect....")
+        if (loading === 1)
+            navigate('/game');
+    }, [loading]);
 
+    console.log('start...')
+    console.log(props);
+
+    async function handleStart() {
+        
         // Load everything (artworks, first 4 images)
-        await props.loadGame();
+        const result = await props.loadGame();
+        
+        setLoading(result); // No need to update this. Once loadGame() is finished, just route to Game.js
+        
+        // Need to call before after loadGame is finished... 
         // navigate('/game');
     }
 

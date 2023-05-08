@@ -11,19 +11,21 @@ function Game(props) {
     const artworks_image = props.artworks_images; 
     const order = props.artworks_order; 
     const artworks_index = props.artworks_index;
-
+    
     const numberOfImages = 10;
     
     const [index, setIndex] = useState(0);
     const [userResponses, setUserResponses] = useState([]);
-
+    
+    console.log("Game here")
+    console.log(props);
+    console.log(`currentView: ${props.currentView}    index: ${artworks_index}`);
     console.log(artworks);
     // Save user's selection to 'UserRespnose' and send it to Parent once all 5 are made
     function handleSelect(e) {
         e.preventDefault();
 
         // props.loadImages2(2);
-
         var choice= e.target.id;
         var tempResponse = userResponses;
         tempResponse.push(choice);
@@ -36,9 +38,23 @@ function Game(props) {
         } else {
             setIndex(index => index + 2);
         }
-
     }    
+    function handleSelect2(e) {
+        e.preventDefault();
 
+        // props.loadImages2(2);
+        var choice= e.target.id;
+        var tempResponse = userResponses;
+        tempResponse.push(choice);
+        setUserResponses(tempResponse);
+
+        // When the game is finished (index), show Result page 
+        if (artworks_index >= numberOfImages - 2) {
+            props.handleGameOver(userResponses);
+        } else {
+            props.loadImages(artworks, order);
+        }
+    }    
     return (
         <div className="Game">
             {

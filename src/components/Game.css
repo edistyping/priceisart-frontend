@@ -3,15 +3,16 @@
     width: 100vw;
     display: flex;
     flex-direction: column;
+    background-color: #A52A2A;
   }
 
   .container-images {
-  
     height: 85vh;
     width: 100%;
     text-align: center;
-    
     display: flex;
+
+    background-color: antiquewhite;
   }
   .section-image {
     width: 50%;

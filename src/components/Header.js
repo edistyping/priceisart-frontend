@@ -19,7 +19,7 @@ function Header(props) {
 
     return (
         <div className={containerHeader}>
-            <h1>Price is Art!</h1>           
+            <h1>PRICE IS ART!</h1>           
                 {(() => {
                     switch(currentView) {
                         case 'Start':
@@ -29,7 +29,7 @@ function Header(props) {
                         case 'Result':
                             return <button id="rankingButton" onClick={props.handleShowRanking}>Ranking</button>;
                         case 'Ranking':
-                            return <button id="resultButton" onClick={props.handleShowRanking}>Back to Result</button>;
+                            return <button id="resultButton" onClick={props.handleGameOver(0)} >Back to Result</button>;
                         default: 
                             return null; 
                     }

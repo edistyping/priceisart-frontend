@@ -10,12 +10,19 @@ function Result(props) {
   // Configuring variables 
   const artworks = props.artworks;
   const artworks_image = props.artworks_image;
-  const userResponses = props.userResponses;
   const order = props.order;
+  
+  // const userResponses = props.userResponses;
+  const [userResponses, setResponse] = useState(props.userResponses);
   const numberOfQuestions = userResponses.length;
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [submitted, setSubmitted] = useState(props.isDataSubmitted);
+
+  useEffect(() => {
+    checkCorrectAnswers(artworks, order, userResponses);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Check and save correct answers and # of correct answers  
   function checkCorrectAnswers(var_artworks, var_order, var_userResponses) {
@@ -50,8 +57,8 @@ function Result(props) {
   }
 
   // Submitting data. API will do its own thing and adding or incrementing exisitng one 
-  function prepareDataForSubmit() {
-    console.log("prepareDataForSubmit()....");
+  function submitVote() {
+    console.log("submitVote()....");
     const artworks = props.artworks;
     const order = props.order;
     const userResponses = props.userResponses;
@@ -61,22 +68,23 @@ function Result(props) {
     var i = 0;
     for (i = 0; i < userResponses.length; i++) {
       var objectLeft = {
-        artworks_id: artworks[order[i * 2]].id,
-        counts: 1,
+        artwork_id: Number(artworks[order[i * 2]].id),
+        count: 1,
         win: correctAnswers[i] === order[i * 2] ? 1:0 
       }
       var objectRight = {
-        artworks_id: order[i * 2 + 1],
-        counts: 1,
+        //artworks_id: order[i * 2 + 1],
+        artwork_id: Number(artworks[order[i * 2 + 1]].id),
+        count: 1,
         win: correctAnswers[i] === order[i * 2 + 1] ? 1:0 
       }
       inputData.push(objectLeft, objectRight);      
     }
     
-    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:8000/postgres/":"https://priceisart-app.herokuapp.com/postgres/"; 
-    const url = preurl + 'submit/'
+    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://priceisart-app.herokuapp.com/postgres/"; 
+    const url = preurl + '/vote/'
     const requestOptions = {
-      method: 'PUT',
+      method: 'POST',
       mode: 'cors',
       headers: { 
           'Content-Type': 'application/json',
@@ -103,10 +111,60 @@ function Result(props) {
     props.handleSubmit()
   }
 
-  useEffect(() => {
-    checkCorrectAnswers(artworks, order, userResponses);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  function submitResponse() {
+    console.log("submitResponse()....");
+    const artworks = props.artworks;
+    const order = props.order;
+    const userResponses = props.userResponses;
+    
+    // Use artwork_id, count, win; count == they were clicked
+    // artwork_id, other_artwork_id, user_id, win
+    var inputData = [];
+    var i = 0;
+    for (i = 0; i < userResponses.length; i++) {
+      var objectLeft = {
+        artwork_id: Number(artworks[order[i * 2]].id),
+        count: 1,
+        win: correctAnswers[i] === order[i * 2] ? 1:0 
+      }
+      var objectRight = {
+        //artworks_id: order[i * 2 + 1],
+        artwork_id: Number(artworks[order[i * 2 + 1]].id),
+        count: 1,
+        win: correctAnswers[i] === order[i * 2 + 1] ? 1:0 
+      }
+      inputData.push(objectLeft, objectRight);      
+    }
+    
+    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://priceisart-app.herokuapp.com/postgres/"; 
+    const url = preurl + '/vote/'
+    const requestOptions = {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inputData)
+    };
+
+    fetch(url, requestOptions)
+    .then(response => {
+      if (response.ok){
+        console.log("Submitted successfully...")
+        setSubmitted(1);
+      }
+      else {
+        console.log("Encountered error...")
+      }
+    })
+    .catch(error => {
+      console.log("Error when submitting the response!")
+      throw new Error("HTTP error " + error);  // ***
+    });    
+
+    // Update IsSubmittedButton() which will cause to disable 'Submit Your Response' button
+    props.handleSubmit()
+  }
 
   return (
     <div className="container-result">
@@ -119,7 +177,7 @@ function Result(props) {
           <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
         </div>
         <div className="container-result-option">
-          <button disabled={submitted} id="submit" onClick={prepareDataForSubmit}>
+          <button disabled={submitted} id="submit" onClick={submitVote}>
             {  submitted === false ? "SUBMIT YOUR RESPONSE" : "THANK YOU!" }
           </button> 
         </div>
@@ -168,4 +226,3 @@ function Result(props) {
 }
 
 export default Result;
-

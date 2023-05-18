@@ -17,6 +17,13 @@ function Header(props) {
     const currentView = props.currentView;
     const containerHeader = (currentView === "Start" ? "container-header-start":"container-header-others") 
 
+    function switchToResult() {
+        props.handleGameOver();
+    }
+    function switchToRanking() {
+        props.handleShowRanking(0);
+    }
+
     return (
         <div className={containerHeader}>
             <h1>PRICE IS ART!</h1>           
@@ -27,9 +34,9 @@ function Header(props) {
                         case 'Game': 
                             break;
                         case 'Result':
-                            return <button id="rankingButton" onClick={props.handleShowRanking}>Ranking</button>;
+                            return <button id="rankingButton" onClick={switchToRanking}>Ranking</button>;
                         case 'Ranking':
-                            return <button id="resultButton" onClick={props.handleGameOver(0)} >Back to Result</button>;
+                            return <button id="resultButton" onClick={switchToResult} >Back to Result</button>;
                         default: 
                             return null; 
                     }

@@ -193,11 +193,17 @@ class App extends Component {
 
   // Receive response from User then show Result page 
   handleGameOver(response) {
-    console.log("  handleGameOver() is called..... ")    
-    this.setState({ 
-      currentView: "Result",
-      artworks_userResponse: response,
-    });    
+
+    if(response === undefined){
+      this.setState({
+        currentView: "Result",
+      });
+    } else {
+      this.setState({ 
+        currentView: "Result",
+        artworks_userResponse: response,
+      });   
+    } 
   }
 
   // Switch between Result page and Ranking page
@@ -208,13 +214,16 @@ class App extends Component {
       const artworks_top = await this.readTopRanking();
       let topOrder = artworks_top.map(a => a.artwork_id);
       await this.loadImages(this.state.artworks, topOrder, 5);
-      
+
+      console.log(artworks_top);
+
       var temp = [];
       for (let i = 0; i < topOrder.length; i++) {
         // Get artwork details for topOrder
         var obj = this.state.artworks.find(item => {
           return item.id === topOrder[i]          
         })
+        console.log(obj);
         temp.push(obj);
       }
 
@@ -225,10 +234,10 @@ class App extends Component {
   }  
   
   
-  
+  // ? I think I can move this inside Result.js
   handleSubmit() {
     this.setState({
-      isDataSubmitted: true,
+      isDataSubmitted: true, 
     })
   }
 
@@ -236,7 +245,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} />
+          <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
           {this.state.currentView === "Result" && <Result isDataSubmitted={this.state.isDataSubmitted} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleSubmit={this.handleSubmit} />}

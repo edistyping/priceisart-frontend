@@ -12,6 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    console.log(window.location.hostname);
     this.state = {
       isDataLoaded: false,
       isDataSubmitted: false,
@@ -19,7 +20,7 @@ class App extends Component {
 
       index: 0, 
 
-      preurl: (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://priceisart-app.herokuapp.com/postgres/", 
+      preurl: (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://price-is-art-backend-node.onrender.com", 
       
       artworks: [],
       artworks_userResponse: [], // This shows selections made by users for each pair of images 

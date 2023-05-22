@@ -162,14 +162,13 @@ class App extends Component {
     // await this.loadImages(result, topOrder, numberOfRanks);
 
     this.setState({
-      isDataLoaded: true, 
-
+      
       artworks: result,
       artworks_order: newOrder,      
       currentView: "Game",
       // artworks_top: topOrder,
-
       artworks_image: images,
+      isDataLoaded: true, 
     })
 
     return 1;

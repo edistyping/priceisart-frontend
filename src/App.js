@@ -125,7 +125,11 @@ class App extends Component {
     for(i = 0; i < n; i++) {      
       if (artworks[order[i]] !== undefined && (images[order[i]] === "" || images[order[i]] === undefined)){
         var img=new Image();
-        var full_path = 'http://localhost:3000/artworks/' + artworks[order[i]].file_path;
+        
+        // var full_path = 'http://localhost:3000/artworks/' + artworks[order[i]].file_path;
+        // https://price-is-art-backend-node.onrender.com/artworks/Alberto%20Giacometti---Chariot.jpg
+        const full_path = this.state.preurl + '/artworks/' + artworks[order[i]].file_path;
+
         img.src=full_path;
         img.id=artworks[order[i]].id; 
         images[order[i]] = img;
@@ -153,20 +157,12 @@ class App extends Component {
     const images = await this.loadImages(result, newOrder, 10);
     
     console.log(result.length)
-    console.log("now onto ranking")
-
-    // Top Ranking and get images for them
-    // const numberOfRanks = 3;
-    // const artworks_top = await this.readTopRanking();
-    // let topOrder = artworks_top.map(a => a.artwork_id);
-    // await this.loadImages(result, topOrder, numberOfRanks);
 
     this.setState({
       
       artworks: result,
       artworks_order: newOrder,      
       currentView: "Game",
-      // artworks_top: topOrder,
       artworks_image: images,
       isDataLoaded: true, 
     })

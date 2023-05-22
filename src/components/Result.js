@@ -18,6 +18,7 @@ function Result(props) {
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [submitted, setSubmitted] = useState(props.isDataSubmitted);
+  const [submitted2, setSubmitted2] = useState(false);
 
   useEffect(() => {
     checkCorrectAnswers(artworks, order, userResponses);
@@ -81,7 +82,7 @@ function Result(props) {
       inputData.push(objectLeft, objectRight);      
     }
     
-    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://priceisart-app.herokuapp.com/postgres/"; 
+    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://price-is-art-backend-node.onrender.com"; 
     const url = preurl + '/vote/'
     const requestOptions = {
       method: 'POST',
@@ -112,11 +113,12 @@ function Result(props) {
   }
 
   function submitResponse() {
-    console.log("submitResponse()....");
+    console.log("d()....");
     const artworks = props.artworks;
     const order = props.order;
     const userResponses = props.userResponses;
     
+    console.log(props);
     // Use artwork_id, count, win; count == they were clicked
     // artwork_id, other_artwork_id, user_id, win
     var inputData = [];
@@ -136,8 +138,8 @@ function Result(props) {
       inputData.push(objectLeft, objectRight);      
     }
     
-    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://priceisart-app.herokuapp.com/postgres/"; 
-    const url = preurl + '/vote/'
+    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://price-is-art-backend-node.onrender.com"; 
+    const url = preurl + '/response/'
     const requestOptions = {
       method: 'POST',
       mode: 'cors',
@@ -178,7 +180,11 @@ function Result(props) {
         </div>
         <div className="container-result-option">
           <button disabled={submitted} id="submit" onClick={submitVote}>
-            {  submitted === false ? "SUBMIT YOUR RESPONSE" : "THANK YOU!" }
+            {  submitted === false ? "SUBMIT YOUR Vote" : "THANK YOU!" }
+          </button> 
+
+          <button disabled={submitted2} id="submit2" onClick={submitResponse}>
+            {  submitted2 === false ? "SUBMIT2" : "THANK YOU!" }
           </button> 
         </div>
       </div>

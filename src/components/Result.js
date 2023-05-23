@@ -113,29 +113,23 @@ function Result(props) {
   }
 
   function submitResponse() {
-    console.log("d()....");
+    console.log("submitResponse()....");
     const artworks = props.artworks;
     const order = props.order;
     const userResponses = props.userResponses;
     
     console.log(props);
-    // Use artwork_id, count, win; count == they were clicked
-    // artwork_id, other_artwork_id, user_id, win
+
+    // prepare data 
     var inputData = [];
-    var i = 0;
-    for (i = 0; i < userResponses.length; i++) {
-      var objectLeft = {
+    for (let i = 0; i < userResponses.length; i++) {
+      var temp = {
         artwork_id: Number(artworks[order[i * 2]].id),
-        count: 1,
-        win: correctAnswers[i] === order[i * 2] ? 1:0 
+        other_artwork_id: Number(artworks[order[i * 2 + 1]].id),
+        user_id: 0,
+        win: artworks[order[i * 2]].adjusted_price > artworks[order[i * 2 + 1]].adjusted_price ? true : false 
       }
-      var objectRight = {
-        //artworks_id: order[i * 2 + 1],
-        artwork_id: Number(artworks[order[i * 2 + 1]].id),
-        count: 1,
-        win: correctAnswers[i] === order[i * 2 + 1] ? 1:0 
-      }
-      inputData.push(objectLeft, objectRight);      
+      inputData.push(temp);      
     }
     
     const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://price-is-art-backend-node.onrender.com"; 
@@ -165,7 +159,6 @@ function Result(props) {
     });    
 
     // Update IsSubmittedButton() which will cause to disable 'Submit Your Response' button
-    props.handleSubmit()
   }
 
   return (
@@ -181,10 +174,6 @@ function Result(props) {
         <div className="container-result-option">
           <button disabled={submitted} id="submit" onClick={submitVote}>
             {  submitted === false ? "SUBMIT YOUR Vote" : "THANK YOU!" }
-          </button> 
-
-          <button disabled={submitted2} id="submit2" onClick={submitResponse}>
-            {  submitted2 === false ? "SUBMIT2" : "THANK YOU!" }
           </button> 
         </div>
       </div>

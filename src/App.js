@@ -18,9 +18,7 @@ class App extends Component {
       isDataSubmitted: false,
       appStart: false,
 
-      index: 0, 
-
-      preurl: (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://price-is-art-backend-node.onrender.com", 
+      preurl: (window.location.hostname === "localhost") ? "http://localhost:3000":"https://price-is-art-backend-node.onrender.com", 
       
       artworks: [],
       artworks_userResponse: [], // This shows selections made by users for each pair of images 
@@ -211,15 +209,12 @@ class App extends Component {
       let topOrder = artworks_top.map(a => a.artwork_id);
       await this.loadImages(this.state.artworks, topOrder, 5);
 
-      console.log(artworks_top);
-
       var temp = [];
       for (let i = 0; i < topOrder.length; i++) {
         // Get artwork details for topOrder
         var obj = this.state.artworks.find(item => {
           return item.id === topOrder[i]          
         })
-        console.log(obj);
         temp.push(obj);
       }
 
@@ -228,7 +223,6 @@ class App extends Component {
         artworks_top: temp
       });    
   }  
-  
   
   // ? I think I can move this inside Result.js
   handleSubmit() {

@@ -18,7 +18,6 @@ function Result(props) {
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [submitted, setSubmitted] = useState(props.isDataSubmitted);
-  const [submitted2, setSubmitted2] = useState(false);
 
   useEffect(() => {
     checkCorrectAnswers(artworks, order, userResponses);
@@ -132,8 +131,8 @@ function Result(props) {
       inputData.push(temp);      
     }
     
-    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://price-is-art-backend-node.onrender.com"; 
-    const url = preurl + '/response/'
+    const preurl = props.preurl
+    const url = preurl + '/artworks/response/'
     const requestOptions = {
       method: 'POST',
       mode: 'cors',

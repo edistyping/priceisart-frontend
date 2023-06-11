@@ -18,7 +18,7 @@ class App extends Component {
       isDataSubmitted: false,
       appStart: false,
 
-      preurl: (window.location.hostname === "localhost") ? "http://localhost:3000":"https://price-is-art-backend-node.onrender.com", 
+      preurl: (window.location.hostname === "localhost") ? "http://localhost:3000":"https://priceisart-express.azurewebsites.net", 
       
       artworks: [],
       artworks_userResponse: [], // This shows selections made by users for each pair of images 
@@ -123,11 +123,7 @@ class App extends Component {
     for(i = 0; i < n; i++) {      
       if (artworks[order[i]] !== undefined && (images[order[i]] === "" || images[order[i]] === undefined)){
         var img=new Image();
-        
-        // var full_path = 'http://localhost:3000/artworks/' + artworks[order[i]].file_path;
-        // https://price-is-art-backend-node.onrender.com/artworks/Alberto%20Giacometti---Chariot.jpg
-        const full_path = this.state.preurl + '/artworks/' + artworks[order[i]].file_path;
-
+        const full_path = this.state.preurl + '/resources/artworks/' + artworks[order[i]].file_path;
         img.src=full_path;
         img.id=artworks[order[i]].id; 
         images[order[i]] = img;
@@ -238,7 +234,7 @@ class App extends Component {
           <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
-          {this.state.currentView === "Result" && <Result isDataSubmitted={this.state.isDataSubmitted} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleSubmit={this.handleSubmit} />}
+          {this.state.currentView === "Result" && <Result preurl={this.state.preurl} isDataSubmitted={this.state.isDataSubmitted} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleSubmit={this.handleSubmit} />}
           {this.state.currentView === "Ranking" && <Ranking artworks_image={this.state.artworks_image} artworks_top={this.state.artworks_top}/>}
       </div>
     )

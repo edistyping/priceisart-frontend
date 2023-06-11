@@ -14,7 +14,7 @@ function Game(props) {
     const [index, setIndex] = useState(0);
     const [userResponses, setUserResponses] = useState([]);
 
-    console.log('hi')
+    console.log(`hi: ${numberOfImages} - ${artworks_image.length}`)
 
     // Save user's selection to 'UserRespnose' and send it to Parent once all 5 are made
     function handleSelect(e) {

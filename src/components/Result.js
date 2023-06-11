@@ -145,19 +145,13 @@ function Result(props) {
     fetch(url, requestOptions)
     .then(response => {
       if (response.ok){
-        console.log("Submitted successfully...")
         setSubmitted(1);
-      }
-      else {
-        console.log("Encountered error...")
       }
     })
     .catch(error => {
       console.log("Error when submitting the response!")
       throw new Error("HTTP error " + error);  // ***
     });    
-
-    // Update IsSubmittedButton() which will cause to disable 'Submit Your Response' button
   }
 
   return (

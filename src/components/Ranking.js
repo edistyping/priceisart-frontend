@@ -7,8 +7,8 @@ import './Ranking.css';
 
 function Ranking(props) {
     
-    const artworks_top = props.artworks_top; // To get correct 10 images from above two props
-    const order = artworks_top.map(a => a.id); // Make an array using 'artworks_top'
+    const artworks_ranking = props.artworks_ranking; // To get correct 10 images from above two props
+    const order = artworks_ranking.map(a => a.id); // Make an array using 'artworks_ranking'
     const artworks_image = props.artworks_image; // For Artworks images
 
     return (
@@ -31,11 +31,11 @@ t
 
                             </div>
                             <div className='content-ranking-right'>
-                                <h3 id="name">{artworks_top[i].name}</h3> 
-                                <p id="artistyear">{artworks_top[i].artist} in {artworks_top[i].year}</p>
-                                <p id="dateofsale">Sold on {artworks_top[i].date_of_sale}</p>
-                                <p id="price">${parseFloat(artworks_top[i].adjusted_price)} Millions</p>
-                                <p id="counts"># Clicked: <span>{artworks_top[i].counts}</span></p> 
+                                <h3 id="name">{artworks_ranking[i].name}</h3> 
+                                <p id="artistyear">{artworks_ranking[i].artist} in {artworks_ranking[i].year}</p>
+                                <p id="dateofsale">Sold on {artworks_ranking[i].date_of_sale}</p>
+                                <p id="price">${parseFloat(artworks_ranking[i].adjusted_price)} Millions</p>
+                                <p id="counts"># Clicked: <span>{artworks_ranking[i].counts}</span></p> 
                             </div>
                         </div>
                     )}   

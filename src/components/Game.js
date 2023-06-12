@@ -14,8 +14,6 @@ function Game(props) {
     const [index, setIndex] = useState(0);
     const [userResponses, setUserResponses] = useState([]);
 
-    console.log(`hi: ${numberOfImages} - ${artworks_image.length}`)
-
     // Save user's selection to 'UserRespnose' and send it to Parent once all 5 are made
     function handleSelect(e) {
         e.preventDefault();
@@ -43,7 +41,6 @@ function Game(props) {
                     <h3><i>{artworks[order[index]].name}</i> {artworks[order[index]].artist} {artworks[order[index]].year} </h3>
                     <img key={index} src={artworks_image[order[index]].src} alt="left one"></img>
                 </div>
-
                 <div className="section-image" onClick={handleSelect} id={[order[index + 1]]} >
                     <h3><i>{artworks[order[index + 1]].name}</i> {artworks[order[index + 1]].artist} {artworks[order[index + 1]].year} </h3>
                     <img key={index + 1} src={artworks_image[order[index + 1]].src} alt="right one"></img>

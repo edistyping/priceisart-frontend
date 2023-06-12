@@ -13,7 +13,7 @@ function Result(props) {
   const order = props.order;
   
   // const userResponses = props.userResponses;
-  const [userResponses, setResponse] = useState(props.userResponses);
+  const userResponses = props.userResponses;
   const numberOfQuestions = userResponses.length;
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
@@ -21,9 +21,9 @@ function Result(props) {
 
   useEffect(() => {
     checkCorrectAnswers(artworks, order, userResponses);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 6/2023: Do I need this? 
   // Check and save correct answers and # of correct answers  
   function checkCorrectAnswers(var_artworks, var_order, var_userResponses) {
     var result = [];
@@ -82,7 +82,7 @@ function Result(props) {
     }
     
     const preurl = props.preurl; 
-    const url = preurl + '/vote/'
+    const url = preurl + '/artworks/vote/'
     const requestOptions = {
       method: 'POST',
       mode: 'cors',
@@ -117,8 +117,6 @@ function Result(props) {
     const order = props.order;
     const userResponses = props.userResponses;
     
-    console.log(props);
-
     // prepare data 
     var inputData = [];
     for (let i = 0; i < userResponses.length; i++) {
@@ -165,7 +163,7 @@ function Result(props) {
           <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
         </div>
         <div className="container-result-option">
-          <button disabled={submitted} id="submit" onClick={submitVote}>
+          <button disabled={submitted} id="submit" onClick={() => { submitVote(); submitResponse();}}>>
             {  submitted === false ? "SUBMIT YOUR Vote" : "THANK YOU!" }
           </button> 
         </div>

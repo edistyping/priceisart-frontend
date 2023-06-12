@@ -81,7 +81,7 @@ function Result(props) {
       inputData.push(objectLeft, objectRight);      
     }
     
-    const preurl = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") ? "http://127.0.0.1:3000":"https://price-is-art-backend-node.onrender.com"; 
+    const preurl = props.preurl; 
     const url = preurl + '/vote/'
     const requestOptions = {
       method: 'POST',

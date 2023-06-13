@@ -163,7 +163,7 @@ function Result(props) {
           <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
         </div>
         <div className="container-result-option">
-          <button disabled={submitted} id="submit" onClick={() => { submitVote(); submitResponse();}}>>
+          <button disabled={submitted} id="submit" onClick={() => { submitVote(); submitResponse();}}>
             {  submitted === false ? "SUBMIT YOUR Vote" : "THANK YOU!" }
           </button> 
         </div>

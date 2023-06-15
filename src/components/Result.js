@@ -81,8 +81,12 @@ function Result(props) {
       inputData.push(objectLeft, objectRight);      
     }
     
+    
     const preurl = props.preurl; 
-    const url = preurl + '/artworks/vote/'
+    const url = preurl + '/artworks/vote'
+    console.log(inputData); //test
+    console.log(url); 
+
     const requestOptions = {
       method: 'POST',
       mode: 'cors',
@@ -91,24 +95,18 @@ function Result(props) {
       },
       body: JSON.stringify(inputData)
     };
-
     fetch(url, requestOptions)
     .then(response => {
       if (response.ok){
         console.log("Submitted successfully...")
         setSubmitted(1);
       }
-      else {
-        console.log("Encountered error...")
-      }
     })
     .catch(error => {
-      console.log("Error when submitting the response!")
       throw new Error("HTTP error " + error);  // ***
     });    
 
-    // Update IsSubmittedButton() which will cause to disable 'Submit Your Response' button
-    props.handleSubmit()
+    props.handleSubmit();
   }
 
   function submitResponse() {
@@ -130,7 +128,11 @@ function Result(props) {
     }
     
     const preurl = props.preurl
-    const url = preurl + '/artworks/response/'
+    const url = preurl + '/artworks/response'
+
+    console.log(inputData); //test
+    console.log(url); 
+
     const requestOptions = {
       method: 'POST',
       mode: 'cors',

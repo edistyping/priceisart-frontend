@@ -13,7 +13,7 @@ function Ranking(props) {
 
     return (
         <div className="container-ranking">
-t
+
             <div className="container-ranking-body">
                 
                 <div className='content-ranking'>

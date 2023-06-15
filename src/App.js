@@ -18,7 +18,7 @@ class App extends Component {
       isDataSubmitted: false,
       appStart: false,
 
-      preurl: (window.location.hostname !== "localhost") ? "http://localhost:3000":"https://priceisart-express.azurewebsites.net", 
+      preurl: (window.location.hostname === "localhost") ? "http://localhost:3000":"https://priceisart-express.azurewebsites.net", 
       
       artworks: [],
       artworks_order: [], 
@@ -74,7 +74,7 @@ class App extends Component {
     try {
       console.log("Running readTopRanking()....")
 
-      const url_ranking = this.state.preurl + "/ranking/"  
+      const url_ranking = this.state.preurl + "artworks/ranking/"  
       const res_ranking = await fetch(url_ranking, {
         method: 'GET',
         mode: 'cors',

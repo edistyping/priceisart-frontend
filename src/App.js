@@ -74,7 +74,9 @@ class App extends Component {
     try {
       console.log("Running readTopRanking()....")
 
-      const url_ranking = this.state.preurl + "artworks/ranking/"  
+      const url_ranking = this.state.preurl + "/artworks/ranking/"  
+      console.log(url_ranking);
+
       const res_ranking = await fetch(url_ranking, {
         method: 'GET',
         mode: 'cors',
@@ -170,18 +172,21 @@ class App extends Component {
     const artworks_ranking = await this.readTopRanking();
     const topOrder = artworks_ranking.map(a => a.artwork_id);
     await this.loadImages(this.state.artworks, topOrder, 5);
-
+    
     var temp = [];
     for (let i = 0; i < topOrder.length; i++) {
       // Get artwork details for topOrder
       var obj = this.state.artworks.find(item => {
         return item.id === topOrder[i]          
       })
+      obj.count = artworks_ranking[i].count;
+      obj.win = artworks_ranking[i].win;
       temp.push(obj);
     }
+    
     this.setState({ 
+      artworks_ranking: temp,
       currentView: "Ranking",
-      artworks_ranking: temp
     });    
   }  
   

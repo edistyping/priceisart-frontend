@@ -108,9 +108,7 @@ class App extends Component {
         img.src=full_path;
         img.id=artworks[order[i]].id; 
         images[order[i]] = img;
-      } else {
-        images[order[i]] = '';
-      }
+      } 
     }
     
     this.setState({

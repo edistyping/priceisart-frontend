@@ -25,7 +25,7 @@ function Ranking(props) {
                         return (  
                         <div key={i} className='content-ranking-wrapper'>
                             <div className='content-ranking-left'>
-                                <img key={`frame-${i}`} id="img-frame" src={require('../static/frames/frame1.png')} alt="frame"  />
+                             {/*    <img key={`frame-${i}`} id="img-frame" src={require('../static/frames/frame1.png')} alt="frame"  /> */}
                                 <img key={i} src={artworks_image[item].src} alt="right one"></img>
                             </div>
                             <div className='content-ranking-right'>

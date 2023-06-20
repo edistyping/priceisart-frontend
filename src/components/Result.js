@@ -17,11 +17,17 @@ function Result(props) {
   const numberOfQuestions = userResponses.length;
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
-  const [submitted, setSubmitted] = useState(props.isDataSubmitted);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     checkCorrectAnswers(artworks, order, userResponses);
-  }, []);
+  });
+
+  function handleSubmit() {
+    // setSubmitted(true); // This function is in below two functions upon success
+    submitVote(); 
+    submitResponse();
+  }
 
   // 6/2023: Do I need this? 
   // Check and save correct answers and # of correct answers  
@@ -49,16 +55,14 @@ function Result(props) {
       } else {
         result.push(-1);
       }
-    }
-    
+    }    
     setTotalCorrectAnswer(total);
     setCorrectAnswers(result);
     return [total, result];
   }
 
   // Submitting data. API will do its own thing and adding or incrementing exisitng one 
-  function submitVote() {
-    console.log("submitVote()....");
+  function submitVote() {    
     const artworks = props.artworks;
     const order = props.order;
     const userResponses = props.userResponses;
@@ -105,7 +109,6 @@ function Result(props) {
       throw new Error("HTTP error " + error);  // ***
     });    
 
-    props.handleSubmit();
   }
 
   function submitResponse() {
@@ -128,10 +131,6 @@ function Result(props) {
     
     const preurl = props.preurl
     const url = preurl + '/artworks/response'
-
-    console.log(inputData); //test
-    console.log(url); 
-
     const requestOptions = {
       method: 'POST',
       mode: 'cors',
@@ -164,7 +163,7 @@ function Result(props) {
           <h2>Correct Answers: {totalCorrectAnswer} / { numberOfQuestions } </h2>
         </div>
         <div className="container-result-option">
-          <button disabled={submitted} id="submit" onClick={() => { submitVote()}}>
+          <button disabled={submitted} id="submit" onClick={handleSubmit}>
             {  submitted === false ? "SUBMIT YOUR Vote" : "THANK YOU!" }
           </button> 
         </div>

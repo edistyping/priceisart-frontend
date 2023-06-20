@@ -11,15 +11,11 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-
-    console.log(window.location.hostname);
     this.state = {
       isDataLoaded: false,
       isDataSubmitted: false,
       appStart: false,
-
       preurl: (window.location.hostname === "localhost") ? "http://localhost:3000":"https://priceisart-express.azurewebsites.net", 
-      
       artworks: [],
       artworks_order: [], 
       artworks_image: [],
@@ -32,7 +28,6 @@ class App extends Component {
     this.handleReplay = this.handleReplay.bind(this);
     this.handleGameOver = this.handleGameOver.bind(this);
     this.handleShowRanking = this.handleShowRanking.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   shuffle(n) {
@@ -187,14 +182,6 @@ class App extends Component {
       currentView: "Ranking",
     });    
   }  
-  
-  // ? I think I can move this inside Result.js
-  handleSubmit() {
-    this.setState({
-      isDataSubmitted: true, 
-    })
-  }
-
 
   render() {
     return (
@@ -202,7 +189,7 @@ class App extends Component {
           <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
-          {this.state.currentView === "Result" && <Result preurl={this.state.preurl} isDataSubmitted={this.state.isDataSubmitted} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} handleSubmit={this.handleSubmit} />}
+          {this.state.currentView === "Result" && <Result preurl={this.state.preurl} isDataSubmitted={this.state.isDataSubmitted} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />}
           {this.state.currentView === "Ranking" && <Ranking artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>}
       </div>
     )

@@ -13,7 +13,6 @@ class App extends Component {
     super(props);
     this.state = {
       isDataLoaded: false,
-      isDataSubmitted: false,
       appStart: false,
       preurl: (window.location.hostname === "localhost") ? "http://localhost:3000":"https://priceisart-express.azurewebsites.net", 
       artworks: [],
@@ -119,6 +118,10 @@ class App extends Component {
   
     // Get artworks data and load 10 random images using 'newOrder'
     var result = await this.readArtworks();
+    if (result === undefined) {
+      alert("The app is not currently available... There must be some issue in the backend")
+    }
+
     const newOrder = this.shuffle(result.length);
     const images = await this.loadImages(result, newOrder, 10);
 
@@ -138,7 +141,6 @@ class App extends Component {
     var new_order = this.shuffle(this.state.artworks.length);
     await this.loadImages(this.state.artworks, new_order, 10);
     this.setState({ 
-      isDataSubmitted: false, 
       artworks_userResponse: [],
       artworks_order: new_order,
       currentView: "Game",
@@ -189,7 +191,7 @@ class App extends Component {
           <Header currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
-          {this.state.currentView === "Result" && <Result preurl={this.state.preurl} isDataSubmitted={this.state.isDataSubmitted} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />}
+          {this.state.currentView === "Result" && <Result preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />}
           {this.state.currentView === "Ranking" && <Ranking artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>}
       </div>
     )

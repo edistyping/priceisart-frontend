@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Start.css';
 
-
+import LoginSignUp from '../auth/Login';
 /*
     1. Start button is clicked and runs a function
     2. Hide START and display Loading div
@@ -23,6 +23,8 @@ const Start = props => {
         <div className="container-begin"> 
 
             <div className="container-begin-start">
+                
+
                 <button className="button-75" onClick={handleStart} >
                     <div className={loading === 0 ? "content-start":"content-blank"} >
                         {

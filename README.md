@@ -1,8 +1,28 @@
 # Price is Art! 
 ## https://priceisart.com/
 
-### Future Update
-1. Click Image to Enlarge them (Result and Ranking page)
+# To Do
+1. Login 
+	- Google / Email
+	- You can only comment or upvote comments if you're logged in
+	- Comment is allowed in Ranking only (Add 'See Comments' also show top 3 upvoted ones)
+	
+		Comment #1 score 
+			Reponse #2 score 
+				Respon #3 score
+		
+		Comment #2
+
+	- You can log 
+	
+	
+
+2. Limit 5 times per 15 mins;
+	- actually, do some calculations 
+	- DAU * all that 
+
+3. Lazy loading for picture 
+	
 
 ![Trust the Process!](src/static/resources/process.png?raw=true)
 

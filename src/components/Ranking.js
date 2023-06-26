@@ -7,13 +7,12 @@ import './Ranking.css';
 
 function Ranking(props) {
     
+    console.log('This is Ranking...');
     const artworks_ranking = props.artworks_ranking; // To get correct 10 images from above two props
     const order = artworks_ranking.map(a => a.id); // Make an array using 'artworks_ranking'
     const artworks_image = props.artworks_image; // For Artworks images
 
-    console.log('This is Ranking...');
-    console.log(artworks_ranking);
-    console.log(artworks_image);
+
     return (
         <div className="container-ranking">
             <div className="container-ranking-body">

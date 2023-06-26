@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Start.css';
 
-import LoginSignUp from '../auth/Login';
 /*
     1. Start button is clicked and runs a function
     2. Hide START and display Loading div
@@ -17,7 +16,6 @@ const Start = props => {
         setLoading(1);
         props.handleStart();
     }
-
 
   return (
         <div className="container-begin"> 

@@ -1,6 +1,9 @@
 # Price is Art! 
 ## https://priceisart.com/
 
+Cache is not setting at Frontend browser wtf 
+
+
 # To Do
 1. Login 
 	- Google / Email
@@ -13,10 +16,12 @@
 		
 		Comment #2
 
+	Click to login -> Sign Up Form 
+				   -> LogInIn. 
+
 	- You can log 
 	
 	
-
 2. Limit 5 times per 15 mins;
 	- actually, do some calculations 
 	- DAU * all that 

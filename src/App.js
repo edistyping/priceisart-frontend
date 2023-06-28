@@ -192,7 +192,7 @@ class App extends Component {
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
           {this.state.currentView === "Result" && <Result preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />}
-          {this.state.currentView === "Ranking" && <Ranking artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>}
+          {this.state.currentView === "Ranking" && <Ranking preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>}
       </div>
     )
   }

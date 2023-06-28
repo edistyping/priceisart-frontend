@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './LoginSignUp.css';
 
 const formStyle = {
     background: "yellow",
@@ -38,8 +39,7 @@ const loginButton = {
 const LoginSignUp = props => {
     const preurl = props.preurl;
 
-    const [isSigned, setisSigned] = useState(false);
-
+    
     const [newUsername, setNewusername] = useState("");
     const [newPassword, setNewpassword] = useState("");
     const [newEmail, setNewemail] = useState("");
@@ -51,6 +51,8 @@ const LoginSignUp = props => {
     // Show Login/Sign up form
     // Show logged in (show Sign Out button)
     // jwt cookie doesn't need to be passed to the app.js
+    const [showForm, setShowform] = useState(false);
+    const [isSigned, setisSigned] = useState(false);
 
     async function handleCreate(e) {
         e.preventDefault();
@@ -80,10 +82,18 @@ const LoginSignUp = props => {
                 },
                 body: JSON.stringify(inputData)
             };
+
             await fetch(url, requestOptions)
-                .then(response => response.text()).then(data => {
+                .then(response => {
+                    console.log(response.status);
+                    if (response.status === 201) {
+                        setisSigned(true);
+                        setShowform(false);
+                    }
+                    return response.text()
+                }).then(data => {
                     console.log(data);
-                }) 
+                })
                 .catch(error => {
                     console.log("Error when submitting the response!");
                     throw new Error("HTTP error " + error);  // ***
@@ -92,6 +102,7 @@ const LoginSignUp = props => {
         }
 
     }
+
     async function handleLogin(e) {
         e.preventDefault();
         var temp = warnings;
@@ -109,27 +120,46 @@ const LoginSignUp = props => {
             const requestOptions = {
                 method: 'POST',
                 mode: 'cors',
+                credentials: "include",
                 headers: { 
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(inputData)
             };
-            const temp = await fetch(url, requestOptions)
-                .then(response => response.text()).then(json => {
-                    console.log(json);
-                }) 
+
+            await fetch(url, requestOptions)
+                .then(response => {
+                    console.log(response.status);
+                    if (response.status === 201) {
+                        setisSigned(true);
+                        setShowform(false);
+                    }
+                    return response.text()
+                }).then(data => {
+                    console.log(data);
+                })
                 .catch(error => {
-                    console.log("Error when submitting the response!")
+                    console.log("Error when submitting the response!");
                     throw new Error("HTTP error " + error);  // ***
-            });    
+            });  
             console.log('----------------------------');
         }
     }
+    async function handleLogout(e) {
+        e.preventDefault();
+        console.log('wtf')
+        setShowform(false);
+        setisSigned(false);
+    }
+    
+
     return (
         <div> 
-            <p>{props.activated} </p>
-            { props.activated ?
+
+            { showForm ?
             <div style={formStyle}>
+                <button onClick={() => setShowform(false)}>Close the Form </button>
+                <p>{showForm.toString()} {isSigned.toString()} </p>
                 <form style={signupStyle} onSubmit={handleCreate}>
                     <label>Enter your Username:
                         <input type="text" value={newUsername} onChange={(e) => setNewusername(e.target.value)}/>
@@ -144,7 +174,7 @@ const LoginSignUp = props => {
                         <p>{warnings[2]}</p>
                     </label>
                     <input type="submit" value="Create an Account" />
-                    <p>Already Registered?<button>Sign In</button></p>
+                    <div>Already Registered?<button>Sign In</button></div>
                 </form>
 
                 <form style={loginStyle} onSubmit={handleLogin}>
@@ -153,16 +183,19 @@ const LoginSignUp = props => {
                         <p>{warnings[3]}</p>
                     </label>
 
-
                     <label>Enter your Password:
                         <input type="text" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         <p>{warnings[4]}</p>
                     </label>
 
-                    <input type="submit" value="name1"/>
+                    <input type="submit" value="Login"/>
                 </form>
             </div>
-            : <button onClick={props.clickLogin} style={loginButton}>Click to Login</button> } 
+            : isSigned ? <div className='div-signin' >You're now signed in. Click to <button onClick={handleLogout}>Sign Out</button></div> 
+                : <button onClick={() => setShowform(true)} style={loginButton}>Click to Login</button> 
+        } 
+
+
         </div>
     )
 }

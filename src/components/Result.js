@@ -77,7 +77,6 @@ function Result(props) {
         win: correctAnswers[i] === order[i * 2] ? 1:0 
       }
       var objectRight = {
-        //artworks_id: order[i * 2 + 1],
         artwork_id: Number(artworks[order[i * 2 + 1]].id),
         count: 1,
         win: correctAnswers[i] === order[i * 2 + 1] ? 1:0 

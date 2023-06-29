@@ -46,6 +46,7 @@ const LoginSignUp = props => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [warnings, setWarnings] = useState(Array(5).fill(''));
+    const [loginError, setLoginerror] = useState('');
 
     // Hide Login/Sign up form
     // Show Login/Sign up form

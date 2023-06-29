@@ -15,10 +15,12 @@ function Ranking(props) {
     const [comments, setCommments] = useState([]);
     const [showComments, setShowcomments] = useState(false);
     const [addComment, setAddcomment] = useState(false);
+    const [commentForm, setCommentform] = useState(0);
+
 
     console.log(artworks_ranking);
     console.log(order);
-    
+    console.log(artworks_image);
     // When ranking page is displayed, load comments for those
     // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
@@ -50,21 +52,19 @@ function Ranking(props) {
         setShowcomments(true);
     }
 
-    function handleAddComment(e) {
-        console.log('handleShowAllComments() called...')
+    function handleAddComment(e, test) {
+        console.log('handleShowAllComments() called...' + test)
         setAddcomment(prevCheck => !prevCheck);
     }
     async function submitComment(e, value) {
         // add a comment
         // parent_id, artwork_id, comment, score, user_id
-            // skip parent_id for now
-            // how do i pass artwork_id? 
-        // comments are divided by artworks then by sorted by score
         e.preventDefault();
         const comment = e.target.comment.value;
         console.log('submitComment() is called....')
         console.log(comment);
-        console.log(value);
+        console.log(`value: ${value}`);
+        console.log(`--------------------------`);
         const inputData = { parent_id: null, artwork_id: value, comment: comment, score: 1, user_Id: 0};
         // console.log(artwork_id);
         
@@ -109,40 +109,41 @@ function Ranking(props) {
                         <h2>3 Most Clicked Artworks</h2>
                     </div>
 
-                    {order.map((item, i) => {
-                        return (  
+                    {artworks_ranking.map((artwork, i) => {
+                    return (  
                         <div key={i} className='content-ranking-wrapper'>
                             <div className='content-ranking-left'>
                              {/*    <img key={`frame-${i}`} id="img-frame" src={require('../static/frames/frame1.png')} alt="frame"  /> */}
-                                <img src={artworks_image[item].src} alt="right one"></img>
+                                <img key={artwork.name} src={artworks_image[artwork.id].src} alt="right one"></img>
                             </div>
 
                             <div  className='content-ranking-right'>
-                                <h3 id="name"> {item}|{i}  {artworks_ranking[i].name}</h3>
-                                <p id="artistyear">{artworks_ranking[i].artist} in {artworks_ranking[i].year}</p>
-                                <p id="dateofsale">Sold on {artworks_ranking[i].date_of_sale}</p>
-                                <p id="price">${parseFloat(artworks_ranking[i].adjusted_price)} Millions</p>
-                                <p id="counts"># Clicked: <span>{artworks_ranking[i].count}</span></p> 
+                                <h3 id="name"> {artwork.id}|{i}  {artwork.name}</h3>
+                                <p id="artistyear">{artwork.artist} in {artwork.year}</p>
+                                <p id="dateofsale">Sold on {artwork.date_of_sale}</p>
+                                <p id="price">${parseFloat(artwork.adjusted_price)} Millions</p>
+                                <p id="counts"># Clicked: <span>{artwork.count}</span></p> 
 
-                                <div key={item} className='content-ranking-comment'>
+                                <div className='content-ranking-comment'>
                                     <button className='button-comments' onClick={handleShowAllComments}>See all Comments</button>
-                                    { comments.filter(comment => comment.artwork_id === artworks_ranking[i].id).map(comment => (
-                                        <p>{comment.user_id} ({comment.score}): {comment.comment}  (+)   (-)</p>
+                                    { comments.filter(comment => comment.artwork_id === artwork.id).map((comment, j) => (
+                                        <p key={j}>{comment.user_id} ({comment.score}): {comment.comment}  (+)   (-)</p>
                                     ))  }
-                                    {item}
-                                    <button className='button-comments' onClick={handleAddComment}>Leave a comment</button>
+                                    <button className='button-comments' onClick={e => handleAddComment(e, artwork.id)}>Leave a comment</button>
                                 </div>
                             </div>
+                            
+                            { addComment ?
+                                <div className='div-add-comment'>
+                                    <form className='div-add-comment' onSubmit={e => submitComment(e, artwork.id)}>
+                                        <p>{`a_raking[i].id: ${artwork.id}  i: ${i}`} </p>
 
-                            { addComment ? 
-                                <div key={item} className='div-add-comment'>
-                                    <form className='div-add-comment' onSubmit={e => submitComment(e, item)}>
-                                        <button onClick={handleAddComment}>X</button>
                                         <label>
                                             <input type="text" name="comment" />
                                         </label>
-                                        <p>{`a_raking[i].id: ${artworks_ranking[i].id}  item: ${item}  i: ${i}`} </p>
-                                        <input type="submit" value="Reply"/>        
+                                        <button id="oh" onClick={e => handleAddComment(e, artwork.id)}>X</button>
+                                        
+                                        <br/><br/><input type="submit" value="Reply"/>        
                                     </form>
                                 </div>
                             : null

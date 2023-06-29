@@ -2,30 +2,17 @@
 ## https://priceisart.com/
 
 Cache is not setting at Frontend browser -> Fixed;  
-To Do:Leave a comment: Id is only repeating last element 
+1. Fixing adding comments
+2. Implement upvoting/downvoting a comment 
+4. Allow only logged in users to submit a comment 
+5. Refreshing the page keeps the login session
 
-
-# To Do
-1. Login 
-	- Google / Email
-	- You can only comment or upvote comments if you're logged in
-	- Comment is allowed in Ranking only (Add 'See Comments' also show top 3 upvoted ones)
-	
-		Comment #1 score 
-			Reponse #2 score 
-				Respon #3 score
-		
-		Comment #2
-
-	Click to login -> Sign Up Form 
-				   -> LogInIn. 
-
-	- You can log 
-	
-	
-2. Limit 5 times per 15 mins;
+# To Do	
+1. Limit 5 times per 15 mins;
 	- actually, do some calculations 
 	- DAU * all that 
+	=> Daily Average Users: 1 Million
+	=> On Average 5 games a day
 
 3. Lazy loading for picture 
 	

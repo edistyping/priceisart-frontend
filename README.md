@@ -1,7 +1,8 @@
 # Price is Art! 
 ## https://priceisart.com/
 
-Cache is not setting at Frontend browser wtf 
+Cache is not setting at Frontend browser -> Fixed;  
+To Do:Leave a comment: Id is only repeating last element 
 
 
 # To Do

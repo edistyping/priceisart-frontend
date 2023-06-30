@@ -22,20 +22,19 @@ function Header(props) {
     const [login, setLogin] = useState(0);
     const [user, setUser] = useState({});
 
-    function handleLogin(user) {
+    function handleLogin(data) {
         console.log('handleLogin() called....');
-        console.log(user);
-        console.log(typeof user);    
-
-        // include jwt to user
-    
+        console.log(data);
+        // save data.accessToken to localStorage/sessionStorage
+        window.sessionStorage.setItem("accessToken", data.accessToken);
         setLogin(true);
-        setUser(user)
+        setUser(data.user)
     };
     function handleSignout() {
         console.log('handleSignout() called....');
         console.log(user);
-        console.log(typeof user);        
+        console.log(typeof user);   
+        window.sessionStorage.removeItem("accessToken");
         setLogin(false);
         setUser({})
     };

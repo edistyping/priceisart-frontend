@@ -97,6 +97,7 @@ function Ranking(props) {
             credentials: 'include',
             headers: { 
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${window.sessionStorage.getItem("accessToken")}`
             },
             body: JSON.stringify(inputData)
         };

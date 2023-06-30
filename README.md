@@ -11,9 +11,13 @@ Cache is not setting at Frontend browser -> Fixed;
 	- when user click 'Add a commenet' button without being logged in, throw error message 
 	- Now update frontend to include jwt token
 
-
 5. Refreshing the page keeps the login session
-	- localstorage
+	- sessionStorage (if users refreshes, keep him logged in)
+6. Turn off Login form if anywhere else is touched. 
+	- can other components be non-clickable when Login Form is opened?
+7. Pop-up message for Add a Comment is only showing for top button  
+
+
 
 # To Do	
 1. Limit 5 times per 15 mins;

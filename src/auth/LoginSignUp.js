@@ -85,7 +85,7 @@ const LoginSignUp = props => {
                     }
                     return response.json()
                 }).then(data => {
-                    console.log('successful creation');
+                    console.log('Successful creation');
                     console.log(data);
                     console.log(typeof data);
                     props.handleLogin(data);

@@ -20,11 +20,24 @@ function Header(props) {
     const containerHeader = (currentView === "Start" ? "container-header-start":"container-header-others") 
 
     const [login, setLogin] = useState(0);
-    function clickLogin(e) {
+    const [user, setUser] = useState({});
+
+    function handleLogin(user) {
+        console.log('handleLogin() called....');
+        console.log(user);
+        console.log(typeof user);    
+
+        // include jwt to user
+    
         setLogin(true);
+        setUser(user)
     };
-    function handleLogin(e) {
+    function handleSignout() {
+        console.log('handleSignout() called....');
+        console.log(user);
+        console.log(typeof user);        
         setLogin(false);
+        setUser({})
     };
 
 
@@ -32,12 +45,12 @@ function Header(props) {
         props.handleGameOver();
     }
     function switchToRanking() {
-        props.handleShowRanking(0);
+        props.handleShowRanking(user);
     }
     return (
         <div className={containerHeader}>
             <h1>PRICE IS ART!</h1>          
-            <LoginSignUp preurl={props.preurl} clickLogin={clickLogin} handleLogin={handleLogin} activated={login} /> 
+            <LoginSignUp preurl={props.preurl} handleLogin={handleLogin} handleSignout={handleSignout} activated={login} /> 
 
             {(() => {
                 switch(currentView) {

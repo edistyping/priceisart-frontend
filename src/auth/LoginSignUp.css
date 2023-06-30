@@ -7,3 +7,12 @@ button {
 .div-signin {
     background-color: yellowgreen;
 }
+
+.container-login {
+    background: red;
+    position: absolute;
+
+    margin: auto;
+    height: 700px;
+    width: 600px;
+}

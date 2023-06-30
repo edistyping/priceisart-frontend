@@ -20,7 +20,9 @@ class App extends Component {
       artworks_image: [],
       artworks_userResponse: [], 
       artworks_ranking: [],
-      currentView: "Start"
+      currentView: "Start",
+
+      user: {},
     };
 
     this.handleStart = this.handleStart.bind(this);
@@ -163,7 +165,7 @@ class App extends Component {
 
   // Switch between Result page and Ranking page
   // Retrieve data for Top Ranking artworks again and load it (if needed)
-  async handleShowRanking() {
+  async handleShowRanking(user) {
     const artworks_ranking = await this.readTopRanking();
     const topOrder = artworks_ranking.map(a => a.artwork_id);
     await this.loadImages(this.state.artworks, topOrder, 5);
@@ -182,6 +184,7 @@ class App extends Component {
     this.setState({ 
       artworks_ranking: temp,
       currentView: "Ranking",
+      user: user,
     });    
   }  
 
@@ -192,7 +195,7 @@ class App extends Component {
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
           {this.state.currentView === "Result" && <Result preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />}
-          {this.state.currentView === "Ranking" && <Ranking preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>}
+          {this.state.currentView === "Ranking" && <Ranking user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>}
       </div>
     )
   }

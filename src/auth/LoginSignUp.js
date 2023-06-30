@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './LoginSignUp.css';
 
-const formStyle = {
-    background: "yellow",
-    position: "absolute",
-    top: 0, left: 0, right:0, bottom: 0,
-    margin: 'auto',
-    height: '75%',
-    width: '60%',
-};
 const signupStyle = {
     background: "yellow",
     display: 'flex',
@@ -91,9 +83,12 @@ const LoginSignUp = props => {
                         setisSigned(true);
                         setShowform(false);
                     }
-                    return response.text()
+                    return response.json()
                 }).then(data => {
+                    console.log('successful creation');
                     console.log(data);
+                    console.log(typeof data);
+                    props.handleLogin(data);
                 })
                 .catch(error => {
                     console.log("Error when submitting the response!");
@@ -104,7 +99,7 @@ const LoginSignUp = props => {
 
     }
 
-    async function handleLogin(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         var temp = warnings;
         if (!username || username === '') {
@@ -138,6 +133,7 @@ const LoginSignUp = props => {
                     return response.text()
                 }).then(data => {
                     console.log(data);
+                    props.handleLogin(data);
                 })
                 .catch(error => {
                     console.log("Error when submitting the response!");
@@ -148,9 +144,8 @@ const LoginSignUp = props => {
     }
     async function handleLogout(e) {
         e.preventDefault();
-        console.log('wtf')
-        setShowform(false);
         setisSigned(false);
+        props.handleSignout();
     }
     
 
@@ -158,7 +153,7 @@ const LoginSignUp = props => {
         <div> 
 
             { showForm ?
-            <div style={formStyle}>
+            <div className='container-login'>
                 <button onClick={() => setShowform(false)}>Close the Form </button>
                 <p>{showForm.toString()} {isSigned.toString()} </p>
                 <form style={signupStyle} onSubmit={handleCreate}>
@@ -178,7 +173,7 @@ const LoginSignUp = props => {
                     <div>Already Registered?<button>Sign In</button></div>
                 </form>
 
-                <form style={loginStyle} onSubmit={handleLogin}>
+                <form style={loginStyle} onSubmit={handleSubmit}>
                     <label>Enter your Username:
                         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
                         <p>{warnings[3]}</p>

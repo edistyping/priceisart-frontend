@@ -1,3 +1,6 @@
+button {
+    font-size: 1rem;
+}
 
 .container-ranking {    
     height: 90vh;
@@ -110,22 +113,44 @@
     font-size: 2em;
 }
 
+.content-ranking-info {
+    height: 60%;
+    background-color: azure;
+}
+
 .content-ranking-comment {
+    height: 40%;
     background-color: aquamarine;
 }
-.button-comments {
-    font-size: 1rem;
+
+.comment-top-container {
+    background-color: lime;
+    height: 80%;
+    
+}
+.comment-bottom-container {
+    background-color: blue;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.comment-top-container #btn-showall {
+
+    right: 0;
+    color: red;
 }
 
 .div-add-comment {
-    background-color: pink;
-    width: 500px;
-    height: 400px;
+    border: solid 5px black;
+    width: 900px;
+    height: 200px;
     position: absolute;
+    font-size: 1rem;
     left: 0; top: 0; bottom: 0; right: 0;
-    margin:auto
+    margin:auto;
+    background-color: wheat;
 }
 
-button {
-    font-size: 1rem;
-}
+

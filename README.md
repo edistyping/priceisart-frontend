@@ -3,9 +3,17 @@
 
 Cache is not setting at Frontend browser -> Fixed;  
 1. Fixing adding comments
-2. Implement upvoting/downvoting a comment 
+	= Fixed; Added a hook variable for tracking and added separate function for show/hide 
+2. Implement upvoting/downvoting a comment
+	= Not Now
 4. Allow only logged in users to submit a comment 
+	= Updated Express
+	- when user click 'Add a commenet' button without being logged in, throw error message 
+	- Now update frontend to include jwt token
+
+
 5. Refreshing the page keeps the login session
+	- localstorage
 
 # To Do	
 1. Limit 5 times per 15 mins;
@@ -13,6 +21,8 @@ Cache is not setting at Frontend browser -> Fixed;
 	- DAU * all that 
 	=> Daily Average Users: 1 Million
 	=> On Average 5 games a day
+
+	// can't upvote same comments more than 3 times in a 60 mins
 
 3. Lazy loading for picture 
 	

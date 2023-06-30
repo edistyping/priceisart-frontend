@@ -1,6 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import './Ranking.css';
 
+import { useCookies } from 'react-cookie';
 /*
     Receive artworks info and images to display top 10    
 */
@@ -17,6 +18,7 @@ function Ranking(props) {
     const [addComment, setAddcomment] = useState(false);
     const [commentForm, setCommentform] = useState(0);
 
+    const [artworkComment, setArtworkComment] = useState(0);
 
     console.log(artworks_ranking);
     console.log(order);
@@ -25,6 +27,8 @@ function Ranking(props) {
     // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
         // get comments
+
+
         var fetchComments = async () => {
             // get only artworks_ranking ids
             const url = props.preurl + '/artworks/comments'
@@ -39,9 +43,9 @@ function Ranking(props) {
             };
             const result = await fetch(url, requestOptions);
             const data = await result.json();
-            console.log('inside fetchComments()....')
-            console.log(data);
-            setCommments(data);
+
+            if (data !== 0) 
+                setCommments(data);
         }
 
         fetchComments().catch(console.error);
@@ -51,28 +55,46 @@ function Ranking(props) {
         console.log('Show all comments clicked')
         setShowcomments(true);
     }
+    function handleShowForm(e, id) {
+        e.preventDefault();
 
-    function handleAddComment(e, test) {
-        console.log('handleShowAllComments() called...' + test)
-        setAddcomment(prevCheck => !prevCheck);
+        console.log('handleShowForm() called...' + id);
+        console.log('handleShowForm() ending...');
+
+        setArtworkComment(id);
+        setAddcomment(true);
     }
-    async function submitComment(e, value) {
+    function handleHideForm(e) {
+        e.preventDefault();
+        console.log('handleHideForm() called...');
+        setAddcomment(false);
+    }
+    function handleVoting(e) {
+        console.log('handleVoting() called...' + e.target.id);
+        // Need comment_id
+        // updateComment by increment/decrement
+    }
+
+    async function submitComment(e) {
         // add a comment
-        // parent_id, artwork_id, comment, score, user_id
+        // parent_id, artwork_id, comment, score, user_id, username
         e.preventDefault();
         const comment = e.target.comment.value;
+        const user = props.user;
+        const artwork_id = artworkComment; 
         console.log('submitComment() is called....')
         console.log(comment);
-        console.log(`value: ${value}`);
+        console.log(`artwork_id: ${artwork_id}`);
+        console.log(user)
+        console.log(typeof user);
         console.log(`--------------------------`);
-        const inputData = { parent_id: null, artwork_id: value, comment: comment, score: 1, user_Id: 0};
-        // console.log(artwork_id);
+        const inputData = { parent_id: null, artwork_id: artwork_id, comment: comment, score: 1, user_id: user.id, username: user.username};
         
+
         const url = preurl + '/artworks/comment';
         const requestOptions = {
             method: 'POST',
-            mode: 'cors',
-            credentials: "include",
+            credentials: 'include',
             headers: { 
                 'Content-Type': 'application/json',
             },
@@ -87,16 +109,15 @@ function Ranking(props) {
                     // added it to my clinet too 
                     setAddcomment(false);
                     setCommments(prevComments => [...prevComments, inputData])
-
                 }
                 return response.json()
             }).then(data => {
                 console.log(data);
             })
             .catch(error => {
-                console.log("Error when submitting the response!");
-                throw new Error("HTTP error " + error);  // ***
-        });  
+                console.log("Error when submitting the comment!");
+                throw new Error(error);  // ***
+            });  
         console.log('----------------------------');
         
     }
@@ -118,30 +139,38 @@ function Ranking(props) {
                             </div>
 
                             <div  className='content-ranking-right'>
-                                <h3 id="name"> {artwork.id}|{i}  {artwork.name}</h3>
-                                <p id="artistyear">{artwork.artist} in {artwork.year}</p>
-                                <p id="dateofsale">Sold on {artwork.date_of_sale}</p>
-                                <p id="price">${parseFloat(artwork.adjusted_price)} Millions</p>
-                                <p id="counts"># Clicked: <span>{artwork.count}</span></p> 
+                                <div className='content-ranking-info'>
+                                    <h3 id="name"> {artwork.id}|{i}  {artwork.name}</h3>
+                                    <p id="artistyear">{artwork.artist} in {artwork.year}</p>
+                                    <p id="dateofsale">Sold on {artwork.date_of_sale}</p>
+                                    <p id="price">${parseFloat(artwork.adjusted_price)} Millions</p>
+                                    <p id="counts"># Clicked: <span>{artwork.count}</span></p> 
+                                </div>
 
                                 <div className='content-ranking-comment'>
-                                    <button className='button-comments' onClick={handleShowAllComments}>See all Comments</button>
-                                    { comments.filter(comment => comment.artwork_id === artwork.id).map((comment, j) => (
-                                        <p key={j}>{comment.user_id} ({comment.score}): {comment.comment}  (+)   (-)</p>
-                                    ))  }
-                                    <button className='button-comments' onClick={e => handleAddComment(e, artwork.id)}>Leave a comment</button>
+                                    <div className='comment-top-container'>
+                                        <button id="btn-showall" className='comments-showall' onClick={handleShowAllComments}>See all Comments</button>
+                                        { comments ? comments.filter(comment => comment.artwork_id === artwork.id).map((comment, j) => (
+                                            <div key={j} style={{display: "flex", background: "purple"}}>
+                                                <p key={j}>{comment.username}: {comment.comment}</p>
+                                            </div>
+                                        ))  : null }
+                                    </div>
+
+                                    <div className='comment-bottom-container'>
+                                        <button onClick={e => handleShowForm(e, artwork.id)}>Add a comment</button>
+                                    </div>
                                 </div>
                             </div>
                             
-                            { addComment ?
+                            { addComment && artworkComment === artwork.id ?
                                 <div className='div-add-comment'>
-                                    <form className='div-add-comment' onSubmit={e => submitComment(e, artwork.id)}>
-                                        <p>{`a_raking[i].id: ${artwork.id}  i: ${i}`} </p>
-
+                                    <form className='div-add-comment' onSubmit={submitComment}>
+                                        <p>{artwork.name}</p>
                                         <label>
                                             <input type="text" name="comment" />
                                         </label>
-                                        <button id="oh" onClick={e => handleAddComment(e, artwork.id)}>X</button>
+                                        <button onClick={handleHideForm}>X</button>
                                         
                                         <br/><br/><input type="submit" value="Reply"/>        
                                     </form>

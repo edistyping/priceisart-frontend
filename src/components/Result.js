@@ -4,7 +4,6 @@ import './Result.css';
 /*
   Purpose: This component is used for following things: 
 */
-
 function Result(props) {
 
   // Configuring variables 

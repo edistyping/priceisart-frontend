@@ -23,11 +23,8 @@ function Ranking(props) {
     const [lastScoring, setLastScoring] = useState(0);
 
     // When ranking page is displayed, load comments for those
-    // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
         // get comments
-
-
         var fetchComments = async () => {
             // get only artworks_ranking ids
             const url = props.preurl + '/artworks/comments'

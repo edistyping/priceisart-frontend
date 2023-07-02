@@ -204,14 +204,14 @@ async handleShowRanking() {
     return (
       <div className="App">
           <Header preurl={this.state.preurl} currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
-          {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
-          {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
-          {this.state.currentView === "Result" && <Result user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />}
-          {this.state.currentView === "Ranking" && <Ranking user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>}
+          <Start currentView={this.state.currentView} handleStart = {this.handleStart} />
+          <Game currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} />
+          <Result currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />
+          <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>
       </div>
     )
   }
 }
 
-
+//{this.state.currentView === "Game" && this.state.isDataLoaded === true}
 export default App;

@@ -13,6 +13,7 @@ function Ranking(props) {
     const order = artworks_ranking.map(a => a.id); // Make an array using 'artworks_ranking'
     const artworks_image = props.artworks_image; // For Artworks images
     const accessToken = props.user.accessToken;
+    const currentView = props.currentView;
 
     const [comments, setCommments] = useState([]);
     const [showComments, setShowcomments] = useState(false);
@@ -162,67 +163,73 @@ function Ranking(props) {
     }
 
     return (
-        <div className="container-ranking">
-            <div className="container-ranking-body">
-                <div className='content-ranking'>
-                    <div className='content-ranking-header'>
-                        <h2>3 Most Clicked Artworks</h2>
-                    </div>
-
-                    {artworks_ranking.map((artwork, i) => {
-                    return (  
-                        <div key={i} className='content-ranking-wrapper'>
-                            <div className='content-ranking-left'>
-                             {/*    <img key={`frame-${i}`} id="img-frame" src={require('../static/frames/frame1.png')} alt="frame"  /> */}
-                                <img key={artwork.name} src={artworks_image[artwork.id].src} alt="right one"></img>
-                            </div>
-
-                            <div  className='content-ranking-right'>
-                                <div className='content-ranking-info'>
-                                    <h3 id="name"> {artwork.id}|{i}  {artwork.name}</h3>
-                                    <p id="artistyear">{artwork.artist} in {artwork.year}</p>
-                                    <p id="dateofsale">Sold on {artwork.date_of_sale}</p>
-                                    <p id="price">${parseFloat(artwork.adjusted_price)} Millions</p>
-                                    <p id="counts"># Clicked: <span>{artwork.count}</span></p> 
-                                </div>
-
-                                <div className='content-ranking-comment'>
-                                    <div className='comment-top-container'>
-                                        <button id="btn-showall" className='comments-showall' onClick={handleShowAllComments}>See all Comments</button>
-                                        { comments ? comments.filter(comment => comment.artwork_id === artwork.id).map((comment, j) => (
-                                            <div key={j} style={{display: "flex", background: "purple"}}>
-                                                <p key={j}>{comment.id} {comment.username}: {comment.comment} {comment.score}</p>
-                                            </div>
-                                        ))  : null }
-                                    </div>
-
-                                    <div className='comment-bottom-container'>
-                                        <button onClick={e => handleShowForm(e, artwork.id)}>Add a comment</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            { addComment && artworkComment === artwork.id ?
-                                <div className='div-add-comment'>
-                                    <form className='div-add-comment' onSubmit={submitComment}>
-                                        <p>{artwork.name}</p>
-                                        <label>
-                                            <input type="text" name="comment" />
-                                        </label>
-                                        <button onClick={handleHideForm}>X</button>
-                                        
-                                        <br/><br/><input type="submit" value="Reply"/>        
-                                    </form>
-                                </div>
-                            : null
-                            }
+        <div>
+            {currentView === 'Ranking' ? 
+            <div className="container-ranking">
+                <div className="container-ranking-body">
+                    <div className='content-ranking'>
+                        <div className='content-ranking-header'>
+                            <h2>3 Most Clicked Artworks</h2>
                         </div>
-                    )}   
-                   )}
+
+                        {artworks_ranking.map((artwork, i) => {
+                            return (  
+                                <div key={i} className='content-ranking-wrapper'>
+                                <div className='content-ranking-left'>
+                                {/*    <img key={`frame-${i}`} id="img-frame" src={require('../static/frames/frame1.png')} alt="frame"  /> */}
+                                    <img key={artwork.name} src={artworks_image[artwork.id].src} alt="right one"></img>
+                                </div>
+
+                                <div  className='content-ranking-right'>
+                                    <div className='content-ranking-info'>
+                                        <h3 id="name"> {artwork.id}|{i}  {artwork.name}</h3>
+                                        <p id="artistyear">{artwork.artist} in {artwork.year}</p>
+                                        <p id="dateofsale">Sold on {artwork.date_of_sale}</p>
+                                        <p id="price">${parseFloat(artwork.adjusted_price)} Millions</p>
+                                        <p id="counts"># Clicked: <span>{artwork.count}</span></p> 
+                                    </div>
+
+                                    <div className='content-ranking-comment'>
+                                        <div className='comment-top-container'>
+                                            <button id="btn-showall" className='comments-showall' onClick={handleShowAllComments}>See all Comments</button>
+                                            { comments ? comments.filter(comment => comment.artwork_id === artwork.id).map((comment, j) => (
+                                                <div key={j} style={{display: "flex", background: "purple"}}>
+                                                    <p key={j}>{comment.id} {comment.username}: {comment.comment} {comment.score}</p>
+                                                </div>
+                                            ))  : null }
+                                        </div>
+
+                                        <div className='comment-bottom-container'>
+                                            <button onClick={e => handleShowForm(e, artwork.id)}>Add a comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                { addComment && artworkComment === artwork.id ?
+                                    <div className='div-add-comment'>
+                                        <form className='div-add-comment' onSubmit={submitComment}>
+                                            <p>{artwork.name}</p>
+                                            <label>
+                                                <input type="text" name="comment" />
+                                            </label>
+                                            <button onClick={handleHideForm}>X</button>
+                                            
+                                            <br/><br/><input type="submit" value="Reply"/>        
+                                        </form>
+                                    </div>
+                                : null
+                                }
+                            </div>
+                        )}   
+                    )}
+                    </div>
                 </div>
             </div>
+   
+        : null 
+        }
         </div>
-    );
+    )
 }
 
 export default Ranking;

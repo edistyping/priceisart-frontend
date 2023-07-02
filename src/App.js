@@ -71,8 +71,6 @@ class App extends Component {
       console.log("Running readTopRanking()....")
 
       const url_ranking = this.state.preurl + "/artworks/ranking/"  
-      console.log(url_ranking);
-
       const res_ranking = await fetch(url_ranking, {
         method: 'GET',
         mode: 'cors',
@@ -152,10 +150,12 @@ class App extends Component {
   // Receive response from User then show Result page 
   handleGameOver(response) {
     if(response === undefined){
+      console.log('switched back to Result')
       this.setState({
         currentView: "Result",
       });
     } else {
+      console.log('Done pickin')
       this.setState({ 
         currentView: "Result",
         artworks_userResponse: response,
@@ -163,30 +163,42 @@ class App extends Component {
     } 
   }
 
+  handleLogin(user) {
+    this.setState({ user: user})
+  }
+
   // Switch between Result page and Ranking page
   // Retrieve data for Top Ranking artworks again and load it (if needed)
-  async handleShowRanking(user) {
-    const artworks_ranking = await this.readTopRanking();
-    const topOrder = artworks_ranking.map(a => a.artwork_id);
-    await this.loadImages(this.state.artworks, topOrder, 5);
-    
-    var temp = [];
-    for (let i = 0; i < topOrder.length; i++) {
-      // Get artwork details for topOrder
-      var obj = this.state.artworks.find(item => {
-        return item.id === topOrder[i]          
-      })
-      obj.count = artworks_ranking[i].count;
-      obj.win = artworks_ranking[i].win;
-      temp.push(obj);
+async handleShowRanking() {
+    if (this.state.artworks_ranking.length === 0) {
+      const artworks_ranking = await this.readTopRanking();
+      const topOrder = artworks_ranking.map(a => a.artwork_id);
+      await this.loadImages(this.state.artworks, topOrder, 5);
+      
+      var temp = [];
+      for (let i = 0; i < topOrder.length; i++) {
+        // Get artwork details for topOrder
+        var obj = this.state.artworks.find(item => {
+          return item.id === topOrder[i]          
+        })
+        obj.count = artworks_ranking[i].count;
+        obj.win = artworks_ranking[i].win;
+        temp.push(obj);
+      }
+      console.log('first ranking')
+      
+      this.setState({ 
+        artworks_ranking: temp,
+        currentView: "Ranking",
+      });    
+    } else {
+      console.log('after ranking..')
+      this.setState({ 
+        currentView: "Ranking",
+      });    
     }
-    
-    this.setState({ 
-      artworks_ranking: temp,
-      currentView: "Ranking",
-      user: user,
-    });    
-  }  
+
+}
 
   render() {
     return (
@@ -194,7 +206,7 @@ class App extends Component {
           <Header preurl={this.state.preurl} currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
           {this.state.currentView === "Start" && <Start handleStart = {this.handleStart} />}
           {this.state.currentView === "Game" && this.state.isDataLoaded === true && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> }
-          {this.state.currentView === "Result" && <Result preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />}
+          {this.state.currentView === "Result" && <Result user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />}
           {this.state.currentView === "Ranking" && <Ranking user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>}
       </div>
     )

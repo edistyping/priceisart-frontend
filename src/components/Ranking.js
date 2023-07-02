@@ -8,21 +8,19 @@ import { useCookies } from 'react-cookie';
 
 function Ranking(props) {
     
-    console.log('This is Ranking...');
     const preurl = props.preurl;
     const artworks_ranking = props.artworks_ranking; // To get correct 3 images from above two props
     const order = artworks_ranking.map(a => a.id); // Make an array using 'artworks_ranking'
     const artworks_image = props.artworks_image; // For Artworks images
+    const accessToken = props.user.accessToken;
+
     const [comments, setCommments] = useState([]);
     const [showComments, setShowcomments] = useState(false);
     const [addComment, setAddcomment] = useState(false);
-    const [commentForm, setCommentform] = useState(0);
 
     const [artworkComment, setArtworkComment] = useState(0);
+    const [lastScoring, setLastScoring] = useState(0);
 
-    console.log(artworks_ranking);
-    console.log(order);
-    console.log(artworks_image);
     // When ranking page is displayed, load comments for those
     // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
@@ -61,6 +59,13 @@ function Ranking(props) {
         console.log('handleShowForm() called...' + id);
         console.log('handleShowForm() ending...');
 
+        const accessToken = props.user.accessToken;
+        console.log(accessToken);
+        if (!accessToken || accessToken === '') {
+            console.log("You're not logged in!")
+            return
+        }
+
         setArtworkComment(id);
         setAddcomment(true);
     }
@@ -75,29 +80,63 @@ function Ranking(props) {
         // updateComment by increment/decrement
     }
 
+    // parent_id, artwork_id, comment, score, user_id, username
+    async function handleScoring(e) {
+        console.log('handleScoring() called...' + e.target.id);
+        const comment_id = e.target.id; 
+        const user_selected = e.target.value;
+        const user_vote = e.target.name;
+        console.log(user_vote);
+        var inputData = { id: comment_id, score: user_selected};
+        var url;
+        var requestOptions;
+
+        // upvote is selected
+        // downvote is selected
+        // undo (same one checked last time )
+
+        const userSelected =2;
+        if (userSelected === lastScoring) {
+            inputData.user_scoring = userSelected * -1;
+            inputData.score = 0;
+        } else if (user_vote === 'upvote') {
+            inputData.score = 1
+        } else if (user_vote === 'downvote') {
+            inputData.score = -1
+        }
+
+        url = preurl + '/artworks/comment'
+        requestOptions = {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(inputData)
+        };    
+        console.log(inputData);
+        await fetch(url, requestOptions);
+
+        // 
+    }
+
     async function submitComment(e) {
         // add a comment
         // parent_id, artwork_id, comment, score, user_id, username
         e.preventDefault();
         const comment = e.target.comment.value;
-        const user = props.user;
+        const user = props.user.user;
+        const accessToken = props.user.accessToken;
         const artwork_id = artworkComment; 
-        console.log('submitComment() is called....')
-        console.log(comment);
-        console.log(`artwork_id: ${artwork_id}`);
-        console.log(user)
-        console.log(typeof user);
-        console.log(`--------------------------`);
         const inputData = { parent_id: null, artwork_id: artwork_id, comment: comment, score: 1, user_id: user.id, username: user.username};
-        
-
         const url = preurl + '/artworks/comment';
         const requestOptions = {
             method: 'POST',
             credentials: 'include',
             headers: { 
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${window.sessionStorage.getItem("accessToken")}`
+                'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify(inputData)
         };
@@ -116,7 +155,6 @@ function Ranking(props) {
                 console.log(data);
             })
             .catch(error => {
-                console.log("Error when submitting the comment!");
                 throw new Error(error);  // ***
             });  
         console.log('----------------------------');
@@ -153,7 +191,7 @@ function Ranking(props) {
                                         <button id="btn-showall" className='comments-showall' onClick={handleShowAllComments}>See all Comments</button>
                                         { comments ? comments.filter(comment => comment.artwork_id === artwork.id).map((comment, j) => (
                                             <div key={j} style={{display: "flex", background: "purple"}}>
-                                                <p key={j}>{comment.username}: {comment.comment}</p>
+                                                <p key={j}>{comment.id} {comment.username}: {comment.comment} {comment.score}</p>
                                             </div>
                                         ))  : null }
                                     </div>

@@ -22,13 +22,15 @@ function Header(props) {
     const [login, setLogin] = useState(0);
     const [user, setUser] = useState({});
 
-    function handleLogin(data) {
+    function loginUser(data) {
         console.log('handleLogin() called....');
         console.log(data);
+        console.log(data.user);
+        console.log(data.accessToken);
         // save data.accessToken to localStorage/sessionStorage
-        window.sessionStorage.setItem("accessToken", data.accessToken);
+        setUser(data);
         setLogin(true);
-        setUser(data.user)
+        props.handleLogin(data);
     };
     function handleSignout() {
         console.log('handleSignout() called....');
@@ -44,12 +46,12 @@ function Header(props) {
         props.handleGameOver();
     }
     function switchToRanking() {
-        props.handleShowRanking(user);
+        props.handleShowRanking();
     }
     return (
         <div className={containerHeader}>
             <h1>PRICE IS ART!</h1>          
-            <LoginSignUp preurl={props.preurl} handleLogin={handleLogin} handleSignout={handleSignout} activated={login} /> 
+            <LoginSignUp preurl={props.preurl} handleLogin={loginUser} handleSignout={handleSignout} activated={login} /> 
 
             {(() => {
                 switch(currentView) {

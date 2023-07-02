@@ -11,10 +11,10 @@ function Result(props) {
   const artworks = props.artworks;
   const artworks_image = props.artworks_image;
   const order = props.order;
-  
-  // const userResponses = props.userResponses;
+  const user = props.user;
   const userResponses = props.userResponses;
   const numberOfQuestions = userResponses.length;
+
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [submitted, setSubmitted] = useState(false);
@@ -115,14 +115,17 @@ function Result(props) {
     const artworks = props.artworks;
     const order = props.order;
     const userResponses = props.userResponses;
-    
+    const user = props.user.user ? props.user.user.id : 0;
+    console.log(props);
+    console.log(user);
+
     // prepare data 
     var inputData = [];
     for (let i = 0; i < userResponses.length; i++) {
       var temp = {
         artwork_id: Number(artworks[order[i * 2]].id),
         other_artwork_id: Number(artworks[order[i * 2 + 1]].id),
-        user_id: 0,
+        user_id: user,
         win: artworks[order[i * 2]].adjusted_price > artworks[order[i * 2 + 1]].adjusted_price ? true : false 
       }
       inputData.push(temp);      

@@ -1,6 +1,13 @@
 # Price is Art! 
 ## https://priceisart.com/
 
+
+
+# To Do	
+- Switching between Ranking and Result undo 'Submit Your Vote'
+	- why does 'Submit Your Vote' get un-disabled
+	- Instead of re-rendering, is it because one gets unmounted? 
+
 Cache is not setting at Frontend browser -> Fixed;  
 1. Fixing adding comments
 	= Fixed; Added a hook variable for tracking and added separate function for show/hide 
@@ -10,16 +17,12 @@ Cache is not setting at Frontend browser -> Fixed;
 	= Updated Express
 	- when user click 'Add a commenet' button without being logged in, throw error message 
 	- Now update frontend to include jwt token
-
 5. Refreshing the page keeps the login session
 	- sessionStorage (if users refreshes, keep him logged in)
 6. Turn off Login form if anywhere else is touched. 
 	- can other components be non-clickable when Login Form is opened?
 7. Pop-up message for Add a Comment is only showing for top button  
 
-
-
-# To Do	
 1. Limit 5 times per 15 mins;
 	- actually, do some calculations 
 	- DAU * all that 

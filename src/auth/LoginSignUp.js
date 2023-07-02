@@ -12,9 +12,7 @@ const loginStyle = {
     display: 'flex',
     flexDirection: 'column',
     height: '40%',
-
 };
-
 const loginButton = {
     position: "absolute",
     top: 0,
@@ -31,14 +29,12 @@ const loginButton = {
 const LoginSignUp = props => {
     const preurl = props.preurl;
 
-    
     const [newUsername, setNewusername] = useState("");
     const [newPassword, setNewpassword] = useState("");
     const [newEmail, setNewemail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [warnings, setWarnings] = useState(Array(5).fill(''));
-    const [loginError, setLoginerror] = useState('');
 
     // Hide Login/Sign up form
     // Show Login/Sign up form
@@ -82,17 +78,16 @@ const LoginSignUp = props => {
                     if (response.status === 201) {
                         setisSigned(true);
                         setShowform(false);
+                        setUsername(newUsername);
                     }
-                    return response.json()
+                    return response.json();
                 }).then(data => {
                     console.log('Successful creation');
-                    console.log(data);
-                    console.log(typeof data);
                     props.handleLogin(data);
                 })
                 .catch(error => {
                     console.log("Error when submitting the response!");
-                    throw new Error("HTTP error " + error);  // ***
+                    throw new Error(error);  // ***
             });  
             console.log('----------------------------');
         }
@@ -133,6 +128,7 @@ const LoginSignUp = props => {
                     return response.text()
                 }).then(data => {
                     console.log(data);
+                    setUsername(username);
                     props.handleLogin(data);
                 })
                 .catch(error => {
@@ -142,12 +138,13 @@ const LoginSignUp = props => {
             console.log('----------------------------');
         }
     }
+
     async function handleLogout(e) {
         e.preventDefault();
         setisSigned(false);
+        window.sessionStorage.removeItem("accessToken");
         props.handleSignout();
     }
-    
 
     return (
         <div> 
@@ -187,7 +184,7 @@ const LoginSignUp = props => {
                     <input type="submit" value="Login"/>
                 </form>
             </div>
-            : isSigned ? <div className='div-signin' >You're now signed in. Click to <button onClick={handleLogout}>Sign Out</button></div> 
+            : isSigned ? <div className='div-signin' >{username} You're now signed in. Click to <button onClick={handleLogout}>Sign Out</button></div> 
                 : <button onClick={() => setShowform(true)} style={loginButton}>Click to Login</button> 
         } 
 

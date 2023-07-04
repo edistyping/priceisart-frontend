@@ -12,17 +12,21 @@ function Result(props) {
   const order = props.order;
   const user = props.user;
   const userResponses = props.userResponses;
-  const numberOfQuestions = userResponses.length;
+  const numberOfQuestions = order.length / 2;
   const currentView = props.currentView;
 
-
+  console.log('Result component...');
+  console.log(`   ${currentView}`);
+  console.log(user);
+  console.log('------------')
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
+    console.log('   useEffect() called...');
     checkCorrectAnswers(artworks, order, userResponses);
-  });
+  }, [props.userResponses]);
 
   function handleSubmit() {
     // setSubmitted(true); // This function is in below two functions upon success
@@ -64,10 +68,7 @@ function Result(props) {
 
   // Submitting data. API will do its own thing and adding or incrementing exisitng one 
   function submitVote() {    
-    const artworks = props.artworks;
-    const order = props.order;
-    const userResponses = props.userResponses;
-    
+    console.log('submitVote()...');
     // Use artwork_id, count, win; count == they were clicked
     var inputData = [];
     var i = 0;
@@ -87,9 +88,6 @@ function Result(props) {
         
     const preurl = props.preurl; 
     const url = preurl + '/artworks/vote'
-    console.log(inputData); 
-    console.log(url); 
-
     const requestOptions = {
       method: 'POST',
       mode: 'cors',
@@ -101,7 +99,6 @@ function Result(props) {
     fetch(url, requestOptions)
     .then(response => {
       if (response.ok){
-        console.log("Submitted successfully...")
         setSubmitted(1);
       }
     })
@@ -117,8 +114,6 @@ function Result(props) {
     const order = props.order;
     const userResponses = props.userResponses;
     const user = props.user.user ? props.user.user.id : 0;
-    console.log(props);
-    console.log(user);
 
     // prepare data 
     var inputData = [];
@@ -157,9 +152,8 @@ function Result(props) {
 
   return (
     <div>
-      { currentView === "Result" ? 
+      { currentView === "Result" && order ? 
         <div className="container-result">
-
           <div className="container-result-options">
             <div className="container-result-option">
               <button onClick={props.handleReplay}>REPLAY</button>
@@ -176,7 +170,7 @@ function Result(props) {
 
           <div className="container-result-body">
             <div className="wrapper-result">
-                {(() => {
+            {(() => {
                   let result = [];
                   for (let i = 0; i < numberOfQuestions; i++) {
                     result.push(
@@ -213,7 +207,7 @@ function Result(props) {
           </div>
 
         </div>
-      : <div></div>
+      : null
       }
     </div>
   )

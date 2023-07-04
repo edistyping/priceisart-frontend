@@ -1,12 +1,26 @@
 # Price is Art! 
 ## https://priceisart.com/
 
-
-
 # To Do	
-- Switching between Ranking and Result undo 'Submit Your Vote'
-	- why does 'Submit Your Vote' get un-disabled
-	- Instead of re-rendering, is it because one gets unmounted? 
+1. After logging in, why does Header.js still say user is {}? 
+
+
+Make a request with accessToken https://miro.medium.com/v2/resize:fit:1400/0*KZrqOGCKh6Ee48Bc.png
+	1. If accessToken is invalid (expired), send error 401. 
+	2. request the token again 
+		- in backend, if refreshToken is valid, just send back accessToken
+	3. make request again with the new token 
+
+########################
+Almost everyone does JWT wrong in SPAs. Never use local storage. Refresh token in an HTTP Only, Secure cookie set when the user logs in. Access token only stored in memory.
+
+On every first load you send a request to the server, the server checks if the refresh token cookie is set and if it's valid. If it is, return a fresh access token to the client and keep it in memory. After that you send another request for the actual data with the Authorization header set.
+
+Every time a user reloads a page or closes their browser you go through the same process. When the access token expires you request a new one using the refresh token cookie. When the refresh token expires you ask your users to login again.
+
+I usually go with 1 month refresh tokens and 15 minute access tokens. There is no need to worry about request count or unnecessary traffic.
+########################
+
 
 Cache is not setting at Frontend browser -> Fixed;  
 1. Fixing adding comments

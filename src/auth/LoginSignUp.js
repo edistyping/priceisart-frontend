@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './LoginSignUp.css';
 
 const signupStyle = {
@@ -27,7 +27,13 @@ const loginButton = {
 }
 
 const LoginSignUp = props => {
+    
+    console.log(`LoginSignUp.....`);
+    console.log(props.user);
+
     const preurl = props.preurl;
+    const user = props.user;
+
 
     const [newUsername, setNewusername] = useState("");
     const [newPassword, setNewpassword] = useState("");
@@ -39,13 +45,11 @@ const LoginSignUp = props => {
     // Hide Login/Sign up form
     // Show Login/Sign up form
     // Show logged in (show Sign Out button)
-    // jwt cookie doesn't need to be passed to the app.js
     const [showForm, setShowform] = useState(false);
     const [isSigned, setisSigned] = useState(false);
 
     async function handleCreate(e) {
         e.preventDefault();
-        console.log(`The name you entered was: ${newUsername}`);
         var temp = warnings;
 
         if (!newUsername || newUsername === '') {
@@ -72,26 +76,24 @@ const LoginSignUp = props => {
                 body: JSON.stringify(inputData)
             };
 
-            await fetch(url, requestOptions)
+            const result = await fetch(url, requestOptions)
                 .then(response => {
-                    console.log(response.status);
-                    if (response.status === 201) {
+                    if (response.status === 201) { 
                         setisSigned(true);
                         setShowform(false);
                         setUsername(newUsername);
                     }
                     return response.json();
                 }).then(data => {
-                    console.log('Successful creation');
-                    props.handleLogin(data);
+
+                    return data;
                 })
                 .catch(error => {
                     console.log("Error when submitting the response!");
                     throw new Error(error);  // ***
-            });  
-            console.log('----------------------------');
+                });  
+            props.handleLogin(result);
         }
-
     }
 
     async function handleSubmit(e) {
@@ -142,13 +144,11 @@ const LoginSignUp = props => {
     async function handleLogout(e) {
         e.preventDefault();
         setisSigned(false);
-        window.sessionStorage.removeItem("accessToken");
         props.handleSignout();
     }
 
     return (
         <div> 
-
             { showForm ?
             <div className='container-login'>
                 <button onClick={() => setShowform(false)}>Close the Form </button>
@@ -184,10 +184,9 @@ const LoginSignUp = props => {
                     <input type="submit" value="Login"/>
                 </form>
             </div>
-            : isSigned ? <div className='div-signin' >{username} You're now signed in. Click to <button onClick={handleLogout}>Sign Out</button></div> 
+            : isSigned ? <div className='div-signin' >{user.user.username} | {username} You're now signed in. Click to <button onClick={handleLogout}>Sign Out</button></div> 
                 : <button onClick={() => setShowform(true)} style={loginButton}>Click to Login</button> 
         } 
-
 
         </div>
     )

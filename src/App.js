@@ -29,6 +29,9 @@ class App extends Component {
     this.handleReplay = this.handleReplay.bind(this);
     this.handleGameOver = this.handleGameOver.bind(this);
     this.handleShowRanking = this.handleShowRanking.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+
   }
 
   shuffle(n) {
@@ -137,9 +140,12 @@ class App extends Component {
   // Need to Reset something except we load image to existing array
   // shuffle artworks again
   // load (more) images using the new order
-  handleReplay = async () => {
+  async handleReplay() {
     var new_order = this.shuffle(this.state.artworks.length);
     await this.loadImages(this.state.artworks, new_order, 10);
+
+    console.log('handleReplay button...');
+    console.log(this.state.artworks_userResponse);
     this.setState({ 
       artworks_userResponse: [],
       artworks_order: new_order,
@@ -149,32 +155,41 @@ class App extends Component {
 
   // Receive response from User then show Result page 
   handleGameOver(response) {
-    if(response === undefined){
-      console.log('switched back to Result')
-      this.setState({
-        currentView: "Result",
-      });
-    } else {
-      console.log('Done pickin')
+    console.log('handleGameOver()....')
+    console.log(response);
+
+    if (response) {
       this.setState({ 
         currentView: "Result",
         artworks_userResponse: response,
+      });           
+    } else {
+      this.setState({ 
+        currentView: "Result",
       });   
-    } 
+    }    
   }
 
   handleLogin(user) {
-    this.setState({ user: user})
+    console.log("(App.js) handleLogin()...");
+    console.log(user);
+    console.log("(App.js) ending()...");
+    this.setState({ user: user });
+  }
+
+  handleLogout() {
+    this.setState({ user: {}})
   }
 
   // Switch between Result page and Ranking page
   // Retrieve data for Top Ranking artworks again and load it (if needed)
-async handleShowRanking() {
-    if (this.state.artworks_ranking.length === 0) {
+  async handleShowRanking() {
+  
       const artworks_ranking = await this.readTopRanking();
       const topOrder = artworks_ranking.map(a => a.artwork_id);
       await this.loadImages(this.state.artworks, topOrder, 5);
-      
+      console.log('handleShowRanking()....');
+      console.log(topOrder);
       var temp = [];
       for (let i = 0; i < topOrder.length; i++) {
         // Get artwork details for topOrder
@@ -185,27 +200,23 @@ async handleShowRanking() {
         obj.win = artworks_ranking[i].win;
         temp.push(obj);
       }
-      console.log('first ranking')
       
       this.setState({ 
         artworks_ranking: temp,
         currentView: "Ranking",
       });    
-    } else {
-      console.log('after ranking..')
-      this.setState({ 
-        currentView: "Ranking",
-      });    
-    }
-
+    
 }
 
   render() {
+    console.log(this.state.currentView);
     return (
       <div className="App">
-          <Header preurl={this.state.preurl} currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
-          <Start currentView={this.state.currentView} handleStart = {this.handleStart} />
-          <Game currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} />
+          <Header user={this.state.user} preurl={this.state.preurl} currentView={this.state.currentView} handleLogin={this.handleLogin} handleLogout={this.handleLogout} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
+          
+          <Start currentView={this.state.currentView} handleStart = {this.handleStart} /> 
+          <Game currentView={this.state.currentView} isDataLoaded={this.state.isDataLoaded} artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver = {this.handleGameOver} /> 
+          
           <Result currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />
           <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>
       </div>

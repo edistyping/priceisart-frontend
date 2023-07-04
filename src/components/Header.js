@@ -1,44 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Header.css';
 
 import LoginSignUp from '../auth/LoginSignUp';
 
 function Header(props) {
 
-    /*
-    // Start: height in container-header increases 
-    
-    // Game: index and numberOfImages        
-        - Use a state variable from App to keep track of currentQuiz
-
-    // Result: Show Ranking
-        
-    // Ranking: Back to Result
-        - Build a API for Top 10 Arts
-    */
+    console.log(`Header.js here....`);
     const currentView = props.currentView;
     const containerHeader = (currentView === "Start" ? "container-header-start":"container-header-others") 
+    
+    console.log(currentView);
+    const [login, setLogin] = useState(false);
+    
+    const [user, setUser] = useState(props.user);    
+    // const user = props.user;
+    console.log(user);
 
-    const [login, setLogin] = useState(0);
-    const [user, setUser] = useState({});
+    useEffect(() => {
+        console.log(`header useEffect() here...`);
+        console.log(props.user);
+        
+        const isSigned = Object.keys(props.user).length !== 0;
+        console.log(isSigned);
+        console.log('----------------------------')
+    }, [props.user]);
 
-    function loginUser(data) {
-        console.log('handleLogin() called....');
-        console.log(data);
-        console.log(data.user);
-        console.log(data.accessToken);
-        // save data.accessToken to localStorage/sessionStorage
-        setUser(data);
-        setLogin(true);
+
+    function handleLogin(data) {
+        console.log('(Header.js) handleLogin() called....');
         props.handleLogin(data);
+        setLogin(true);
     };
     function handleSignout() {
-        console.log('handleSignout() called....');
-        console.log(user);
-        console.log(typeof user);   
-        window.sessionStorage.removeItem("accessToken");
+        console.log(`handleSignout() called....`);
         setLogin(false);
-        setUser({})
+        props.handleLogout();
     };
 
 
@@ -49,10 +45,9 @@ function Header(props) {
         props.handleShowRanking();
     }
     return (
-        <div className={containerHeader}>
-            <h1>PRICE IS ART!</h1>          
-            <LoginSignUp preurl={props.preurl} handleLogin={loginUser} handleSignout={handleSignout} activated={login} /> 
-
+        <div key={props.user} className={containerHeader}>
+            <h1>{login.toString()}PRICE IS ART!</h1>          
+            <LoginSignUp user={props.user} preurl={props.preurl} handleLogin={handleLogin} handleSignout={handleSignout} /> 
             {(() => {
                 switch(currentView) {
                     case 'Start':
@@ -66,8 +61,7 @@ function Header(props) {
                     default: 
                         return null; 
                 }
-                }).call(this)
-            }
+            }).call(this)}
         </div>
     );
 }

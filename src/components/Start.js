@@ -10,10 +10,10 @@ import './Start.css';
 
 
 const Start = props => {
-    const [loading, setLoading] = useState(0);
+    const [loading, setLoading] = useState(false);
     const currentView = props.currentView;
     function handleStart() {
-        setLoading(1);
+        setLoading(true);
         props.handleStart();
     }
 
@@ -23,13 +23,13 @@ const Start = props => {
                 <div className="container-begin"> 
                     <div className="container-begin-start">
                     <button className="button-75" onClick={handleStart} >
-                    <div className={loading === 0 ? "content-start":"content-blank"} >
+                    <div className={!loading ? "content-start":"content-blank"} >
                     {
                         <p>START{props.isDataLoaded}</p>
                     }    
                     </div>
                     
-                    <div className={loading === 1 ? "content-loading":"content-blank"} >
+                    <div className={loading ? "content-loading":"content-blank"} >
                     <div className="content-loading-top">
                     <p id="text-gamerule">Prepare to Choose 5 Appealing Artworks</p>
                     </div>

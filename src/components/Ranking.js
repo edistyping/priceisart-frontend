@@ -1,19 +1,20 @@
 import React, { useState, useEffect }  from 'react';
 import './Ranking.css';
 
-import { useCookies } from 'react-cookie';
 /*
     Receive artworks info and images to display top 10    
 */
 
 function Ranking(props) {
-    
+    console.log("Ranking here.... wtf \n\n")
+    console.log(props);
+
+    const currentView = props.currentView;
     const preurl = props.preurl;
-    const artworks_ranking = props.artworks_ranking; // To get correct 3 images from above two props
-    const order = artworks_ranking.map(a => a.id); // Make an array using 'artworks_ranking'
     const artworks_image = props.artworks_image; // For Artworks images
     const accessToken = props.user.accessToken;
-    const currentView = props.currentView;
+    const artworks_ranking = props.artworks_ranking; // To get correct 3 images from above two props
+    const order = artworks_ranking.map(a => a.id); // Make an array using 'artworks_ranking'
 
     const [comments, setCommments] = useState([]);
     const [showComments, setShowcomments] = useState(false);
@@ -54,9 +55,6 @@ function Ranking(props) {
     function handleShowForm(e, id) {
         e.preventDefault();
 
-        console.log('handleShowForm() called...' + id);
-        console.log('handleShowForm() ending...');
-
         const accessToken = props.user.accessToken;
         console.log(accessToken);
         if (!accessToken || accessToken === '') {
@@ -69,22 +67,14 @@ function Ranking(props) {
     }
     function handleHideForm(e) {
         e.preventDefault();
-        console.log('handleHideForm() called...');
         setAddcomment(false);
-    }
-    function handleVoting(e) {
-        console.log('handleVoting() called...' + e.target.id);
-        // Need comment_id
-        // updateComment by increment/decrement
     }
 
     // parent_id, artwork_id, comment, score, user_id, username
     async function handleScoring(e) {
-        console.log('handleScoring() called...' + e.target.id);
         const comment_id = e.target.id; 
         const user_selected = e.target.value;
         const user_vote = e.target.name;
-        console.log(user_vote);
         var inputData = { id: comment_id, score: user_selected};
         var url;
         var requestOptions;
@@ -113,7 +103,6 @@ function Ranking(props) {
             },
             body: JSON.stringify(inputData)
         };    
-        console.log(inputData);
         await fetch(url, requestOptions);
 
         // 
@@ -129,6 +118,8 @@ function Ranking(props) {
         const artwork_id = artworkComment; 
         const inputData = { parent_id: null, artwork_id: artwork_id, comment: comment, score: 1, user_id: user.id, username: user.username};
         const url = preurl + '/artworks/comment';
+
+        console.log(props.user)
         const requestOptions = {
             method: 'POST',
             credentials: 'include',
@@ -141,7 +132,6 @@ function Ranking(props) {
 
         await fetch(url, requestOptions)
             .then(response => {
-                console.log(response.status);
                 if (response.status === 200) {
                     // once a comment is successfully added. 
                     // added it to my clinet too 
@@ -155,7 +145,6 @@ function Ranking(props) {
             .catch(error => {
                 throw new Error(error);  // ***
             });  
-        console.log('----------------------------');
         
     }
 

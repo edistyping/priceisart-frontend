@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginSignUp.css';
 
 const signupStyle = {
@@ -28,13 +28,7 @@ const loginButton = {
 
 const LoginSignUp = props => {
     
-    console.log(`LoginSignUp.....`);
-    console.log(props.user);
-
     const preurl = props.preurl;
-    const user = props.user;
-
-
     const [newUsername, setNewusername] = useState("");
     const [newPassword, setNewpassword] = useState("");
     const [newEmail, setNewemail] = useState("");
@@ -42,11 +36,18 @@ const LoginSignUp = props => {
     const [password, setPassword] = useState("");
     const [warnings, setWarnings] = useState(Array(5).fill(''));
 
-    // Hide Login/Sign up form
-    // Show Login/Sign up form
-    // Show logged in (show Sign Out button)
     const [showForm, setShowform] = useState(false);
     const [isSigned, setisSigned] = useState(false);
+    
+    const [user, setUser] = useState('');    
+    
+    
+    useEffect(() => {
+        const isSigned = Object.keys(props.user).length !== 0;
+        if (isSigned) {
+            setUser(props.user);        
+        }
+    }, [props.user]);
 
     async function handleCreate(e) {
         e.preventDefault();
@@ -81,11 +82,9 @@ const LoginSignUp = props => {
                     if (response.status === 201) { 
                         setisSigned(true);
                         setShowform(false);
-                        setUsername(newUsername);
                     }
                     return response.json();
                 }).then(data => {
-
                     return data;
                 })
                 .catch(error => {
@@ -122,14 +121,12 @@ const LoginSignUp = props => {
 
             await fetch(url, requestOptions)
                 .then(response => {
-                    console.log(response.status);
                     if (response.status === 201) {
-                        setisSigned(true);
-                        setShowform(false);
                     }
                     return response.text()
                 }).then(data => {
-                    console.log(data);
+                    setShowform(false);
+                    setisSigned(true);
                     setUsername(username);
                     props.handleLogin(data);
                 })
@@ -137,7 +134,6 @@ const LoginSignUp = props => {
                     console.log("Error when submitting the response!");
                     throw new Error("HTTP error " + error);  // ***
             });  
-            console.log('----------------------------');
         }
     }
 
@@ -145,14 +141,13 @@ const LoginSignUp = props => {
         e.preventDefault();
         setisSigned(false);
         props.handleSignout();
-    }
+    };
 
     return (
         <div> 
             { showForm ?
-            <div className='container-login'>
+            <div key={props.user} className='container-login'>
                 <button onClick={() => setShowform(false)}>Close the Form </button>
-                <p>{showForm.toString()} {isSigned.toString()} </p>
                 <form style={signupStyle} onSubmit={handleCreate}>
                     <label>Enter your Username:
                         <input type="text" value={newUsername} onChange={(e) => setNewusername(e.target.value)}/>
@@ -167,7 +162,6 @@ const LoginSignUp = props => {
                         <p>{warnings[2]}</p>
                     </label>
                     <input type="submit" value="Create an Account" />
-                    <div>Already Registered?<button>Sign In</button></div>
                 </form>
 
                 <form style={loginStyle} onSubmit={handleSubmit}>
@@ -184,10 +178,9 @@ const LoginSignUp = props => {
                     <input type="submit" value="Login"/>
                 </form>
             </div>
-            : isSigned ? <div className='div-signin' >{user.user.username} | {username} You're now signed in. Click to <button onClick={handleLogout}>Sign Out</button></div> 
+            : isSigned ? <div className='div-signin'> { user } You're now signed in. Click to <button onClick={handleLogout}>Sign Out</button></div> 
                 : <button onClick={() => setShowform(true)} style={loginButton}>Click to Login</button> 
         } 
-
         </div>
     )
 }

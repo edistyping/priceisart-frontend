@@ -7,12 +7,9 @@ import './Game.css';
 */
 function Game(props) {
     
-    console.log('Game component here...');
     const artworks = props.artworks;
     const artworks_image = props.images; 
     const order = props.order; 
-    const currentView = props.currentView;
-    const isDataLoaded = props.isDataLoaded;
     const numberOfImages = order.length;
     
     const [index, setIndex] = useState(0);
@@ -37,7 +34,6 @@ function Game(props) {
 
     return (
         <div>
-            { currentView === "Game" && isDataLoaded === true ? 
             <div className="Game">
                 <div className="container-images" >
                     <div className="section-image" onClick={handleSelect} id={[order[index]]} >
@@ -50,8 +46,6 @@ function Game(props) {
                     </div>
                 </div>            
             </div>
-            : null    
-            }
         </div>
         
     );

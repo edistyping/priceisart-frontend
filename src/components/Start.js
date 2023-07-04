@@ -11,41 +11,37 @@ import './Start.css';
 
 const Start = props => {
     const [loading, setLoading] = useState(false);
-    const currentView = props.currentView;
     function handleStart() {
-        setLoading(true);
         props.handleStart();
+        setLoading(true);
     }
 
   return (
         <div>
-            { currentView === 'Start' ? 
-                <div className="container-begin"> 
-                    <div className="container-begin-start">
-                    <button className="button-75" onClick={handleStart} >
-                    <div className={!loading ? "content-start":"content-blank"} >
-                    {
-                        <p>START{props.isDataLoaded}</p>
-                    }    
-                    </div>
-                    
-                    <div className={loading ? "content-loading":"content-blank"} >
-                    <div className="content-loading-top">
-                    <p id="text-gamerule">Prepare to Choose 5 Appealing Artworks</p>
-                    </div>
-                    <div className="content-loading-bottom">
-                    <img src={require('../static/images/bobross.gif')} alt="Loading Icon" id="img-bobross"  />
-                    <p id="text-loading">Loading...</p>
-                    </div>
-                    </div>
-                        </button>
-                    </div>
-                    
-                    <div className="content-filler">
-                    </div>
+            <div className="container-begin"> 
+                <div className="container-begin-start">
+                <button className="button-75" onClick={handleStart} >
+                <div className={!loading ? "content-start":"content-blank"} >
+                {
+                    <p>START{props.isDataLoaded}</p>
+                }    
                 </div>
-            : null
-            } 
+                
+                <div className={loading ? "content-loading":"content-blank"} >
+                <div className="content-loading-top">
+                <p id="text-gamerule">Prepare to Choose 5 Appealing Artworks</p>
+                </div>
+                <div className="content-loading-bottom">
+                <img src={require('../static/images/bobross.gif')} alt="Loading Icon" id="img-bobross"  />
+                <p id="text-loading">Loading...</p>
+                </div>
+                </div>
+                    </button>
+                </div>
+                
+                <div className="content-filler">
+                </div>
+            </div>
         </div>
 
     )

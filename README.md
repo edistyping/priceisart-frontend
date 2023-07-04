@@ -2,7 +2,14 @@
 ## https://priceisart.com/
 
 # To Do	
-1. After logging in, why does Header.js still say user is {}? 
+- Implementing OpenAI 
+	- generate an image, download it, store it in my web app?
+		- storing it in the webapp will require my app to reload so maybe azure storage
+	- update postgres 
+
+- Limit 'POST comment' call to 3 + 1per day (one for each plus bonus)
+
+- Lazy Load for images 
 
 
 Make a request with accessToken https://miro.medium.com/v2/resize:fit:1400/0*KZrqOGCKh6Ee48Bc.png

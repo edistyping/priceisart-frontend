@@ -10,21 +10,16 @@ function Result(props) {
   const artworks = props.artworks;
   const artworks_image = props.artworks_image;
   const order = props.order;
-  const user = props.user;
   const userResponses = props.userResponses;
   const numberOfQuestions = order.length / 2;
   const currentView = props.currentView;
+  const user = props.user;
 
-  console.log('Result component...');
-  console.log(`   ${currentView}`);
-  console.log(user);
-  console.log('------------')
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    console.log('   useEffect() called...');
     checkCorrectAnswers(artworks, order, userResponses);
   }, [props.userResponses]);
 
@@ -68,8 +63,7 @@ function Result(props) {
 
   // Submitting data. API will do its own thing and adding or incrementing exisitng one 
   function submitVote() {    
-    console.log('submitVote()...');
-    // Use artwork_id, count, win; count == they were clicked
+    
     var inputData = [];
     var i = 0;
     for (i = 0; i < userResponses.length; i++) {
@@ -109,11 +103,10 @@ function Result(props) {
   }
 
   function submitResponse() {
-    console.log("submitResponse()....");
     const artworks = props.artworks;
     const order = props.order;
     const userResponses = props.userResponses;
-    const user = props.user.user ? props.user.user.id : 0;
+    const user = props.user ? props.user.user.id : 0;
 
     // prepare data 
     var inputData = [];

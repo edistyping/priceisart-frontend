@@ -25,28 +25,32 @@ function Ranking(props) {
 
     // When ranking page is displayed, load comments for those
     useEffect(() => {
-        // get comments
-        var fetchComments = async () => {
-            // get only artworks_ranking ids
-            const url = props.preurl + '/artworks/comments'
-            const requestOptions = {
-                method: 'POST',
-                mode: 'cors',
-                credentials: "include",
-                headers: { 
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(order)
-            };
-            const result = await fetch(url, requestOptions);
-            const data = await result.json();
+        // get comments only after 'Ranking' clicked
+        if (artworks_ranking.length !== 0) {
+            console.log('Not Empty')
+            console.log(props.artworks_ranking);
+            console.log(artworks_ranking);
+            var fetchComments = async () => {
+                // get only artworks_ranking ids
+                const url = props.preurl + '/artworks/comments'
+                const requestOptions = {
+                    method: 'POST',
+                    mode: 'cors',
+                    credentials: "include",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(order)
+                };
+                const result = await fetch(url, requestOptions);
+                const data = await result.json();
 
-            if (data !== 0) 
-                setCommments(data);
+                if (data !== 0) 
+                    setCommments(data);
+            }            
+            fetchComments().catch(console.error);
         }
-
-        fetchComments().catch(console.error);
-    }, []);
+    }, [props.artworks_ranking]);
 
     function handleShowAllComments(e) {  
         console.log('Show all comments clicked')

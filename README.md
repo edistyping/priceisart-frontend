@@ -11,6 +11,7 @@
 
 - Lazy Load for images 
 
+- jwt (refreshing accessToken)
 
 Make a request with accessToken https://miro.medium.com/v2/resize:fit:1400/0*KZrqOGCKh6Ee48Bc.png
 	1. If accessToken is invalid (expired), send error 401. 

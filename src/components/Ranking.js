@@ -23,7 +23,7 @@ function Ranking(props) {
     // When ranking page is displayed, load comments for those
     useEffect(() => {
         var fetchComments = async () => {
-            const url = props.preurl + '/artworks/comments'
+            const url = props.preurl + '/artworks/comment'
             const requestOptions = {
                 method: 'POST',
                 mode: 'cors',
@@ -35,9 +35,9 @@ function Ranking(props) {
             };
             const result = await fetch(url, requestOptions);
             const data = await result.json();
-
-            if (data !== 0) 
+            if (Object.keys(data).length !== 0) {
                 setCommments(data);
+            }
         }            
         fetchComments().catch(console.error);        
     }, [props.artworks_ranking]);
@@ -46,7 +46,6 @@ function Ranking(props) {
         e.preventDefault();
 
         const accessToken = user.accessToken;
-        console.log(accessToken);
         if (!accessToken || accessToken === '') {
             console.log("You're not logged in!")
             return
@@ -68,7 +67,6 @@ function Ranking(props) {
         const inputData = { parent_id: null, artwork_id: artwork_id, comment: comment, score: 1, user_id: user.id, username: user.username};
         const url = preurl + '/artworks/comment';
 
-        console.log(props.user)
         const requestOptions = {
             method: 'POST',
             credentials: 'include',
@@ -85,11 +83,9 @@ function Ranking(props) {
                     // once a comment is successfully added. 
                     // added it to my clinet too 
                     setAddcomment(false);
-                    setCommments(prevComments => [...prevComments, inputData])
+                    setCommments(prevComments => [...prevComments, inputData]);
                 }
-                return response.json()
-            }).then(data => {
-                console.log(data);
+                return response.json();
             })
             .catch(error => {
                 throw new Error(error);  // ***

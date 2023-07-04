@@ -179,7 +179,7 @@ const LoginSignUp = props => {
                 </form>
             </div>
             : isSigned ? <div className='div-signin'> { user } You're now signed in. Click to <button onClick={handleLogout}>Sign Out</button></div> 
-                : <button onClick={() => setShowform(true)} style={loginButton}>Click to Login</button> 
+                : <button onClick={() => setShowform(true)} >Click to Login</button> 
         } 
         </div>
     )

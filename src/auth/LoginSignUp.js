@@ -38,19 +38,38 @@ const LoginSignUp = props => {
 
     const [showForm, setShowform] = useState(false);
     const [isSigned, setisSigned] = useState(false);
+    const [user, setUser] = useState(props.user);    
     
-    const [user, setUser] = useState('');    
     
-    
+    // When ranking page is displayed, load comments for those
     useEffect(() => {
-        const isSigned = Object.keys(props.user).length !== 0;
-        if (isSigned) {
-            setUser(props.user);        
+        console.log('useEffect() called in loginsingup.js')
+        console.log(props.user);
+        setUser(props.user);
+       
+        // Object.keys(new Date()).length === 0
+        if (Object.keys(props.user).length === 0) {
+            console.log("logging out")
+            setisSigned(false);
+        } else {
+            setisSigned(true);
         }
+
     }, [props.user]);
 
-    async function handleCreate(e) {
+    function clearInputs() {
+        setNewusername('')
+        setNewpassword('')
+        setNewemail('')
+        setUsername('')
+        setPassword('')
+        setWarnings(Array(5).fill(''))
+    }
+
+
+    async function handleSignUp(e) {
         e.preventDefault();
+        console.log(`handleSignUp()....`)
         var temp = warnings;
 
         if (!newUsername || newUsername === '') {
@@ -82,20 +101,24 @@ const LoginSignUp = props => {
                     if (response.status === 201) { 
                         setisSigned(true);
                         setShowform(false);
+                        setUser(newUsername);
+                        clearInputs();
                     }
                     return response.json();
                 }).then(data => {
+                    console.log(data);
                     return data;
                 })
                 .catch(error => {
                     console.log("Error when submitting the response!");
                     throw new Error(error);  // ***
                 });  
+                
             props.handleLogin(result);
         }
     }
 
-    async function handleSubmit(e) {
+    async function handleLogin(e) {
         e.preventDefault();
         var temp = warnings;
         if (!username || username === '') {
@@ -127,8 +150,9 @@ const LoginSignUp = props => {
                 }).then(data => {
                     setShowform(false);
                     setisSigned(true);
-                    setUsername(username);
+                    setUser(user);
                     props.handleLogin(data);
+                    clearInputs()
                 })
                 .catch(error => {
                     console.log("Error when submitting the response!");
@@ -137,18 +161,42 @@ const LoginSignUp = props => {
         }
     }
 
-    async function handleLogout(e) {
+    async function handleSignOut(e) {
         e.preventDefault();
+        console.log('handleSignOut')
+        const url = preurl + '/users/deletetokens';
+        console.log(url);
+        await fetch(url, {
+            method: 'DELETE',
+            credentials: "include",
+        });
         setisSigned(false);
         props.handleSignout();
     };
+
+    // validate + get new accessToken
+    async function refreshToken() {
+        console.log('refreshToken')
+        const url = preurl + '/users/newaccesstoken';
+        console.log(url);
+        console.log(user);
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.accessToken}`
+            },
+        });
+        const result = await response.json();
+        props.refreshToken(); 
+    }
 
     return (
         <div> 
             { showForm ?
             <div key={props.user} className='container-login'>
                 <button onClick={() => setShowform(false)}>Close the Form </button>
-                <form style={signupStyle} onSubmit={handleCreate}>
+                <form style={signupStyle} onSubmit={handleSignUp}>
                     <label>Enter your Username:
                         <input type="text" value={newUsername} onChange={(e) => setNewusername(e.target.value)}/>
                         <p>{warnings[0]}</p>
@@ -164,7 +212,7 @@ const LoginSignUp = props => {
                     <input type="submit" value="Create an Account" />
                 </form>
 
-                <form style={loginStyle} onSubmit={handleSubmit}>
+                <form style={loginStyle} onSubmit={handleLogin}>
                     <label>Enter your Username:
                         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
                         <p>{warnings[3]}</p>
@@ -177,8 +225,13 @@ const LoginSignUp = props => {
 
                     <input type="submit" value="Login"/>
                 </form>
+
+                <button></button>
             </div>
-            : isSigned ? <div className='div-signin'> { user } You're now signed in. Click to <button onClick={handleLogout}>Sign Out</button></div> 
+            : isSigned ? 
+                <div className='div-signin'> {  } You're now signed in. Click to 
+                    <button onClick={handleSignOut}>Sign Out</button>
+                </div> 
                 : <button onClick={() => setShowform(true)} >Click to Login</button> 
         } 
         </div>

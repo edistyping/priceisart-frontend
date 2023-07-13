@@ -7,11 +7,48 @@
 		- storing it in the webapp will require my app to reload so maybe azure storage
 	- update postgres 
 
+- How to refresh Token
+
+	- Frontend makes a api call. 
+		- middleware api call checks AccessToken in the backend.
+			- if success, post or send back data
+			- if fail, send out an error
+		
+	- What to do when Frontend receives this error?
+		? Need to call a new Access Token
+			if RefreshToken is invalid, log in again
+		- 
+
+https://medium.com/@techsuneel99/jwt-authentication-in-nodejs-refresh-jwt-with-cookie-based-token-37348ff685bf 
+
+
+//////////////////////////////////////////////////////////////////////////
 - Limit 'POST comment' call to 3 + 1per day (one for each plus bonus)
+- jwt (refreshing accessToken)
+
+User makes a request.
+
+if the accessToken is valid everything is fine, backend does not check the refreshToken at all
+
+if the accessToken is invalid, error response
+
+if error response, get JWT auth with refreshToken
+
+backend checks refreshToken and issues new accessToken if refresh is valid, otherwise error response
+
+frontend retries the original request
+
+//////////////////////////////////////////////////////////////////////////
+
+
 
 - Lazy Load for images 
 
-- jwt (refreshing accessToken)
+
+
+
+
+
 
 Make a request with accessToken https://miro.medium.com/v2/resize:fit:1400/0*KZrqOGCKh6Ee48Bc.png
 	1. If accessToken is invalid (expired), send error 401. 

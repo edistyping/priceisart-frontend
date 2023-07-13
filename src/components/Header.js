@@ -3,6 +3,8 @@ import './Header.css';
 
 import LoginSignUp from '../auth/LoginSignUp';
 
+import { useJwt } from "react-jwt";
+
 function Header(props) {
 
     const currentView = props.currentView;
@@ -15,15 +17,19 @@ function Header(props) {
     useEffect(() => {
         const isSigned = Object.keys(props.user).length !== 0;
         if (isSigned) {
-            setUser(props.user.user.username);        
+            setUser(props.user);        
         }
     }, [props.user]);
 
 
     function handleLogin(data) {
         props.handleLogin(data);
+        console.log(data);
+
+
         setLogin(true);
     };
+     
     function handleSignout() {
         setLogin(false);
         props.handleLogout();
@@ -37,9 +43,9 @@ function Header(props) {
     }
     return (
         <div key={props.user} className={containerHeader}>
-            <h1>{login.toString()}PRICE IS ART!</h1>          
+            <h1>PRICE IS ART!</h1>          
             
-            <LoginSignUp user={user} preurl={props.preurl} handleLogin={handleLogin} handleSignout={handleSignout} /> 
+            <LoginSignUp user={props.user} preurl={props.preurl} handleLogin={handleLogin} handleSignout={handleSignout} /> 
             {(() => {
                 switch(currentView) {
                     case 'Start':

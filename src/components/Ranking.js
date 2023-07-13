@@ -7,6 +7,7 @@ import './Ranking.css';
 
 function Ranking(props) {
 
+    console.log('Ranking')
     const currentView = props.currentView;
     const preurl = props.preurl;
     const artworks_image = props.artworks_image; // For Artworks images
@@ -18,12 +19,11 @@ function Ranking(props) {
     const [addComment, setAddcomment] = useState(false);
 
     const [artworkComment, setArtworkComment] = useState(0);
-    const [lastScoring, setLastScoring] = useState(0);
 
     // When ranking page is displayed, load comments for those
     useEffect(() => {
         var fetchComments = async () => {
-            const url = props.preurl + '/artworks/comment'
+            const url = props.preurl + '/artworks/comments' // There are two POST comment calls. FIX IT
             const requestOptions = {
                 method: 'POST',
                 mode: 'cors',
@@ -35,6 +35,7 @@ function Ranking(props) {
             };
             const result = await fetch(url, requestOptions);
             const data = await result.json();
+            console.log(data); 
             if (Object.keys(data).length !== 0) {
                 setCommments(data);
             }
@@ -49,6 +50,7 @@ function Ranking(props) {
         if (!accessToken || accessToken === '') {
             console.log("You're not logged in!")
             return
+            //
         }
         setArtworkComment(id);
         setAddcomment(true);
@@ -64,12 +66,16 @@ function Ranking(props) {
         e.preventDefault();
         const comment = e.target.comment.value;
         const artwork_id = artworkComment; 
-        const inputData = { parent_id: null, artwork_id: artwork_id, comment: comment, score: 1, user_id: user.id, username: user.username};
+        const inputData = { parent_id: null, artwork_id: artwork_id, comment: comment, score: 1, user_id: user.user.id, username: user.user.username};
         const url = preurl + '/artworks/comment';
+        console.log('submitComment()....');
+        console.log(user);
 
+        
         const requestOptions = {
             method: 'POST',
-            credentials: 'include',
+            credentials: "include",
+
             headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.accessToken}`
@@ -84,14 +90,20 @@ function Ranking(props) {
                     // added it to my clinet too 
                     setAddcomment(false);
                     setCommments(prevComments => [...prevComments, inputData]);
+                } else if (response.status === 400) {
+                    console.log('RefreshToken expired... Require users to sign in again...');
+                    setAddcomment(false);
+                    props.handleLogout();
                 }
                 return response.json();
             })
             .catch(error => {
+                console.log('addingComment() error.....');
+                console.log(error);
                 throw new Error(error);  // ***
             });  
         
-    }
+        }
 
     return (
         <div>
@@ -125,7 +137,7 @@ function Ranking(props) {
                                             <div style={{height:"100%", overflowY: "scroll", backgroundColor: "red",}}>
                                                 { comments ? comments.filter(comment => comment.artwork_id === artwork.id).map((comment, j) => (
                                                     <div key={j} >
-                                                        <p key={j}>{comment.id} {comment.username}: {comment.comment} {comment.score}</p>
+                                                        <p >{comment.id} {comment.username}: {comment.comment}</p>                                                        
                                                     </div>
                                                 ))  : null }
                                             </div>

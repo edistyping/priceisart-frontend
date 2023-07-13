@@ -35,7 +35,6 @@ class App extends Component {
   }
 
   shuffle(n) {
-    // randomly generated N = 10 length array 0 <= A[N] <= 39
     var arr = Array.from({length: 10}, () => Math.floor(Math.random() * n));
     return arr;
   }
@@ -43,7 +42,6 @@ class App extends Component {
   // Call API to get Artworks data from Postgres
   async readArtworks() {
     try {
-      var startTime = performance.now()
       const url = this.state.preurl + '/artworks/'
       const res = await fetch(url, {
         method: 'GET',
@@ -53,13 +51,10 @@ class App extends Component {
         }
       });
       let res_json = await res.json();
-      var endTime = performance.now()
-      //console.log(`   Inside readArtworks()... ${endTime - startTime} milliseconds`)
       return res_json;
     }
     catch(error) {
       console.log("Error occurred in reading Artworks...")
-      console.log(error);
     }
   }
 
@@ -81,7 +76,6 @@ class App extends Component {
     }
     catch(error) {
       console.log("Error occurred in reading readTopRanking()...")
-      console.log(error);
       var endTime = performance.now()
       console.log(`   Inside readTopRanking()... ${endTime - startTime} milliseconds`)
     }
@@ -102,10 +96,6 @@ class App extends Component {
       } 
     }
     
-    this.setState({
-      // artworks_image: images,
-      // isDataLoaded: true,
-    })
     return images; 
   }  
 
@@ -130,8 +120,7 @@ class App extends Component {
     })
   }
   
-  // Need to Reset something except we load image to existing array
-  // shuffle artworks again
+
   // load (more) images using the new order
   async handleReplay() {
     var new_order = this.shuffle(this.state.artworks.length);
@@ -160,11 +149,14 @@ class App extends Component {
   }
 
   handleLogin(user) {
+    console.log('handleLogin() in App.js')
+    console.log(user)
+
     this.setState({ user: user });
   }
 
-  handleLogout() {
-    this.setState({ user: {}})
+  async handleLogout() {
+    this.setState({ user: {} })
   }
 
   // Switch between Result page and Ranking page
@@ -200,7 +192,7 @@ class App extends Component {
           { (this.state.currentView === "Result" || this.state.currentView === "Ranking") && 
           <>
             <Result currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />
-            <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking}/>
+            <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking} handleLogout={this.handleLogout}/>
           </>
           }
         </div>

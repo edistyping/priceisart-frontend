@@ -23,7 +23,7 @@ const Start = props => {
                 <button className="button-75" onClick={handleStart} >
                 <div className={!loading ? "content-start":"content-blank"} >
                 {
-                    <p>START{props.isDataLoaded}</p>
+                    <p>START</p>
                 }    
                 </div>
                 

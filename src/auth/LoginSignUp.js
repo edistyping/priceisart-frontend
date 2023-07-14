@@ -40,7 +40,6 @@ const LoginSignUp = props => {
     const [isSigned, setisSigned] = useState(false);
     const [user, setUser] = useState(props.user);    
     
-    
     // When ranking page is displayed, load comments for those
     useEffect(() => {
         console.log('useEffect() called in loginsingup.js')

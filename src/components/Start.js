@@ -7,8 +7,6 @@ import './Start.css';
     3. Start Retrieving arts and wait for response
     4. Start the game if successful. Show Error message if no data 
  */
-
-
 const Start = props => {
     const [loading, setLoading] = useState(false);
     function handleStart() {

@@ -7,21 +7,23 @@ import './Ranking.css';
 
 function Ranking(props) {
 
-    console.log('Ranking')
     const currentView = props.currentView;
     const preurl = props.preurl;
     const artworks_image = props.artworks_image; // For Artworks images
     const artworks_ranking = props.artworks_ranking; // To get correct 3 images from above two props
     const user = props.user;
-    const order = artworks_ranking.map(a => a.id); // Make an array using 'artworks_ranking'
 
-    const [comments, setCommments] = useState([]);
-    const [addComment, setAddcomment] = useState(false);
+    const [comments, setCommments] = useState([]); // Load comments for Top artworks
+    const [displayForm, setDisplayForm] = useState(false); // Display the form
+    const [artworkSelected, setArtworkSelected] = useState(null); // Selected artwork for commenting
+    const [warning, setWarning] = useState('');
 
-    const [artworkComment, setArtworkComment] = useState(0);
-
+    console.log('artwork_ranking below....')
+    console.log(artworks_ranking)
+    console.log(artworks_image)
     // When ranking page is displayed, load comments for those
     useEffect(() => {
+        const order = props.artworks_ranking.map(a => a.id);
         var fetchComments = async () => {
             const url = props.preurl + '/artworks/comments' // There are two POST comment calls. FIX IT
             const requestOptions = {
@@ -35,47 +37,42 @@ function Ranking(props) {
             };
             const result = await fetch(url, requestOptions);
             const data = await result.json();
-            console.log(data); 
             if (Object.keys(data).length !== 0) {
                 setCommments(data);
             }
         }            
         fetchComments().catch(console.error);        
-    }, [props.artworks_ranking]);
-
+    }, [props.artworks_ranking, props.preurl]);
+    
     function handleShowForm(e, id) {
         e.preventDefault();
 
         const accessToken = user.accessToken;
         if (!accessToken || accessToken === '') {
             console.log("You're not logged in!")
+            setWarning('Please login to comment');
             return
-            //
         }
-        setArtworkComment(id);
-        setAddcomment(true);
+
+        setArtworkSelected(id);
+        setDisplayForm(true);
     }
     function handleHideForm(e) {
         e.preventDefault();
-        setAddcomment(false);
+        setDisplayForm(false);
     }
 
     async function submitComment(e) {
-        // add a comment
         // parent_id, artwork_id, comment, score, user_id, username
         e.preventDefault();
-        const comment = e.target.comment.value;
-        const artwork_id = artworkComment; 
-        const inputData = { parent_id: null, artwork_id: artwork_id, comment: comment, score: 1, user_id: user.user.id, username: user.user.username};
-        const url = preurl + '/artworks/comment';
-        console.log('submitComment()....');
-        console.log(user);
 
-        
+        const comment = e.target.comment.value;
+        const artwork_id = artworkSelected; 
+        const inputData = { parent_id: null, artwork_id: artwork_id, comment: comment, score: 1, user_id: user.user.id, username: user.user.username};
+        const url = preurl + '/artworks/comment';        
         const requestOptions = {
             method: 'POST',
             credentials: "include",
-
             headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.accessToken}`
@@ -86,13 +83,12 @@ function Ranking(props) {
         await fetch(url, requestOptions)
             .then(response => {
                 if (response.status === 200) {
-                    // once a comment is successfully added. 
-                    // added it to my clinet too 
-                    setAddcomment(false);
+                    // Once a comment is added to DB, add it to hook variable too 
+                    setDisplayForm(false);
                     setCommments(prevComments => [...prevComments, inputData]);
                 } else if (response.status === 400) {
                     console.log('RefreshToken expired... Require users to sign in again...');
-                    setAddcomment(false);
+                    setDisplayForm(false);
                     props.handleLogout();
                 }
                 return response.json();
@@ -102,7 +98,6 @@ function Ranking(props) {
                 console.log(error);
                 throw new Error(error);  // ***
             });  
-        
         }
 
     return (
@@ -144,12 +139,13 @@ function Ranking(props) {
                                         </div>
 
                                         <div className='comment-bottom-container'>
+                                            <p>{warning}</p>
                                             <button onClick={e => handleShowForm(e, artwork.id)}>Add a comment</button>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                { addComment && artworkComment === artwork.id ?
+                                { displayForm && artworkSelected === artwork.id ?
                                     <div className='div-add-comment'>
                                         <form className='div-add-comment' onSubmit={submitComment}>
                                             <p>{artwork.name}</p>

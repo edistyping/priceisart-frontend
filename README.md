@@ -2,22 +2,27 @@
 ## https://priceisart.com/
 
 # To Do	
+In Ranking, artwork is not matching with Game/Result (id is -1 or something. )
+	- Game/Result: id: 	53 Boy and Dog
+	- Rank: id: 		52|00 Flag
+
+	- conflict 
+		- In database, ID starts at 1 
+		- In Code, Array starts at 0
+		  
+
+Update "You're now signed in." to include username
+
+
+
 - Implementing OpenAI 
 	- generate an image, download it, store it in my web app?
 		- storing it in the webapp will require my app to reload so maybe azure storage
 	- update postgres 
+- Convert to Typescript Typescript Typescript Typescript Typescript 
+- Consider using CDN 
 
-- How to refresh Token
 
-	- Frontend makes a api call. 
-		- middleware api call checks AccessToken in the backend.
-			- if success, post or send back data
-			- if fail, send out an error
-		
-	- What to do when Frontend receives this error?
-		? Need to call a new Access Token
-			if RefreshToken is invalid, log in again
-		- 
 
 https://medium.com/@techsuneel99/jwt-authentication-in-nodejs-refresh-jwt-with-cookie-based-token-37348ff685bf 
 

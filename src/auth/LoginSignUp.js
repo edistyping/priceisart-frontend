@@ -13,18 +13,6 @@ const loginStyle = {
     flexDirection: 'column',
     height: '40%',
 };
-const loginButton = {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    margin: '1% 1% 0 0',
-    background: '#800000',
-    border: 'none',
-    borderRadius: '30px',
-    color: 'white',
-    fontSize: "1.5rem",
-    padding: '15px',
-}
 
 const LoginSignUp = props => {
     
@@ -34,7 +22,7 @@ const LoginSignUp = props => {
     const [newEmail, setNewemail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [warnings, setWarnings] = useState(Array(5).fill(''));
+    const [warnings, setWarnings] = useState(Array(7).fill(''));
 
     const [showForm, setShowform] = useState(false);
     const [isSigned, setisSigned] = useState(false);
@@ -42,19 +30,14 @@ const LoginSignUp = props => {
     
     // When ranking page is displayed, load comments for those
     useEffect(() => {
-        console.log('useEffect() called in loginsingup.js')
-        console.log(props.user);
         setUser(props.user);
-       
-        // Object.keys(new Date()).length === 0
         if (Object.keys(props.user).length === 0) {
-            console.log("logging out")
             setisSigned(false);
         } else {
             setisSigned(true);
         }
+    }, [props.user, warnings]);
 
-    }, [props.user]);
 
     function clearInputs() {
         setNewusername('')
@@ -65,11 +48,9 @@ const LoginSignUp = props => {
         setWarnings(Array(5).fill(''))
     }
 
-
     async function handleSignUp(e) {
         e.preventDefault();
-        console.log(`handleSignUp()....`)
-        var temp = warnings;
+        var temp = [...warnings];
 
         if (!newUsername || newUsername === '') {
             temp[0] = "Please enter username";
@@ -80,7 +61,6 @@ const LoginSignUp = props => {
         if (!newEmail || newEmail === '') {
             temp[2] = "Please enter email";
         }
-        setWarnings(prevWarnings => [...prevWarnings, ...temp])
         
         if (newUsername && newEmail && newPassword) {
             const inputData = { username: newUsername, password: newPassword, email: newEmail};
@@ -97,39 +77,38 @@ const LoginSignUp = props => {
 
             const result = await fetch(url, requestOptions)
                 .then(response => {
+                    console.log(response.status);
                     if (response.status === 201) { 
                         setisSigned(true);
                         setShowform(false);
                         setUser(newUsername);
                         clearInputs();
+                    } else if (response.status === 409) {
+                        console.log("Error when submitting the response!");
+                        temp[5] = 'Username Exists! Please try anothero ne :-D'
+                        console.log(temp);
                     }
                     return response.json();
-                }).then(data => {
-                    console.log(data);
-                    return data;
                 })
-                .catch(error => {
-                    console.log("Error when submitting the response!");
-                    throw new Error(error);  // ***
-                });  
                 
-            props.handleLogin(result);
-        }
+                props.handleLogin(result);
+            } 
+        setWarnings(temp);
+            
     }
 
     async function handleLogin(e) {
         e.preventDefault();
-        var temp = warnings;
+        var temp = [...warnings];
         if (!username || username === '') {
             temp[3] = "Please enter username";
         }
         if (!password || password === '') {
             temp[4] = "Please enter password";
         }
-        setWarnings(prevWarnings => [...prevWarnings, ...temp]);
 
         if (username && password) {
-            const inputData = { username: username, password: password};
+            const inputData = { username: username, password: password };
             const url = preurl + '/users/login';
             const requestOptions = {
                 method: 'POST',
@@ -140,31 +119,27 @@ const LoginSignUp = props => {
                 },
                 body: JSON.stringify(inputData)
             };
-
             await fetch(url, requestOptions)
                 .then(response => {
-                    if (response.status === 201) {
-                    }
-                    return response.text()
+                    return response.json()
                 }).then(data => {
-                    setShowform(false);
-                    setisSigned(true);
-                    setUser(user);
-                    props.handleLogin(data);
-                    clearInputs()
+                    if (data.user) {
+                        setShowform(false);
+                        setisSigned(true);
+                        setUser(user);
+                        props.handleLogin(data);
+                        clearInputs();
+                    } else {
+                        temp[6] = 'Please Try Again or Make a new account'
+                    }
                 })
-                .catch(error => {
-                    console.log("Error when submitting the response!");
-                    throw new Error("HTTP error " + error);  // ***
-            });  
         }
+        setWarnings(temp);
     }
 
     async function handleSignOut(e) {
         e.preventDefault();
-        console.log('handleSignOut')
         const url = preurl + '/users/deletetokens';
-        console.log(url);
         await fetch(url, {
             method: 'DELETE',
             credentials: "include",
@@ -172,23 +147,6 @@ const LoginSignUp = props => {
         setisSigned(false);
         props.handleSignout();
     };
-
-    // validate + get new accessToken
-    async function refreshToken() {
-        console.log('refreshToken')
-        const url = preurl + '/users/newaccesstoken';
-        console.log(url);
-        console.log(user);
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.accessToken}`
-            },
-        });
-        const result = await response.json();
-        props.refreshToken(); 
-    }
 
     return (
         <div> 
@@ -208,6 +166,8 @@ const LoginSignUp = props => {
                         <input type="text" value={newEmail} onChange={(e) => setNewemail(e.target.value)}/>
                         <p>{warnings[2]}</p>
                     </label>
+
+                    <p>{warnings[5]}</p>
                     <input type="submit" value="Create an Account" />
                 </form>
 
@@ -222,10 +182,10 @@ const LoginSignUp = props => {
                         <p>{warnings[4]}</p>
                     </label>
 
+                    <p>{warnings[6]}</p>
                     <input type="submit" value="Login"/>
                 </form>
 
-                <button></button>
             </div>
             : isSigned ? 
                 <div className='div-signin'> {  } You're now signed in. Click to 

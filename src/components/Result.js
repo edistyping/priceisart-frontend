@@ -13,7 +13,6 @@ function Result(props) {
   const userResponses = props.userResponses;
   const numberOfQuestions = order.length / 2;
   const currentView = props.currentView;
-  const user = props.user;
 
   const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0); // ex: 7 out of 10 => 7
   const [correctAnswers, setCorrectAnswers] = useState([]); // ex: ['Correct','Incorrect', ...]
@@ -21,10 +20,9 @@ function Result(props) {
 
   useEffect(() => {
     checkCorrectAnswers(artworks, order, userResponses);
-  }, [props.userResponses]);
+  }, [artworks, order, userResponses]);
 
   function handleSubmit() {
-    // setSubmitted(true); // This function is in below two functions upon success
     submitVote(); 
     submitResponse();
   }
@@ -63,7 +61,6 @@ function Result(props) {
 
   // Submitting data. API will do its own thing and adding or incrementing exisitng one 
   function submitVote() {    
-    
     var inputData = [];
     var i = 0;
     for (i = 0; i < userResponses.length; i++) {
@@ -93,11 +90,11 @@ function Result(props) {
     fetch(url, requestOptions)
     .then(response => {
       if (response.ok){
-        setSubmitted(1);
+        setSubmitted(true);
       }
     })
     .catch(error => {
-      throw new Error("HTTP error " + error);  // ***
+      throw new Error("HTTP error " + error); 
     });    
 
   }
@@ -106,8 +103,8 @@ function Result(props) {
     const artworks = props.artworks;
     const order = props.order;
     const userResponses = props.userResponses;
-    const user = props.user ? props.user.user.id : 0;
-
+    const user = Object.keys(props.user).length !== 0 ? props.user.user.id : 0;
+    
     // prepare data 
     var inputData = [];
     for (let i = 0; i < userResponses.length; i++) {

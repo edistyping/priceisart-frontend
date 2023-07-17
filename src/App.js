@@ -13,7 +13,6 @@ class App extends Component {
     super(props);
     this.state = {
       isDataLoaded: false,
-      appStart: false,
       preurl: (window.location.hostname === "localhost") ? "http://localhost:3000":"https://priceisart-express.azurewebsites.net", 
       artworks: [],
       artworks_order: [], 
@@ -21,7 +20,6 @@ class App extends Component {
       artworks_userResponse: [], 
       artworks_ranking: [],
       currentView: "Start",
-
       user: {},
     };
 
@@ -31,7 +29,6 @@ class App extends Component {
     this.handleShowRanking = this.handleShowRanking.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-
   }
 
   shuffle(n) {
@@ -60,9 +57,7 @@ class App extends Component {
 
   // Call API to get Top-10 data from Postgres
   async readTopRanking() {
-    var startTime = performance.now()
     try {
-
       const url_ranking = this.state.preurl + "/artworks/ranking/"  
       const res_ranking = await fetch(url_ranking, {
         method: 'GET',
@@ -76,11 +71,8 @@ class App extends Component {
     }
     catch(error) {
       console.log("Error occurred in reading readTopRanking()...")
-      var endTime = performance.now()
-      console.log(`   Inside readTopRanking()... ${endTime - startTime} milliseconds`)
     }
   }
-
 
   // load images to 'artwork_images'; skip if already added
   async loadImages(artworks, order, n) {
@@ -89,25 +81,25 @@ class App extends Component {
     for(i = 0; i < n; i++) {      
       if (artworks[order[i]] !== undefined && (images[order[i]] === "" || images[order[i]] === undefined)){
         var img=new Image();
+        
         const full_path = this.state.preurl + '/resources/artworks/' + artworks[order[i]].file_path;
         img.src=full_path;
         img.id=artworks[order[i]].id; 
         images[order[i]] = img;
       } 
-    }
-    
+    }    
+    console.log('loadImages..')
+    console.log(order);
+    console.log(images);
     return images; 
   }  
 
   // Get 10 random images for Game. Also, get top 10 images for Ranking 
   async handleStart() {    
-  
-    // Get artworks data and load 10 random images using 'newOrder'
     var result = await this.readArtworks();
     if (result === undefined) {
       alert("The app is not currently available... There must be some issue in the backend")
     }
-
     const newOrder = this.shuffle(result.length);
     const images = await this.loadImages(result, newOrder, 10);
 
@@ -120,12 +112,10 @@ class App extends Component {
     })
   }
   
-
   // load (more) images using the new order
   async handleReplay() {
     var new_order = this.shuffle(this.state.artworks.length);
     await this.loadImages(this.state.artworks, new_order, 10);
-
     this.setState({ 
       artworks_userResponse: [],
       artworks_order: new_order,
@@ -135,7 +125,6 @@ class App extends Component {
 
   // Switch to Result for first time or back from Ranking
   handleGameOver(response) {
-
     if (response) {
       this.setState({ 
         currentView: "Result",
@@ -149,32 +138,34 @@ class App extends Component {
   }
 
   handleLogin(user) {
-    console.log('handleLogin() in App.js')
-    console.log(user)
-
     this.setState({ user: user });
   }
 
   async handleLogout() {
-    this.setState({ user: {} })
+    this.setState({ user: {} });
   }
 
-  // Switch between Result page and Ranking page
   // Retrieve data for Top Ranking artworks again and load it (if needed)
   async handleShowRanking() {
+      console.log('handleShowRanking called...')
       const artworks_ranking = await this.readTopRanking();
       const topOrder = artworks_ranking.map(a => a.artwork_id);
-      await this.loadImages(this.state.artworks, topOrder, 5);
+
+      console.log(artworks_ranking);
+
+      await this.loadImages(this.state.artworks, topOrder, 3); // fetch 5 images
       var temp = [];
       for (let i = 0; i < topOrder.length; i++) {
         // Get artwork details for topOrder
         var obj = this.state.artworks.find(item => {
-          return item.id === topOrder[i]          
+          return item.id === topOrder[i];          
         })
         obj.count = artworks_ranking[i].count;
         obj.win = artworks_ranking[i].win;
         temp.push(obj);
       }
+      console.log('meow: ')
+      console.log(temp);
       
       this.setState({ 
         artworks_ranking: temp,
@@ -186,19 +177,17 @@ class App extends Component {
     return (
       <div className="App">
           <Header user={this.state.user} preurl={this.state.preurl} currentView={this.state.currentView} handleLogin={this.handleLogin} handleLogout={this.handleLogout} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
-
           { this.state.currentView === "Start" && <Start handleStart = {this.handleStart} /> }
-          { this.state.currentView === "Game" && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver={this.handleGameOver} /> }
+          { this.state.currentView === "Game" && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver={this.handleGameOver} /> }          
           { (this.state.currentView === "Result" || this.state.currentView === "Ranking") && 
-          <>
-            <Result currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />
-            <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking} handleLogout={this.handleLogout}/>
-          </>
+            <>
+              <Result currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />
+              <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking} handleLogout={this.handleLogout}/>
+            </>
           }
         </div>
     )
   }
 }
 
-//{this.state.currentView === "Game" && this.state.isDataLoaded === true}
 export default App;

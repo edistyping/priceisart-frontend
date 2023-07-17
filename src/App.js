@@ -32,10 +32,12 @@ class App extends Component {
   }
 
   shuffle(n) {
+    console.log(n);
     var arr = Array.from({length: 10}, () => Math.floor(Math.random() * n));
     return arr;
   }
-  
+
+
   // Call API to get Artworks data from Postgres
   async readArtworks() {
     try {
@@ -88,9 +90,7 @@ class App extends Component {
         images[order[i]] = img;
       } 
     }    
-    console.log('loadImages..')
-    console.log(order);
-    console.log(images);
+
     return images; 
   }  
 
@@ -100,9 +100,13 @@ class App extends Component {
     if (result === undefined) {
       alert("The app is not currently available... There must be some issue in the backend")
     }
-    const newOrder = this.shuffle(result.length);
+    const newOrder = this.shuffle(result.length - 1); // 0 to n - 1  
     const images = await this.loadImages(result, newOrder, 10);
 
+    console.log(`handleStart...`)
+    console.log(`newOrder: ${newOrder}`)
+    console.log(images);
+    
     this.setState({
       artworks: result,
       artworks_order: newOrder,      
@@ -148,27 +152,19 @@ class App extends Component {
   // Retrieve data for Top Ranking artworks again and load it (if needed)
   async handleShowRanking() {
       console.log('handleShowRanking called...')
+
       const artworks_ranking = await this.readTopRanking();
-      const topOrder = artworks_ranking.map(a => a.artwork_id);
 
-      console.log(artworks_ranking);
+      // '-1' is needed because 'artwork' variable starts at 0 whereas databsae start at 0 
+      const topOrder = artworks_ranking.map(a => a.artwork_id - 1); // index
+ 
+      const images = await this.loadImages(this.state.artworks, topOrder, 3); // fetch 5 images
 
-      await this.loadImages(this.state.artworks, topOrder, 3); // fetch 5 images
-      var temp = [];
-      for (let i = 0; i < topOrder.length; i++) {
-        // Get artwork details for topOrder
-        var obj = this.state.artworks.find(item => {
-          return item.id === topOrder[i];          
-        })
-        obj.count = artworks_ranking[i].count;
-        obj.win = artworks_ranking[i].win;
-        temp.push(obj);
-      }
-      console.log('meow: ')
-      console.log(temp);
+      console.log('Final output for Ranking... ')
       
       this.setState({ 
-        artworks_ranking: temp,
+        artworks_ranking: artworks_ranking,
+        artworks_image: images,
         currentView: "Ranking",
       });    
   }
@@ -182,7 +178,7 @@ class App extends Component {
           { (this.state.currentView === "Result" || this.state.currentView === "Ranking") && 
             <>
               <Result currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />
-              <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks_image={this.state.artworks_image} artworks_ranking={this.state.artworks_ranking} handleLogout={this.handleLogout}/>
+              <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} artworks_ranking={this.state.artworks_ranking} artworks_image={this.state.artworks_image} handleLogout={this.handleLogout}/>
             </>
           }
         </div>

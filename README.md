@@ -10,6 +10,9 @@ In Ranking, artwork is not matching with Game/Result (id is -1 or something. )
 		- In database, ID starts at 1 
 		- In Code, Array starts at 0
 		  
+	App.js 162/163 artworks_ranking data is different (0, 72 93)
+	Ranking (id\temp): 1|0    74|73    95|94
+
 
 Update "You're now signed in." to include username
 

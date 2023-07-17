@@ -180,7 +180,7 @@ function Result(props) {
                           <div className="content-result-body" style={{ border: (correctAnswers[i] === order[i * 2 + 1] ? "solid 10px lime" : (correctAnswers[i] === -1 && userResponses[i] === order[i * 2 + 1].toString() ) ? "solid 10px red" : "solid 10px inherit") }}>
                             <div className="content-result-header">
                               <h2><i>{artworks[order[i * 2 + 1]].name}</i></h2>
-                              <h3> By {artworks[order[i * 2]].artist}</h3>
+                              <h3> By {artworks[order[i * 2 + 1]].artist}</h3>
                               <h4>${parseFloat(artworks[order[i * 2 + 1]].adjusted_price)} Million</h4>
                             </div>
                             <div className="content-result-image" >

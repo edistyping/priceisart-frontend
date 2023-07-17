@@ -10,8 +10,10 @@ function Ranking(props) {
     const currentView = props.currentView;
     const preurl = props.preurl;
     const artworks_image = props.artworks_image; // For Artworks images
+    const artworks = props.artworks;
     const artworks_ranking = props.artworks_ranking; // To get correct 3 images from above two props
     const user = props.user;
+
 
     const [comments, setCommments] = useState([]); // Load comments for Top artworks
     const [displayForm, setDisplayForm] = useState(false); // Display the form
@@ -19,8 +21,10 @@ function Ranking(props) {
     const [warning, setWarning] = useState('');
 
     console.log('artwork_ranking below....')
+    console.log(artworks);
     console.log(artworks_ranking)
     console.log(artworks_image)
+
     // When ranking page is displayed, load comments for those
     useEffect(() => {
         const order = props.artworks_ranking.map(a => a.id);
@@ -69,6 +73,7 @@ function Ranking(props) {
         const comment = e.target.comment.value;
         const artwork_id = artworkSelected; 
         const inputData = { parent_id: null, artwork_id: artwork_id, comment: comment, score: 1, user_id: user.user.id, username: user.user.username};
+        
         const url = preurl + '/artworks/comment';        
         const requestOptions = {
             method: 'POST',
@@ -79,7 +84,6 @@ function Ranking(props) {
             },
             body: JSON.stringify(inputData)
         };
-
         await fetch(url, requestOptions)
             .then(response => {
                 if (response.status === 200) {
@@ -115,15 +119,15 @@ function Ranking(props) {
                                 <div key={i} className='content-ranking-wrapper'>
                                 <div className='content-ranking-left'>
                                 {/*    <img key={`frame-${i}`} id="img-frame" src={require('../static/frames/frame1.png')} alt="frame"  /> */}
-                                    <img key={artwork.name} src={artworks_image[artwork.id].src} alt="right one"></img>
+                                    <img key={artwork.name} src={artworks_image[artwork.artwork_id - 1].src} alt="right one"></img>
                                 </div>
 
                                 <div  className='content-ranking-right'>
                                     <div className='content-ranking-info'>
-                                        <h3 id="name"> {artwork.id}|{i}  {artwork.name}</h3>
-                                        <p id="artistyear">{artwork.artist} in {artwork.year}</p>
-                                        <p id="dateofsale">Sold on {artwork.date_of_sale}</p>
-                                        <p id="price">${parseFloat(artwork.adjusted_price)} Millions</p>
+                                        <h3 id="name"> {artworks[artwork.artwork_id - 1].name}</h3>
+                                        <p id="artistyear">{artworks[artwork.artwork_id - 1].artist} in {artworks[artwork.artwork_id - 1].year}</p>
+                                        <p id="dateofsale">Sold on {artworks[artwork.artwork_id - 1].date_of_sale}</p>
+                                        <p id="price">${parseFloat(artworks[artwork.artwork_id - 1].adjusted_price)} Millions</p>
                                         <p id="counts"># Clicked: <span>{artwork.count}</span></p> 
                                     </div>
 

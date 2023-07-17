@@ -11,6 +11,8 @@ function Game(props) {
     const order = props.order; 
     const numberOfImages = order.length;
     
+
+
     const [index, setIndex] = useState(0);
     const [userResponses, setUserResponses] = useState([]);
 
@@ -36,23 +38,18 @@ function Game(props) {
             <div className="Game">
                 <div className="container-images" >
                     <div className="section-image" onClick={handleSelect} id={[order[index]]} >
-                        <h3><i>{artworks[order[index]].name}</i> {artworks[order[index]].artist} {artworks[order[index]].year} </h3>
-
-                        <p> Index: {index} | order[index]: {order[index]} | artworks[{order[index]}].id: {artworks[order[index]].id}  </p>
-                        
+                        <h3><i>{artworks[order[index]].name}</i> {artworks[order[index]].artist} {artworks[order[index]].year} </h3>                        
                         <img key={index} src={artworks_image[order[index]].src} alt="left one"></img>
-                        <p>{console.log(artworks_image)}</p>
                     </div>
                     <div className="section-image" onClick={handleSelect} id={[order[index + 1]]} >
                         <h3><i>{artworks[order[index + 1]].name}</i> {artworks[order[index + 1]].artist} {artworks[order[index + 1]].year} </h3>
-                        <p> Index: {index + 1} | order[index]: {order[index + 1]} | artworks[{order[index + 1]}].id: {artworks[order[index]].id}  </p>
                         <img key={index + 1} src={artworks_image[order[index + 1]].src} alt="right one"></img>
                     </div>
                 </div>            
             </div>
-        </div>
-        
+        </div>        
     );
 }
 
 export default Game;
+

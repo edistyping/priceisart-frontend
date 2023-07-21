@@ -30,11 +30,11 @@ const LoginSignUp = props => {
     
     // When ranking page is displayed, load comments for those
     useEffect(() => {
-        setUser(props.user);
         if (Object.keys(props.user).length === 0) {
             setisSigned(false);
         } else {
             setisSigned(true);
+            setUser(props.user);
         }
     }, [props.user, warnings]);
 
@@ -86,11 +86,10 @@ const LoginSignUp = props => {
                     } else if (response.status === 409) {
                         console.log("Error when submitting the response!");
                         temp[5] = 'Username Exists! Please try anothero ne :-D'
-                        console.log(temp);
                     }
                     return response.json();
                 })
-                
+
                 props.handleLogin(result);
             } 
         setWarnings(temp);
@@ -188,7 +187,8 @@ const LoginSignUp = props => {
 
             </div>
             : isSigned ? 
-                <div className='div-signin'> {  } You're now signed in. Click to 
+                <div className='div-signin'>
+                    <h3>Greeting to { user.user ? user.user.username : ""}!</h3> 
                     <button onClick={handleSignOut}>Sign Out</button>
                 </div> 
                 : <button onClick={() => setShowform(true)} >Click to Login</button> 

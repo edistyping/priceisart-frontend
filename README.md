@@ -2,18 +2,34 @@
 ## https://priceisart.com/
 
 # To Do	
-Need to use LocalStorage
-Update "You're now signed in." to include username
+Implement upvoting/downvoting a comment
+	= Not Now
+Pop-up message for Add a Comment is only showing for top button  
+Cache image in the browser?
+	- id: image
+	- update artwork_images on componentDidMount for existing ones?
+
+1. Limit 20 submissions 1 hour;
+	- actually, do some calculations 
+	- DAU * all that 
+	=> Daily Average Users, Average image size, Average Read per Min/Hour/Day
+		=> data for read, write, image
+	=> 500 users/day,  500kb/image, 
+	=> 30 games / hour 
+		=> READ: 10 * 30 max images + 1 * 30 Artworks calls, 1 * 30 Response (Ranking), 30 comments 
+		=> Write: 1 * 15 max comments, 
 
 
 
+3. Lazy loading for picture 
+	
 - Implementing OpenAI 
 	- generate an image, download it, store it in my web app?
 		- storing it in the webapp will require my app to reload so maybe azure storage
 	- update postgres 
 - Convert to Typescript Typescript Typescript Typescript Typescript 
 - Consider using CDN 
-
+	- For what thu? Frontend, backend, image? 
 
 
 https://medium.com/@techsuneel99/jwt-authentication-in-nodejs-refresh-jwt-with-cookie-based-token-37348ff685bf 
@@ -64,31 +80,6 @@ I usually go with 1 month refresh tokens and 15 minute access tokens. There is n
 ########################
 
 
-Cache is not setting at Frontend browser -> Fixed;  
-1. Fixing adding comments
-	= Fixed; Added a hook variable for tracking and added separate function for show/hide 
-2. Implement upvoting/downvoting a comment
-	= Not Now
-4. Allow only logged in users to submit a comment 
-	= Updated Express
-	- when user click 'Add a commenet' button without being logged in, throw error message 
-	- Now update frontend to include jwt token
-5. Refreshing the page keeps the login session
-	- sessionStorage (if users refreshes, keep him logged in)
-6. Turn off Login form if anywhere else is touched. 
-	- can other components be non-clickable when Login Form is opened?
-7. Pop-up message for Add a Comment is only showing for top button  
-
-1. Limit 5 times per 15 mins;
-	- actually, do some calculations 
-	- DAU * all that 
-	=> Daily Average Users: 1 Million
-	=> On Average 5 games a day
-
-	// can't upvote same comments more than 3 times in a 60 mins
-
-3. Lazy loading for picture 
-	
 
 ![Trust the Process!](src/static/resources/process.png?raw=true)
 
@@ -200,3 +191,13 @@ https://www.parkwestgallery.com/browse-artwork/gallery/matt-beyrer
 + Need a way to refresh data for 'Ranking' page. 
     - Might need to create a separate function
     - Call it whenever a 'Ranking' button is clicked or other way
++ Need to use LocalStorage
++ Update "You're now signed in." to include username
++ Need to fix user_id for insertResponse(); 
+	- Need to retrieve and pass out user_id for createUser, signIn
++ Allow only logged in users to submit a comment 
+	= Updated Express
+	- when user click 'Add a commenet' button without being logged in, throw error message 
+	- Now update frontend to include jwt token
++ Refreshing the page keeps the login session
+	- sessionStorage (if users refreshes, keep him logged in)

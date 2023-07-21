@@ -21,7 +21,7 @@ class App extends Component {
       artworks_userResponse: [], 
       artworks_ranking: [],
       currentView: "Start",
-      user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {},
+      user: {},
     };
 
     this.handleStart = this.handleStart.bind(this);
@@ -38,6 +38,39 @@ class App extends Component {
     return arr;
   }
 
+  async componentDidMount() {
+    // authenicate the accessToken
+    console.log('componentDidUpdate....');
+    const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {}
+    console.log(user)
+
+    const url = this.state.preurl + '/users/authToken';        
+    const requestOptions = {
+        method: 'GET',
+        credentials: "include",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
+        },
+    };
+
+    await fetch(url, requestOptions).then(response => {
+      if (response.status === 400 || response.status === 401) {
+        console.log('accessToken/refreshToken is not valid...')
+        this.handleLogout({});
+      } else if (response.status === 200) {
+        console.log('accessToken is ok')
+        return response.json()
+      }
+    }).then(result => {
+      if (result) {
+        console.log('logging in');
+        user.accessToken = result.accessToken;
+        this.handleLogin(user);
+      }
+    })
+
+  }
 
   // Call API to get Artworks data from Postgres
   async readArtworks() {

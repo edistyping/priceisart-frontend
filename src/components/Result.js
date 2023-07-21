@@ -105,15 +105,17 @@ function Result(props) {
     const artworks = props.artworks;
     const order = props.order;
     const userResponses = props.userResponses;
-    const user = Object.keys(props.user).length !== 0 ? props.user.user.id : 0;
- 
+    const user_id = Object.keys(props.user).length !== 0 ? props.user.user.id : 0;
+    
+    console.log(`submitResponse for ${user_id}`)
+
     // prepare data 
     var inputData = [];
     for (let i = 0; i < userResponses.length; i++) {
       var temp = {
         artwork_id: Number(artworks[order[i * 2]].id),
         other_artwork_id: Number(artworks[order[i * 2 + 1]].id),
-        user_id: user,
+        user_id: user_id,
         win: artworks[order[i * 2]].adjusted_price > artworks[order[i * 2 + 1]].adjusted_price ? true : false 
       }
       inputData.push(temp);      

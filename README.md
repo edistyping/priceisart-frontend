@@ -2,18 +2,7 @@
 ## https://priceisart.com/
 
 # To Do	
-In Ranking, artwork is not matching with Game/Result (id is -1 or something. )
-	- Game/Result: id: 	53 Boy and Dog
-	- Rank: id: 		52|00 Flag
-
-	- conflict 
-		- In database, ID starts at 1 
-		- In Code, Array starts at 0
-		  
-	App.js 162/163 artworks_ranking data is different (0, 72 93)
-	Ranking (id\temp): 1|0    74|73    95|94
-
-
+Need to use LocalStorage
 Update "You're now signed in." to include username
 
 

@@ -23,7 +23,7 @@ function Result(props) {
   }, [artworks, order, userResponses]);
 
   function handleSubmit() {
-    submitVote(); 
+    // submitVote(); 
     submitResponse();
   }
 
@@ -92,11 +92,13 @@ function Result(props) {
       if (response.ok){
         setSubmitted(true);
       }
-    })
+      return response.json();
+    }).then(result => {
+        console.log(result);
+    }) 
     .catch(error => {
       throw new Error("HTTP error " + error); 
     });    
-
   }
 
   function submitResponse() {
@@ -104,7 +106,7 @@ function Result(props) {
     const order = props.order;
     const userResponses = props.userResponses;
     const user = Object.keys(props.user).length !== 0 ? props.user.user.id : 0;
-    
+ 
     // prepare data 
     var inputData = [];
     for (let i = 0; i < userResponses.length; i++) {
@@ -133,7 +135,10 @@ function Result(props) {
       if (response.ok){
         setSubmitted(1);
       }
-    })
+      return response.json();
+    }).then(result => {
+      console.log(result);
+    }) 
     .catch(error => {
       console.log("Error when submitting the response!")
       throw new Error("HTTP error " + error);  // ***

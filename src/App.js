@@ -11,6 +11,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+      
     this.state = {
       isDataLoaded: false,
       preurl: (window.location.hostname === "localhost") ? "http://localhost:3000":"https://priceisart-express.azurewebsites.net", 
@@ -20,7 +21,7 @@ class App extends Component {
       artworks_userResponse: [], 
       artworks_ranking: [],
       currentView: "Start",
-      user: {},
+      user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {},
     };
 
     this.handleStart = this.handleStart.bind(this);
@@ -142,10 +143,12 @@ class App extends Component {
   }
 
   handleLogin(user) {
+    localStorage.setItem('user', JSON.stringify(user));
     this.setState({ user: user });
   }
 
   async handleLogout() {
+    localStorage.clear('user');
     this.setState({ user: {} });
   }
 

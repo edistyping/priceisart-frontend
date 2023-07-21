@@ -47,6 +47,14 @@ function Ranking(props) {
         }            
         fetchComments().catch(console.error);        
     }, [props.artworks_ranking, props.preurl]);
+
+    useEffect(() => {
+        console.log('Raning useEffect2 called...')
+        console.log(props.user);
+        if (props.user)
+            setWarning('')
+
+    }, [props.user]);
     
     function handleShowForm(e, id) {
         e.preventDefault();
@@ -152,7 +160,7 @@ function Ranking(props) {
                                 { displayForm && artworkSelected === artwork.id ?
                                     <div className='div-add-comment'>
                                         <form className='div-add-comment' onSubmit={submitComment}>
-                                            <p>{artwork.name}</p>
+                                            <p>{artworks[artwork.artwork_id - 1].name}</p>
                                             <label>
                                                 <input type="text" name="comment" />
                                             </label>

@@ -24,22 +24,22 @@ class App extends Component {
       user: {},
     };
 
-    this.handleStart = this.handleStart.bind(this);
-    this.handleReplay = this.handleReplay.bind(this);
-    this.handleGameOver = this.handleGameOver.bind(this);
-    this.handleShowRanking = this.handleShowRanking.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
+    // this.handleStart = this.handleStart.bind(this);
+    // this.handleReplay = this.handleReplay.bind(this);
+    // this.handleGameOver = this.handleGameOver.bind(this);
+    // this.handleShowRanking = this.handleShowRanking.bind(this);
+    // this.handleLogin = this.handleLogin.bind(this);
+    // this.handleLogout = this.handleLogout.bind(this);
   }
 
-  shuffle(n) {
-    console.log(n);
-    var arr = Array.from({length: 10}, () => Math.floor(Math.random() * n));
-    return arr;
-  }
+  // shuffle(n) {
+  //   console.log(n);
+  //   var arr = Array.from({length: 10}, () => Math.floor(Math.random() * n));
+  //   return arr;
+  // }
 
-  async componentDidMount() {
-    // Authenicate the accessToken
+  // async componentDidMount() {
+    // // Authenicate the accessToken
     
     // console.log('componentDidUpdate....');
     // const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {}
@@ -71,140 +71,140 @@ class App extends Component {
     //   }
     // })
 
-  }
+  // }
 
-  // Call API to get Artworks data from Postgres
-  async readArtworks() {
-    try {
-      const url = this.state.preurl + '/artworks/'
-      const res = await fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      let res_json = await res.json();
-      return res_json;
-    }
-    catch(error) {
-      console.log("Error occurred in reading Artworks...")
-    }
-  }
+  // // Call API to get Artworks data from Postgres
+  // async readArtworks() {
+  //   try {
+  //     const url = this.state.preurl + '/artworks/'
+  //     const res = await fetch(url, {
+  //       method: 'GET',
+  //       mode: 'cors',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
+  //     let res_json = await res.json();
+  //     return res_json;
+  //   }
+  //   catch(error) {
+  //     console.log("Error occurred in reading Artworks...")
+  //   }
+  // }
 
-  // Call API to get Top-10 data from Postgres
-  async readTopRanking() {
-    try {
-      const url_ranking = this.state.preurl + "/artworks/ranking/"  
-      const res_ranking = await fetch(url_ranking, {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      let res_json_ranking = await res_ranking.json();
-      return res_json_ranking;
-    }
-    catch(error) {
-      console.log("Error occurred in reading readTopRanking()...")
-    }
-  }
+  // // Call API to get Top-10 data from Postgres
+  // async readTopRanking() {
+  //   try {
+  //     const url_ranking = this.state.preurl + "/artworks/ranking/"  
+  //     const res_ranking = await fetch(url_ranking, {
+  //       method: 'GET',
+  //       mode: 'cors',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
+  //     let res_json_ranking = await res_ranking.json();
+  //     return res_json_ranking;
+  //   }
+  //   catch(error) {
+  //     console.log("Error occurred in reading readTopRanking()...")
+  //   }
+  // }
 
-  // load images to 'artwork_images'; skip if already added
-  async loadImages(artworks, order, n) {
-    var images = this.state.artworks_image;
-    let i = 0;
-    for(i = 0; i < n; i++) {      
-      if (artworks[order[i]] !== undefined && (images[order[i]] === "" || images[order[i]] === undefined)){
-        var img=new Image();
+  // // load images to 'artwork_images'; skip if already added
+  // async loadImages(artworks, order, n) {
+  //   var images = this.state.artworks_image;
+  //   let i = 0;
+  //   for(i = 0; i < n; i++) {      
+  //     if (artworks[order[i]] !== undefined && (images[order[i]] === "" || images[order[i]] === undefined)){
+  //       var img=new Image();
         
-        const full_path = this.state.preurl + '/resources/artworks/' + artworks[order[i]].file_path;
-        img.src=full_path;
-        img.id=artworks[order[i]].id; 
-        images[order[i]] = img;
-      } 
-    }    
+  //       const full_path = this.state.preurl + '/resources/artworks/' + artworks[order[i]].file_path;
+  //       img.src=full_path;
+  //       img.id=artworks[order[i]].id; 
+  //       images[order[i]] = img;
+  //     } 
+  //   }    
 
-    return images; 
-  }  
+  //   return images; 
+  // }  
 
-  // Get 10 random images for Game. Also, get top 10 images for Ranking 
-  async handleStart() {    
-    var result = await this.readArtworks();
-    if (result === undefined) {
-      alert("The app is not currently available... There must be some issue in the backend")
-    }
-    const newOrder = this.shuffle(result.length - 1); // 0 to n - 1  
-    const images = await this.loadImages(result, newOrder, 10);
+  // // Get 10 random images for Game. Also, get top 10 images for Ranking 
+  // async handleStart() {    
+  //   var result = await this.readArtworks();
+  //   if (result === undefined) {
+  //     alert("The app is not currently available... There must be some issue in the backend")
+  //   }
+  //   const newOrder = this.shuffle(result.length - 1); // 0 to n - 1  
+  //   const images = await this.loadImages(result, newOrder, 10);
 
-    console.log(`handleStart...`)
-    console.log(`newOrder: ${newOrder}`)
-    console.log(images);
+  //   console.log(`handleStart...`)
+  //   console.log(`newOrder: ${newOrder}`)
+  //   console.log(images);
     
-    this.setState({
-      artworks: result,
-      artworks_order: newOrder,      
-      currentView: "Game",
-      artworks_image: images,
-      isDataLoaded: true, 
-    })
-  }
+  //   this.setState({
+  //     artworks: result,
+  //     artworks_order: newOrder,      
+  //     currentView: "Game",
+  //     artworks_image: images,
+  //     isDataLoaded: true, 
+  //   })
+  // }
   
-  // load (more) images using the new order
-  async handleReplay() {
-    var new_order = this.shuffle(this.state.artworks.length);
-    await this.loadImages(this.state.artworks, new_order, 10);
-    this.setState({ 
-      artworks_userResponse: [],
-      artworks_order: new_order,
-      currentView: "Game",
-    });    
-  }
+  // // load (more) images using the new order
+  // async handleReplay() {
+  //   var new_order = this.shuffle(this.state.artworks.length);
+  //   await this.loadImages(this.state.artworks, new_order, 10);
+  //   this.setState({ 
+  //     artworks_userResponse: [],
+  //     artworks_order: new_order,
+  //     currentView: "Game",
+  //   });    
+  // }
 
-  // Switch to Result for first time or back from Ranking
-  handleGameOver(response) {
-    if (response) {
-      this.setState({ 
-        currentView: "Result",
-        artworks_userResponse: response,
-      });           
-    } else {
-      this.setState({ 
-        currentView: "Result",
-      });   
-    }    
-  }
+  // // Switch to Result for first time or back from Ranking
+  // handleGameOver(response) {
+  //   if (response) {
+  //     this.setState({ 
+  //       currentView: "Result",
+  //       artworks_userResponse: response,
+  //     });           
+  //   } else {
+  //     this.setState({ 
+  //       currentView: "Result",
+  //     });   
+  //   }    
+  // }
 
-  handleLogin(user) {
-    localStorage.setItem('user', JSON.stringify(user));
-    this.setState({ user: user });
-  }
+  // handleLogin(user) {
+  //   localStorage.setItem('user', JSON.stringify(user));
+  //   this.setState({ user: user });
+  // }
 
-  async handleLogout() {
-    localStorage.clear('user');
-    this.setState({ user: {} });
-  }
+  // async handleLogout() {
+  //   localStorage.clear('user');
+  //   this.setState({ user: {} });
+  // }
 
-  // Retrieve data for Top Ranking artworks again and load it (if needed)
-  async handleShowRanking() {
-      console.log('handleShowRanking called...')
+  // // Retrieve data for Top Ranking artworks again and load it (if needed)
+  // async handleShowRanking() {
+  //     console.log('handleShowRanking called...')
 
-      const artworks_ranking = await this.readTopRanking();
+  //     const artworks_ranking = await this.readTopRanking();
 
-      // '-1' is needed because 'artwork' variable starts at 0 whereas databsae start at 0 
-      const topOrder = artworks_ranking.map(a => a.artwork_id - 1); // index
+  //     // '-1' is needed because 'artwork' variable starts at 0 whereas databsae start at 0 
+  //     const topOrder = artworks_ranking.map(a => a.artwork_id - 1); // index
  
-      const images = await this.loadImages(this.state.artworks, topOrder, 3); // fetch 5 images
+  //     const images = await this.loadImages(this.state.artworks, topOrder, 3); // fetch 5 images
 
-      console.log('Final output for Ranking... ')
+  //     console.log('Final output for Ranking... ')
       
-      this.setState({ 
-        artworks_ranking: artworks_ranking,
-        artworks_image: images,
-        currentView: "Ranking",
-      });    
-  }
+  //     this.setState({ 
+  //       artworks_ranking: artworks_ranking,
+  //       artworks_image: images,
+  //       currentView: "Ranking",
+  //     });    
+  // }
 
   render() {
     return (

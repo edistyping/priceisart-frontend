@@ -208,16 +208,22 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        {
+          /*
           <Header user={this.state.user} preurl={this.state.preurl} currentView={this.state.currentView} handleLogin={this.handleLogin} handleLogout={this.handleLogout} handleShowRanking={this.handleShowRanking} handleGameOver={this.handleGameOver} />
           { this.state.currentView === "Start" && <Start handleStart = {this.handleStart} /> }
           { this.state.currentView === "Game" && <Game artworks={this.state.artworks} order={this.state.artworks_order} images={this.state.artworks_image} handleGameOver={this.handleGameOver} /> }          
           { (this.state.currentView === "Result" || this.state.currentView === "Ranking") && 
             <>
-              <Result currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />
-              <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} artworks_ranking={this.state.artworks_ranking} artworks_image={this.state.artworks_image} handleLogout={this.handleLogout}/>
+            <Result currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} order={this.state.artworks_order} artworks_image={this.state.artworks_image} userResponses={this.state.artworks_userResponse} handleReplay={this.handleReplay} />
+            <Ranking currentView={this.state.currentView} user={this.state.user} preurl={this.state.preurl} artworks={this.state.artworks} artworks_ranking={this.state.artworks_ranking} artworks_image={this.state.artworks_image} handleLogout={this.handleLogout}/>
             </>
           }
-        </div>
+          */
+        }
+
+        HELLO WORLD!
+      </div>
     )
   }
 }

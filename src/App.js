@@ -39,36 +39,37 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    // authenicate the accessToken
-    console.log('componentDidUpdate....');
-    const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {}
-    console.log(user)
+    // Authenicate the accessToken
+    
+    // console.log('componentDidUpdate....');
+    // const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {}
+    // console.log(user)
 
-    const url = this.state.preurl + '/users/authToken';        
-    const requestOptions = {
-        method: 'GET',
-        credentials: "include",
-        headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.accessToken}`
-        },
-    };
+    // const url = this.state.preurl + '/users/authToken';        
+    // const requestOptions = {
+    //     method: 'GET',
+    //     credentials: "include",
+    //     headers: { 
+    //         'Content-Type': 'application/json',
+    //         'Authorization': `Bearer ${user.accessToken}`
+    //     },
+    // };
 
-    await fetch(url, requestOptions).then(response => {
-      if (response.status === 400 || response.status === 401) {
-        console.log('accessToken/refreshToken is not valid...')
-        this.handleLogout({});
-      } else if (response.status === 200) {
-        console.log('accessToken is ok')
-        return response.json()
-      }
-    }).then(result => {
-      if (result) {
-        console.log('logging in');
-        user.accessToken = result.accessToken;
-        this.handleLogin(user);
-      }
-    })
+    // await fetch(url, requestOptions).then(response => {
+    //   if (response.status === 400 || response.status === 401) {
+    //     console.log('accessToken/refreshToken is not valid...')
+    //     this.handleLogout({});
+    //   } else if (response.status === 200) {
+    //     console.log('accessToken is ok')
+    //     return response.json()
+    //   }
+    // }).then(result => {
+    //   if (result) {
+    //     console.log('logging in');
+    //     user.accessToken = result.accessToken;
+    //     this.handleLogin(user);
+    //   }
+    // })
 
   }
 
@@ -222,7 +223,10 @@ class App extends Component {
           */
         }
 
-        HELLO WORLD!
+        <p>
+          HELLO WORLD!
+        </p>
+
       </div>
     )
   }

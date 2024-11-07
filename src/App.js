@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
 import './App.css';
-import Header from './components/Header';
-import Start from './components/Start';
-import Game from './components/Game';
-import Result from './components/Result';
-import Ranking from './components/Ranking';
+// import Header from './components/Header';
+// import Start from './components/Start';
+// import Game from './components/Game';
+// import Result from './components/Result';
+// import Ranking from './components/Ranking';
 
 class App extends Component {
 

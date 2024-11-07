@@ -2,7 +2,7 @@
   "name": "priceisart",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://www.priceisart.com",
+  "homepage": "https://edistyping.github.io/priceisart-frontend",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/user-event": "^13.5.0",
